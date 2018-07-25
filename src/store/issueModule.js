@@ -30,6 +30,10 @@ export default {
                 .then(issues => {
                     context.commit({ type: SET_ISSUES, issues })
                 })
-        }
+        },
+
+        [GET_ISSUE_BY_ID](state, issueId) {
+            // return issueService.
+        },
     }
 }

@@ -1,5 +1,5 @@
 
-<<template>
+<template>
     <section>
     
     </section>
@@ -7,11 +7,10 @@
 
 <script>
 // import helloWorld from '@/components/helloWorld.vue';
-import { GET_ISSUE_BY_ID } from '@/store/issueModlue.js';
+import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 // import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 
 export default {
-    name: 'home',
 
     data() {
         return {
@@ -29,8 +28,8 @@ export default {
     },
 
     components: {
-    helloWorld,
-    issueListCmp
+    
+    
     }
 };
 </script>
