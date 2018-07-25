@@ -7,30 +7,27 @@
 
 <script>
 // import helloWorld from '@/components/helloWorld.vue';
-import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
+import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
 // import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 
 export default {
-    name: 'home',
+  name: "home",
 
-    data() {
-        return {
-            issue:null,
-        }
-    },    
+  data() {
+    return {
+      issue: null
+    };
+  },
 
-    created () {
-        let issueId = this.$route.params.issueId;
-        this.issue = this.$store.dispatch({type:GET_ISSUE_BY_ID, issueId})
-    },
+  created() {
+    let issueId = this.$route.params.issueId;
+    this.issue = this.$store.dispatch({ type: GET_ISSUE_BY_ID, issueId });
+  },
 
-    computed: {
-        
-    },
+  computed: {},
 
-    components: {
-    // helloWorld,
-    // issueListCmp
-    }
+  components: {
+    
+  }
 };
 </script>
