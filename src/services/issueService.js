@@ -15,12 +15,12 @@ function query() {
 }
 
 function getIssueById(issueId) {
-    return axios.get(`${ISSUE_URL}/:${issueId}`)
-        .then(res=>res.data)
+    return axios.get(`${ISSUE_URL}/${issueId}`)
+        .then(res=> res.data)
         .catch(err=> console.warn(err))
 }
 
 export default {
     query,
-    getIssueById
+    getIssueById,
 }

@@ -33,9 +33,9 @@ export default {
                 })
         },
 
-        [GET_ISSUE_BY_ID](context, issueId) {
-                console.log(issueId);
-                
+        [GET_ISSUE_BY_ID](context, {issueId}) {
+            return issueService.getIssueById(issueId)     
+                .then(issue=>issue)           
         },
     }
 }

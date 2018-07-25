@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
+    "vue-carousel": "^0.10.0",
     "vue-router": "^3.0.1",
     "vue2-google-maps": "^0.10.0",
     "vuex": "^3.0.1"

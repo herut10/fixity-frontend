@@ -8,7 +8,6 @@
 
 <script>
 // @ is an alias to /src
-import helloWorld from '@/components/helloWorld.vue';
 import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
 import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 
@@ -22,7 +21,6 @@ export default {
   },
 
   components: {
-    helloWorld,
     issueListCmp
   }
 };
