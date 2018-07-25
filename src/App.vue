@@ -9,6 +9,19 @@
   </div>
 </template>
 
+<script>
+import { LOAD_ISSUES } from '@/store/issueModule.js';
+
+export default {
+  name: 'app',
+
+  created() {
+    this.$store.dispatch({ type: LOAD_ISSUES });
+  }
+};
+</script>
+
+
 <style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
