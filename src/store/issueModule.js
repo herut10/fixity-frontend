@@ -8,7 +8,8 @@ export const ISSUES_TO_DISPLAY = 'issue/getters/issuesToDisplay';
 
 export default {
     state: {
-        issues: [{ txt: 'issue1' }, { txt: 'issue2' }, { txt: 'issue3' }]
+        // issues: [{ txt: 'issue1' }, { txt: 'issue2' }, { txt: 'issue3' }]
+        issues: []
     },
 
     mutations: {
@@ -25,7 +26,10 @@ export default {
 
     actions: {
         [LOAD_ISSUES](context, payload) {
-
+            return issueService.query()
+                .then(issues => {
+                    context.commit({ type: SET_ISSUES, issues })
+                })
         }
     }
 }
