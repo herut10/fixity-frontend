@@ -1,15 +1,15 @@
-import Vue from 'vue'
-import app from './app.vue'
-import router from './router'
-import store from './store/store'
-import './registerServiceWorker'
+import Vue from 'vue';
+import app from './app.vue';
+import router from './router';
+import store from './store/store';
+import './registerServiceWorker';
+import axios from 'axios';
+import * as VueGoogleMaps from 'vue2-google-maps';
 import VueCarousel from 'vue-carousel';
-Vue.use(VueCarousel);
+import '@/assets/scss/main.scss';
 
+axios.defaults.withCredentials = true
 Vue.config.productionTip = false
-
-
-import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -18,6 +18,7 @@ Vue.use(VueGoogleMaps, {
   },
 })
 
+Vue.use(VueCarousel);
 
 new Vue({
   router,

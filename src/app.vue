@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/issue/add">report issue</router-link>
+      <router-link to="/issueAdd">report issue</router-link>
     </div>
     <router-view/>
   </div>
@@ -17,6 +17,7 @@ export default {
 
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
+    // this.$store.dispatch({ type: LOAD_CURRLOC });
   }
 };
 </script>

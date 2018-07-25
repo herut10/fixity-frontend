@@ -1,8 +1,6 @@
 <template>
   <section class="home">
     <issue-list-cmp :issues="issues"></issue-list-cmp>
-    <!-- <img src="../assets/logo.png"> -->
-    <!-- <helloWorld msg="Welcome to Your Vue.js App"/> -->
   </section>
 </template>
 
@@ -12,7 +10,7 @@ import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
 import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 
 export default {
-  name: 'home',
+  name: "home",
 
   computed: {
     issues() {

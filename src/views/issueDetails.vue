@@ -35,7 +35,6 @@
 </template>
 
 <script>
-// import helloWorld from '@/components/helloWorld.vue';
 import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { Carousel, Slide } from 'vue-carousel';
 
