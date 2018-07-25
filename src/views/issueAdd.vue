@@ -1,0 +1,40 @@
+<template>
+    <section>
+<GmapMap
+  :center="{lat:10, lng:10}"
+  :zoom="7"
+  map-type-id="terrain"
+  style="width: 500px; height: 300px"
+>
+  <GmapMarker
+    :key="index"
+    v-for="(m, index) in markers"
+    :position="m.position"
+    :clickable="true"
+    :draggable="true"
+    @click="center=m.position"
+  />
+</GmapMap>
+    </section>
+</template>
+
+<script>
+import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
+export default {
+  data() {
+    return {
+      markers: [
+        {
+          position: {
+            lat: 10,
+            lng: 10
+          }
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style>
+</style>

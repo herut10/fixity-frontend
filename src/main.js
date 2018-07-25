@@ -6,6 +6,17 @@ import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
+
+import * as VueGoogleMaps from 'vue2-google-maps'
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyAKgxLxUePB9fjgJ2D-IcAwXtx8BW9xEdg',
+    libraries: 'places', 
+  },
+})
+
+
 new Vue({
   router,
   store,
