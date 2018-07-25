@@ -1,0 +1,79 @@
+[{
+        "imgUrls": ["https://res.cloudinary.com/djewvb6ty/image/upload/v1532520634/sidewalk.jpg"],
+        "title": "side walk hole",
+        "desc": "telephone poll was ripped and the hole wasn't filled properly",
+        "loc": {
+            "lat": 32.120210,
+            "lng": 34.792447
+        },
+        "category": "pedestrian",
+        "status": "open",
+        "createdAt": 1532520103083,
+        "reportedBy": "5b58233fcdbd016cc0b475f8"
+    },
+    {
+        "imgUrls": ["https://res.cloudinary.com/djewvb6ty/image/upload/v1532520634/matressjpg.jpg"],
+        "title": "abandoned mattress",
+        "desc": "someone left his disgusting mattress next to my home!",
+        "loc": {
+            "lat": 32.075129,
+            "lng": 34.788329
+        },
+        "category": "garbage",
+        "status": "recognized",
+        "createdAt": 1532500103083,
+        "reportedBy": "5b58233fcdbd016cc0b475f8"
+    },
+    {
+        "imgUrls": ["https://res.cloudinary.com/djewvb6ty/image/upload/v1532520633/litter.jpg"],
+        "title": "trash strewn around!",
+        "desc": "someone left trash all over the street!",
+        "loc": {
+            "lat": 32.066692,
+            "lng": 34.840834
+        },
+        "category": "garbage",
+        "status": "closed",
+        "createdAt": 1502520103083,
+        "reportedBy": "5b58233fcdbd016cc0b475f8"
+    },
+    {
+        "imgUrls": ["https://res.cloudinary.com/djewvb6ty/image/upload/v1532520633/fallentree.jpg"],
+        "title": "fallen tree",
+        "desc": "tree was fell nearly three weeks ago and still has not been vacated yet!",
+        "loc": {
+            "lat": 32.093746,
+            "lng": 34.832255
+        },
+        "category": "garbage",
+        "status": "open",
+        "createdAt": 1532020103083,
+        "reportedBy": "5b58233fcdbd016cc0b475f8"
+    },
+    {
+        "imgUrls": ["https://res.cloudinary.com/djewvb6ty/image/upload/v1532520633/potholes.jpg"],
+        "title": "increasing potholes in my street!",
+        "desc": "these potholes have been a major hazard you must fix it!",
+        "loc": {
+            "lat": 32.032355,
+            "lng": 34.760193
+        },
+        "category": "road hazzard",
+        "status": "recognized",
+        "createdAt": 1532520103083,
+        "reportedBy": "5b58233fcdbd016cc0b475f8"
+    },
+    {
+        "imgUrls": ["https://res.cloudinary.com/djewvb6ty/image/upload/v1532520633/stop_sign.jpg"],
+        "title": "run over stop sign",
+        "desc": "some asshole ran over the stop sign next to my home",
+        "loc": {
+            "lat": 32.087638,
+            "lng": 34.883392
+        },
+        "category": "road hazzard",
+        "status": "recognized",
+        "createdAt": 1532520103083,
+        "reportedBy": "5b58233fcdbd016cc0b475f8"
+    }
+]
