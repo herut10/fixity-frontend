@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "styles": "node-sass scss/style.scss -o dist --watch"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
+    "vue-carousel": "^0.10.0",
     "vue-router": "^3.0.1",
     "vue2-google-maps": "^0.10.0",
     "vuex": "^3.0.1"
@@ -18,7 +20,7 @@
     "@vue/cli-plugin-babel": "^3.0.0-rc.5",
     "@vue/cli-plugin-pwa": "^3.0.0-rc.5",
     "@vue/cli-service": "^3.0.0-rc.5",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.2",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.16"
   },

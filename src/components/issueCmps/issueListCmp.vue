@@ -1,7 +1,7 @@
 <template>
     <section class="issue-list">
-        <ul>
-            <li v-for="issue in issues" :key="issue._id">
+        <ul class="clean-list flex flex-wrap">
+            <li v-for="issue in issues" :key="issue._id" class="issue">
                 <issue-preview-cmp :issue="issue"></issue-preview-cmp>
             </li>
         </ul>

@@ -10,7 +10,6 @@ export const MARKERS_TO_DISPLAY = 'issue/getters/markersToDisplay';
 
 export default {
     state: {
-        // issues: [{ txt: 'issue1' }, { txt: 'issue2' }, { txt: 'issue3' }]
         issues: []
     },
 
