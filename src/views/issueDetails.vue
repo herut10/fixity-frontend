@@ -12,20 +12,18 @@ import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 
 export default {
 
-    data() {
-        return {
-            issue:null,
-        }
-    },    
+  data() {
+    return {
+      issue: null
+    };
+  },
 
-    created () {
-        let issueId = this.$route.params.issueId;
-        this.issue = this.$store.dispatch({type:GET_ISSUE_BY_ID, issueId})
-    },
+  created() {
+    let issueId = this.$route.params.issueId;
+    this.issue = this.$store.dispatch({ type: GET_ISSUE_BY_ID, issueId });
+  },
 
-    computed: {
-        
-    },
+  computed: {},
 
     components: {
     

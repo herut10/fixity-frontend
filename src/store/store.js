@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import issueModule from './issueModule.js';
 import userModule from './userModule.js';
 import commentModule from './commentModule.js';
+import mapModule from './mapModule.js';
 
 Vue.use(Vuex)
 
@@ -12,9 +13,7 @@ export default new Vuex.Store({
 
   },
 
-  mutations: {
-
-  },
+  mutations: {},
 
   actions: {
 
@@ -23,6 +22,7 @@ export default new Vuex.Store({
   modules: {
     issueModule,
     commentModule,
-    userModule
+    userModule,
+    mapModule
   }
 })

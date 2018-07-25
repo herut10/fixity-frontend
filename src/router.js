@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import home from './views/home.vue'
 import about from './views/about.vue'
 import issueDetails from './views/issueDetails.vue'
-import addIssue from './views/issueAdd.vue'
+import issueAdd from './views/issueAdd.vue'
 
 Vue.use(Router)
 
@@ -23,11 +23,10 @@ export default new Router({
       name: 'issueDetails',
       component: issueDetails
     },
-    
-    { 
-      path: '/issue/add',
-      name: 'add issue',
-      component: addIssue
+    {
+      path: '/issueAdd',
+      name: 'issueAdd',
+      component: issueAdd
     }
   ]
 })
