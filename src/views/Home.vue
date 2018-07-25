@@ -1,18 +1,29 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <section class="home">
+    <issue-list-cmp :issues="issues"></issue-list-cmp>
+    <!-- <img src="../assets/logo.png"> -->
+    <!-- <helloWorld msg="Welcome to Your Vue.js App"/> -->
+  </section>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import helloWorld from '@/components/helloWorld.vue';
+import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
+import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 
 export default {
   name: 'home',
+
+  computed: {
+    issues() {
+      return this.$store.getters[ISSUES_TO_DISPLAY];
+    }
+  },
+
   components: {
-    HelloWorld
+    helloWorld,
+    issueListCmp
   }
-}
+};
 </script>
