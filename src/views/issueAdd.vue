@@ -1,20 +1,27 @@
 <template>
     <section>
-<GmapMap
-  :center="{lat:10, lng:10}"
-  :zoom="7"
-  map-type-id="terrain"
-  style="width: 500px; height: 300px"
->
-  <GmapMarker
-    :key="index"
-    v-for="(m, index) in markers"
-    :position="m.position"
-    :clickable="true"
-    :draggable="true"
-    @click="center=m.position"
-  />
-</GmapMap>
+      <GmapMap
+        :center="center"
+        @click="setCenter"
+        :zoom="7"
+        map-type-id="terrain"
+      >
+        <GmapMarker
+          :position="center"
+          :clickable="true"
+          :draggable="false"
+        />
+      </GmapMap>
+      <form >
+      <input v-model="newIssue.address" type="text" placeholder="address"/>
+      <input v-model="newIssue.title" type="text" placeholder="title" />
+      <textarea v-model="newIssue.title" type="text" placeholder="title" ></textarea>
+      <select>
+        <option value="pedestrian">pedestrian</option>
+        <option value="garbage">garbage</option>
+        <option value="road hazzard">road hazzard</option>
+      </select>
+      </form>
     </section>
 </template>
 
@@ -23,18 +30,38 @@ import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
 export default {
   data() {
     return {
-      markers: [
-        {
-          position: {
-            lat: 10,
-            lng: 10
-          }
-        }
-      ]
+      newIssue: {
+        title: '',
+        address: '',
+        body:'',
+        category:''
+      },
+      center: {
+        lat: 10,
+        lng: 10
+      }
     };
+  },
+  methods: {
+    setCenter(ev) {
+      [this.center.lat, this.center.lng] = [ev.latLng.lat(), ev.latLng.lng()];
+      console.log('click');
+    },
+  },
+  created() {
+    navigator.geolocation.getCurrentPosition(position => {
+      [this.center.lat, this.center.lng] = [
+        position.coords.latitude,
+        position.coords.longitude
+      ];
+    });
   }
 };
 </script>
 
-<style>
+<style scoped>
+.vue-map-container {
+  width: 100%;
+  height: 200px;
+}
 </style>
