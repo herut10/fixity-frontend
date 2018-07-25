@@ -24,7 +24,7 @@ export default {
             return state.issues;
         },
         [MARKERS_TO_DISPLAY](state) {
-            console.log(state);
+            // console.log(state);
             
             return state.issues.map(state => {
                 return {
