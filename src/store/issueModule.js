@@ -9,7 +9,6 @@ export const GET_ISSUE_BY_ID = 'issue/action/getIssueById';
 
 export default {
     state: {
-        // issues: [{ txt: 'issue1' }, { txt: 'issue2' }, { txt: 'issue3' }]
         issues: []
     },
 

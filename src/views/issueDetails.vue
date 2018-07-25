@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// import helloWorld from '@/components/helloWorld.vue';
 import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 // import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 

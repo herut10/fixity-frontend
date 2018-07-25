@@ -1,0 +1,25 @@
+@import 'helpers';
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+}
+
+.issue-list {
+    .issue {
+        border: 1px solid gray;
+        width: 200px;
+        height: 200px;
+        margin: 5px;
+    }
+}
+
+.issue-preview {
+    img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+}
