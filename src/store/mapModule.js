@@ -1,7 +1,7 @@
 'use strict';
 
 
-export const MARKERS_TO_DISPLAY = 'issue/getters/issuesToDisplay';
+export const MARKERS_TO_DISPLAY = 'issue/getters/markersToDisplay';
 
 export default {
 
