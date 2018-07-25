@@ -5,6 +5,7 @@ import issueService from '../services/issueService.js';
 export const SET_ISSUES = 'issue/mutations/setIssues';
 export const LOAD_ISSUES = 'issue/actions/loadIssues';
 export const ISSUES_TO_DISPLAY = 'issue/getters/issuesToDisplay';
+export const GET_ISSUE_BY_ID = 'issue/action/getIssueById';
 
 export default {
     state: {
@@ -32,8 +33,9 @@ export default {
                 })
         },
 
-        [GET_ISSUE_BY_ID](state, issueId) {
-            // return issueService.
+        [GET_ISSUE_BY_ID](context, issueId) {
+                console.log(issueId);
+                
         },
     }
 }
