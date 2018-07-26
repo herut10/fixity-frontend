@@ -1,5 +1,5 @@
 <template>
-    <section class="flex column align-center">
+    <section class="container flex column align-center">
       <GmapMap
         :center="center"
         @click="setCenter"
@@ -69,7 +69,7 @@ export default {
   watch: {
     center: {
       handler(center, oldCenter) {
-        mapService.converCoordsToAddress(center).then(address => {
+        mapService.convertCoordsToAddress(center).then(address => {
           this.newIssue.address = address;
         });
       },

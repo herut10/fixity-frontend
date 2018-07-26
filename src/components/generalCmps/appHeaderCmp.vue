@@ -15,7 +15,8 @@ export default {
 
 <style scoped>
 .app-header {
-    background-color: #fdc612;
+    /* background-color: #fdc612; */
+    background-color: #0b83d9;
     position: fixed;
     top: 0;
     height: 60px;
@@ -24,13 +25,19 @@ export default {
 }
 
 .logo {
+    border-radius: 15px;
     float: left;
     margin: 15px;
     width: 80px;
 }
 
 .about {
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+    width: 30px;
+    height: 30px;
     float: right;
-    margin: 20px 10px;
+    margin: 15px 10px;
 }
 </style>

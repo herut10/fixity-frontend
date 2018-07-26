@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import mapService from '@/services/mapService.js'
 import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
 import navbar from '@/components/generalCmps/navbarCmp.vue';
 import { LOAD_ISSUES } from '@/store/issueModule.js';
@@ -46,7 +47,7 @@ export default {
     font-weight: bold;
     color: white;
     &.router-link-exact-active {
-      color: #fdc612;
+      color: #0b83d9;
     }
   }
 }

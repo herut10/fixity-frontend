@@ -2,7 +2,7 @@
     <section class="issue-list">
         <ul class="clean-list flex column align-center flex-wrap">
             <li v-for="issue in issues" :key="issue._id" class="issue">
-                <issue-preview-cmp :issue="issue"></issue-preview-cmp>
+                <issue-preview-cmp v-if="mapLoaded" :issue="issue"></issue-preview-cmp>
             </li>
         </ul>
     </section>
@@ -17,7 +17,8 @@ export default {
     props: {
         issues: {
             type: Array
-        }
+        },
+        mapLoaded: null
     },
 
     components: {
