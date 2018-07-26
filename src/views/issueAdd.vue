@@ -14,7 +14,7 @@
       </GmapMap>
       <form >
       <input v-model="newIssue.address" type="text" placeholder="address"/>
-      <input v-model="newIssue.title" type="text" placeholder="title" />
+      <input v-model="newIssue.title" type="text" placeholder="title" maxlength="25" />
       <textarea v-model="newIssue.title" type="text" placeholder="title" ></textarea>
       <select>
         <option value="pedestrian">pedestrian</option>

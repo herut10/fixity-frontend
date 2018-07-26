@@ -1,5 +1,22 @@
+.container {
+    padding: 5px;
+    margin-top: 60px;
+}
+
 .flex {
     display: flex;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
 }
 
 .flex-wrap {

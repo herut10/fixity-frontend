@@ -1,15 +1,14 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/issueAdd">report issue</router-link>
-    </div>
+    <app-header />
+    <navbar />
     <router-view/>
   </div>
 </template>
 
 <script>
+import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
+import navbar from '@/components/generalCmps/navbarCmp.vue';
 import { LOAD_ISSUES } from '@/store/issueModule.js';
 
 export default {
@@ -18,6 +17,11 @@ export default {
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
     // this.$store.dispatch({ type: LOAD_CURRLOC });
+  },
+
+  components: {
+    appHeader,
+    navbar
   }
 };
 </script>
@@ -31,13 +35,18 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-  padding: 30px;
+.navbar {
+  background-color: #312e2e;
+  position: fixed;
+  bottom: 0;
+  padding: 15px;
+  width: 100%;
+  z-index: 1;
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: white;
     &.router-link-exact-active {
-      color: #42b983;
+      color: #fdc612;
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <section class="home">
+  <section class="home container">
     <issue-list-cmp :issues="issues"></issue-list-cmp>
   </section>
 </template>
