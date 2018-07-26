@@ -1,10 +1,10 @@
 @import 'helpers';
-
 * {
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     margin: 0;
 }
 
@@ -23,12 +23,10 @@ html, body {
     height: 100%;
     box-shadow: inset -1px 1px #aeadad;
     border-radius: 20px;
-
     h2 {
         text-transform: capitalize;
         font-size: 1.2em;
     }
-
     h4 {
         text-transform: capitalize;
         font-size: .8em;
@@ -37,9 +35,17 @@ html, body {
 
 .issue-preview {
     padding: 10px;
-
     img {
         max-width: 100px;
         max-height: 100px;
     }
+}
+
+body>iframe {
+    width: 200% !important;
+    position: absolute !important;
+    float: left !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
 }

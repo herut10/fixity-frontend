@@ -1,5 +1,5 @@
 <template>
-    <section class="flex column align-center">
+    <section @resize="myFunction" class="issue-add container flex column align-center">
       <GmapMap
         :center="center"
         @click="setCenter"
@@ -51,6 +51,7 @@ export default {
   components: {
     autoComplete
   },
+
   data() {
     return {
       newIssue: {
@@ -77,21 +78,31 @@ export default {
     }
   },
   methods: {
+    myFunction(val) {
+      console.log(val);
+      console.log("hi");
+    },
     placeChanged(val) {
       var loc = val.geometry.location;
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
     },
     openWidget() {
+      
       cloudinary.openUploadWidget(
-        { cloud_name: "demo", upload_preset: "a5vxnzbp" },
+        {
+          cloud_name: "djewvb6ty",
+          upload_preset: "qtz1qjeq",
+          sources: ["local"]
+        },
         function(error, result) {
+          
+          
           console.log(error, result);
         }
       );
     },
     onFileChanged(event) {
       const file = event.target.files[0];
-      console.log(file);
       this.selectedFile = event.target.files[0];
     },
     onSubmit() {},
