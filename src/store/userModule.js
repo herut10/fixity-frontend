@@ -1,8 +1,18 @@
 'use strict';
+import userService from '../services/userService.js';
+
+export const GET_USER = 'user/getters/getUser';
+
 
 export default {
     state: {
-        
+        user:{
+            "_id" : "5b58233fcdbd016cc0b475f8",
+            "username" : "notAdmin",
+            "password" : "passworddd",
+            "imgUrl" : "http://via.placeholder.com/150x150",
+            "isAdmin" : false
+        }
     },
 
     mutations: {
@@ -10,7 +20,9 @@ export default {
     },
 
     getters: {
-        
+        [GET_USER](state) {
+            return state.user;
+        }
     },
 
     actions: {

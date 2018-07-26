@@ -48,14 +48,21 @@ button, input, a {
         text-transform: capitalize;
         font-size: .8em;
     }
-
     img {
         max-width: 100px;
         max-height: 100px;
     }
 }
 
-
 .VueCarousel-wrapper, .VueCarousel-inner, .VueCarousel-slide {
     height: 100%;
+}
+
+body>iframe {
+    width: 200% !important;
+    position: absolute !important;
+    float: left !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
 }
