@@ -1,7 +1,9 @@
 <template>
-    <section class="issue-preview">
-        {{issue.title}}
-        <carousel :perPage="1">
+    <section class="issue-preview flex column space-between">
+        <h2>{{issue.title}}</h2>
+        <h4>{{issue.category}}</h4>
+
+        <carousel :perPage="1" :autoplay="true" :autoplayTimeout="1500" :paginationEnabled="false">
             <slide>
                 <img :src="issue.imgUrls[0]" />
             </slide>

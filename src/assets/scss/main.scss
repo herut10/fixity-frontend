@@ -10,14 +10,34 @@ html, body {
 
 .issue-list {
     .issue {
-        border: 1px solid gray;
-        width: 200px;
-        height: 200px;
+        border-radius: 20px;
+        border: 4px solid #efecec;
+        box-shadow: -1px 1px #aeadad;
+        width: 210px;
+        height: 250px;
         margin: 5px;
     }
 }
 
 .issue-preview {
+    height: 100%;
+    box-shadow: inset -1px 1px #aeadad;
+    border-radius: 20px;
+
+    h2 {
+        text-transform: capitalize;
+        font-size: 1.2em;
+    }
+
+    h4 {
+        text-transform: capitalize;
+        font-size: .8em;
+    }
+}
+
+.issue-preview {
+    padding: 10px;
+
     img {
         max-width: 100px;
         max-height: 100px;
