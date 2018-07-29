@@ -16,7 +16,8 @@ export default {
             "password" : "passworddd",
             "imgUrl" : "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
             "isAdmin" : false
-        }
+        },
+        currLoc:null,
     },
 
     mutations: {
