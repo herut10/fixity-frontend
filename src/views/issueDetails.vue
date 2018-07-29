@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "issue && comments.length" class="details-container flex column" >
+    <section v-if = "issue" class="details-container flex column" >
       <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="12" map-type-id="terrain" style="min-width: 500px; min-height: 200px">
         <GmapMarker :position="issue.loc"/>
       </GmapMap>
@@ -64,6 +64,8 @@ export default {
 
   created() {
       let issueId = this.$route.params.issueId;
+      console.log(issueId);
+      
       this.getIssue(issueId);
       this.getComments(issueId);
     },
@@ -73,6 +75,8 @@ export default {
     getIssue(issueId) {
       this.$store.dispatch({ type: GET_ISSUE_BY_ID, issueId })
         .then(issue => {
+          console.log(issue);
+          
           this.issue = issue;
         }).catch(err => console.warn(err))
     },
