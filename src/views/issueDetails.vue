@@ -43,7 +43,7 @@
 <script>
 import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { GET_COMMENTS } from '@/store/commentModule.js';
-import { GET_USER } from '@/store/userModule.js';
+import { USER } from '@/store/userModule.js';
 import { ADD_COMMENT } from '@/store/commentModule.js';
 import { Carousel, Slide } from 'vue-carousel';
 
@@ -90,7 +90,7 @@ export default {
 
     addComment() {
       var txt = this.$refs.commentContent.innerText;
-      var commenter = this.$store.getters[GET_USER];
+      var commenter = this.$store.getters[USER];
       this.$store.dispatch({type: ADD_COMMENT,payload:{comment:{issueId: this.issue._id, commenterId: commenter._id,
       txt, createdAt: Date.now()},commenter}})
         .then(comment=> console.log('comment added'))
@@ -100,7 +100,6 @@ export default {
 
     toggleModal() {
       this.openModal = (this.openModal)? false : true;
-      if(this.openModal) this.$refs.commentContent.focus();
     }
   },
 

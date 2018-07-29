@@ -53,7 +53,7 @@
 import utilsService from '@/services/utilsService.js';
 import mapService from '@/services/mapService.js';
 import { UPDATE_ISSUE } from '@/store/issueModule.js';
-import { GET_CURRLOC } from '@/store/userModule.js';
+import { CURRLOC } from '@/store/userModule.js';
 
 export default {
   name: 'issuePreview',
@@ -72,7 +72,7 @@ export default {
 
   computed: {
     issueDistanceFromUser() {
-      var userLoc = this.$store.getters[GET_CURRLOC];
+      var userLoc = this.$store.getters[CURRLOC];
       if (!userLoc) return 'Distance Unknown';
       var distance = utilsService.getDistanceFromLatLngInKm(userLoc, this.issue.loc);
       if (distance < 1) return (distance * 1000).toFixed(0);

@@ -1,10 +1,10 @@
 'use strict';
 import userService from '../services/userService.js';
 
-export const GET_USER = 'user/getters/getUser';
+export const USER = 'user/getters/getUser';
+export const CURRLOC = 'user/getters/getCurrLoc';
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
-export const GET_CURRLOC = 'user/getters/getCurrLoc';
 
 export default {
     state: {
@@ -22,17 +22,16 @@ export default {
         [SET_CURRLOC](state, {
             currLoc
         }) {
-
-            state.currLoc = currLoc
+            state.currLoc = JSON.parse(JSON.stringify(currLoc))
         }
     },
 
     getters: {
-        [GET_USER](state) {
+        [USER](state) {
             return state.user;
         },
-        [GET_CURRLOC](state) {
-            return state.currLoc
+        [CURRLOC](state) {
+            return JSON.parse(JSON.stringify(state.currLoc))
         }
     },
 

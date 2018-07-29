@@ -4,6 +4,7 @@ import issueService from '../services/issueService.js';
 
 export const SET_ISSUES = 'issue/mutations/setIssues';
 export const SET_ISSUES_VIEW = 'issue/mutations/setIssuesView';
+export const ADD_ISSUE = 'issue/mutations/addIssue';
 
 export const ISSUES_TO_DISPLAY = 'issue/getters/issuesToDisplay';
 export const MARKERS_TO_DISPLAY = 'issue/getters/markersToDisplay';
@@ -12,6 +13,7 @@ export const ISSUES_VIEW = 'issue/getters/issuesView';
 export const LOAD_ISSUES = 'issue/actions/loadIssues';
 export const GET_ISSUE_BY_ID = 'issue/actions/getIssueById';
 export const UPDATE_ISSUE = 'issue/actions/updateIssue';
+export const SUBMIT_ISSUE = 'issue/actions/submitIssue';
 
 export default {
     state: {
@@ -20,13 +22,22 @@ export default {
     },
 
     mutations: {
-        [SET_ISSUES](state, { issues }) {
+        [SET_ISSUES](state, {
+            issues
+        }) {
             state.issues = issues;
         },
 
-        [UPDATE_ISSUE](state, { updatedIssue }) {
+        [UPDATE_ISSUE](state, {
+            updatedIssue
+        }) {
             var issueIdx = state.issues.findIndex(issue => issue._id === updatedIssue._id);
             state.issues.splice(issueIdx, 1, updatedIssue);
+        },
+        [ADD_ISSUE](state, {
+            issueToSubmit
+        }) {
+            state.issues.push(issueToSubmit)
         },
 
         [SET_ISSUES_VIEW](state, { viewType }) {
@@ -62,21 +73,47 @@ export default {
 
             return issueService.query(getBy)
                 .then(issues => {
-                    context.commit({ type: SET_ISSUES, issues })
+                    context.commit({
+                        type: SET_ISSUES,
+                        issues
+                    })
                     return issues;
                 })
         },
 
-        [GET_ISSUE_BY_ID](context, { issueId }) {
+        [GET_ISSUE_BY_ID](context, {
+            issueId
+        }) {
             return issueService.getIssueById(issueId)
                 .then(issue => issue)
         },
 
-        [UPDATE_ISSUE](context, { issueId, updatedIssue }) {
+        [UPDATE_ISSUE](context, {
+            issueId,
+            updatedIssue
+        }) {
             return issueService.updateIssue(issueId, updatedIssue)
                 .then(updatedIssue => {
-                    context.commit({ type: UPDATE_ISSUE, updatedIssue })
+                    context.commit({
+                        type: UPDATE_ISSUE,
+                        updatedIssue
+                    })
                 })
+        },
+        [SUBMIT_ISSUE](context, {
+            issueToSubmit
+        }) {
+            var tempIssueIdx = context.commit({
+                type: ADD_ISSUE,
+                issueToSubmit
+            }) //optimistic adding
+            issueService.addIssue(issueToSubmit)
+                .then(res => {
+                    debugger
+                    issueToSubmit._id = res._id
+                })
+
         }
+
     }
 }

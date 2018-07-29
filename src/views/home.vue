@@ -25,6 +25,7 @@
         :position="issue.loc"
         :clickable="true"
         :draggable="false"
+        :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
       />
     </GmapMap>
   </section>
@@ -36,7 +37,7 @@ import {
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
 } from '@/store/issueModule.js';
-import { GET_CURRLOC } from '@/store/userModule.js';
+import { CURRLOC } from '@/store/userModule.js';
 import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 
 export default {
@@ -58,7 +59,7 @@ export default {
     },
 
     center() {
-      var userLoc = this.$store.getters[GET_CURRLOC];
+      var userLoc = this.$store.getters[CURRLOC];
       if (!userLoc) return { lat: 32, lng: 34 };
       else return userLoc;
     }
