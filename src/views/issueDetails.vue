@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "issue && comments" class="details-container flex column" >
+    <section v-if = "issue && comments.length" class="details-container flex column" >
       <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="12" map-type-id="terrain" style="min-width: 500px; min-height: 200px">
         <GmapMarker :position="issue.loc"/>
       </GmapMap>
@@ -24,7 +24,7 @@
             <h2>Comments:</h2><button class="add-btn" @click = "toggleModal">Add Comment</button>
         <div class="comments-container" v-for ='comment in comments' :key="comment._id">
             <div class="card-container">
-            <img :src = 'comment.commenter.imgUrl'><div class="comment-box">{{comment.txt}}</div>
+            <img :src = "comment.commenter.imgUrl"><div class="comment-box">{{comment.txt}}</div>
             </div>
         </div>
         
@@ -78,7 +78,7 @@ export default {
     },
 
     getComments(issueId) {
-      this.$store.dispatch({ type: GET_COMMENTS, issueId })
+      this.$store.dispatch({ type: GET_COMMENTS, getBy:{issueId : issueId}})
         .then(comments=> {
           this.comments = comments;
         }).catch(err => console.warn(err))
@@ -86,9 +86,9 @@ export default {
 
     addComment() {
       var txt = this.$refs.commentContent.innerText;
-      var user = this.$store.getters[GET_USER];
-      this.$store.dispatch({type: ADD_COMMENT, comment:{issueId: this.issue._id, commenterId: user._id,
-      txt, createdAt: Date.now()}})
+      var commenter = this.$store.getters[GET_USER];
+      this.$store.dispatch({type: ADD_COMMENT,payload:{comment:{issueId: this.issue._id, commenterId: commenter._id,
+      txt, createdAt: Date.now()},commenter}})
         .then(comment=> console.log('comment added'))
         .catch(err=>console.warn(err))
         this.toggleModal();

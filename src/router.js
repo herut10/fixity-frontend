@@ -4,6 +4,7 @@ import home from './views/home.vue'
 import about from './views/about.vue'
 import issueDetails from './views/issueDetails.vue'
 import issueAdd from './views/issueAdd.vue'
+import user from './views/user.vue'
 
 Vue.use(Router)
 
@@ -27,6 +28,12 @@ export default new Router({
       path: '/issueAdd',
       name: 'issueAdd',
       component: issueAdd
+    },
+    
+    {
+      path: '/user',
+      name: 'user',
+      component: user
     }
   ]
 })

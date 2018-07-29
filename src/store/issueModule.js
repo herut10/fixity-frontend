@@ -36,10 +36,11 @@ export default {
     },
 
     actions: {
-        [LOAD_ISSUES](context, payload) {
-            return issueService.query()
+        [LOAD_ISSUES](context, {getBy}) {
+            return issueService.query(getBy)
                 .then(issues => {
                     context.commit({ type: SET_ISSUES, issues })
+                    return issues;
                 })
         },
 
