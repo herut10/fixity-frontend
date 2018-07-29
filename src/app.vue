@@ -9,25 +9,26 @@
 </template>
 
 <script>
-import mapService from '@/services/mapService.js'
-import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
-import navbar from '@/components/generalCmps/navbarCmp.vue';
-import about from '@/views/about.vue';
-import { LOAD_ISSUES } from '@/store/issueModule.js';
-import { LOAD_CURRLOC } from '@/store/userModule.js';
+import mapService from "@/services/mapService.js";
+import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
+import navbar from "@/components/generalCmps/navbarCmp.vue";
+import about from "@/views/about.vue";
+import { LOAD_ISSUES } from "@/store/issueModule.js";
+import { LOAD_CURRLOC } from "@/store/userModule.js";
 
 export default {
-  name: 'app',
+  name: "app",
 
   created() {
-    this.$store.dispatch({ type: LOAD_ISSUES,});
+    this.$store.dispatch({ type: LOAD_ISSUES });
     this.$store.dispatch({ type: LOAD_CURRLOC });
+    this.$socket.emit("emit_method", 15);//testing sockets
   },
 
   methods: {
     openAbout() {
-      this.$refs.about.$el.classList.toggle('about-open');
-      this.$el.children[3].classList.toggle('hidden');
+      this.$refs.about.$el.classList.toggle("about-open");
+      this.$el.children[3].classList.toggle("hidden");
     }
   },
 

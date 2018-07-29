@@ -43,7 +43,7 @@
 <script>
 import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { GET_COMMENTS } from '@/store/commentModule.js';
-import { GET_USER } from '@/store/userModule.js';
+import { USER } from '@/store/userModule.js';
 import { ADD_COMMENT } from '@/store/commentModule.js';
 import { Carousel, Slide } from 'vue-carousel';
 
