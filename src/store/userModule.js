@@ -5,6 +5,8 @@ export const GET_USER = 'user/getters/getUser';
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
 export const GET_CURRLOC = 'user/getters/getCurrLoc';
+export const UPDATE_USER = 'user/action/getCurrLoc';
+export const SET_USER = 'user/getters/getCurrLoc';
 
 
 
@@ -25,6 +27,9 @@ export default {
             currLoc
         }) {
             state.currLoc = JSON.parse(JSON.stringify(currLoc))
+        },
+        [SET_USER](state,{user}) {
+            state.user = user;
         }
     },
 
@@ -34,7 +39,8 @@ export default {
         },
         [GET_CURRLOC](state) {
             return JSON.parse(JSON.stringify(state.currLoc))
-        }
+        },
+        
     },
 
     actions: {
@@ -51,7 +57,14 @@ export default {
                         }
                     })
                 })
-        }
+        },
+        [UPDATE_USER](contex, {user}) {
+            return userService.updateUser(user)
+                .then(user=> {
+                contex.commit({type:SET_USER, user})                        
+            })
+                .catch(err=> console.warn(err));
+            },
 
     }
 }
