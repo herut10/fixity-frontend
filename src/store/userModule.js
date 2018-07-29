@@ -1,12 +1,12 @@
 'use strict';
 import userService from '../services/userService.js';
 
-export const GET_USER = 'user/getters/getUser';
-export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
-export const GET_CURRLOC = 'user/getters/getCurrLoc';
-export const UPDATE_USER = 'user/action/getCurrLoc';
+export const USER = 'user/getters/getUser';
+export const CURRLOC = 'user/getters/getCurrLoc';
 export const SET_USER = 'user/getters/getCurrLoc';
+export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
+export const UPDATE_USER = 'user/action/getCurrLoc';
 
 
 
@@ -19,7 +19,7 @@ export default {
             "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
             "isAdmin": false
         },
-        currLoc: null,
+        currLoc: null
     },
 
     mutations: {
@@ -34,10 +34,10 @@ export default {
     },
 
     getters: {
-        [GET_USER](state) {
+        [USER](state) {
             return state.user;
         },
-        [GET_CURRLOC](state) {
+        [CURRLOC](state) {
             return JSON.parse(JSON.stringify(state.currLoc))
         },
         
@@ -46,16 +46,19 @@ export default {
     actions: {
         [LOAD_CURRLOC](context) {
             return new Promise((resolve, reject) => {
-                    navigator.geolocation.watchPosition(resolve, reject)
-                })
+                navigator.geolocation.watchPosition(resolve, reject)
+            })
                 .then(res => {
+                    var coords = res.coords;
+
                     context.commit({
                         type: SET_CURRLOC,
                         currLoc: {
-                            lat: res.coords.latitude,
-                            lng: res.coords.longitude
+                            lat: coords.latitude,
+                            lng: coords.longitude
                         }
                     })
+                    return coords;
                 })
         },
         [UPDATE_USER](contex, {user}) {

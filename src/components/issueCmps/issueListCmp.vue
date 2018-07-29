@@ -64,7 +64,7 @@ ul {
   border-radius: 15px;
   box-shadow: -2px 2px #7e7e7e;
   width: 100%;
-  height: 400px;
+  height: 440px;
   margin: 0 10px 30px;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   &:hover {

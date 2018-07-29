@@ -19,6 +19,7 @@
         
         <div class="issue-info">
             <h2>{{issue.title}}</h2>
+            <h3>{{issueDistanceFromUser}} {{issueDistanceFromUser | distanceUnit}}</h3>
             <h3>{{issueAddress}}</h3>
             <h4>{{issue.category}}</h4>
         </div>
@@ -49,8 +50,10 @@
 </template>
 
 <script>
+import utilsService from '@/services/utilsService.js';
 import mapService from '@/services/mapService.js';
 import { UPDATE_ISSUE } from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
 
 export default {
   name: 'issuePreview',
@@ -67,6 +70,16 @@ export default {
     };
   },
 
+  computed: {
+    issueDistanceFromUser() {
+      var userLoc = this.$store.getters[CURRLOC];
+      if (!userLoc) return 'Distance Unknown';
+      var distance = utilsService.getDistanceFromLatLngInKm(userLoc, this.issue.loc);
+      if (distance < 1) return (distance * 1000).toFixed(0);
+      else return distance.toFixed(2);
+    }
+  },
+
   mounted() {
     mapService
       .convertCoordsToAddress(this.issue.loc)
@@ -77,6 +90,7 @@ export default {
     changeIssueLikes(likeType) {
       //TODO: only logged in user can like. if user is not logged- open the modal for signing up.
       //TODO: connect likes with user, so that when user logs in the emoji is marked clicked if he already clicked on it.
+      //      + if user type-liked issue, he cannot other-type-like in issue.
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
       if (this.$refs[likeType].classList.contains('clicked'))
         updatedIssue.likes[likeType]--;
@@ -137,7 +151,7 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
-  width: 103%;
+  width: 118%;
 }
 
 .issue-info {

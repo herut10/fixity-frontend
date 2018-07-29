@@ -1,5 +1,4 @@
 @import 'helpers';
-
 @font-face {
     font-family: 'Kalam';
     src: url('~@/assets/fonts/kalam/Kalam-Regular.ttf');
@@ -19,13 +18,22 @@
     box-sizing: border-box;
 }
 
-html, body, h1, h2, h3, h4, h5, h6 {
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0;
     font-family: 'Kalam', cursive;
     color: black;
 }
 
-button, input, a {
+button,
+input,
+a {
     font-family: 'Kalam', cursive;
 }
 
@@ -37,17 +45,25 @@ button {
     cursor: pointer;
 }
 
-.VueCarousel-wrapper, .VueCarousel-inner, .VueCarousel-slide {
+.VueCarousel-wrapper,
+.VueCarousel-inner,
+.VueCarousel-slide {
     height: 100%;
 }
 
 body>iframe {
-    width: 200% !important;
+    width: 700px !important;
     position: absolute !important;
     float: left !important;
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) !important;
+}
+
+@media(min-width:700px) {
+    body>iframe {
+        width: 100% !important;
+    }
 }
 
 .about.about-open {

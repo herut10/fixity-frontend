@@ -42,12 +42,12 @@
 
 <script>
 import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
-import { GET_CURRLOC } from "@/store/userModule.js";
+import { SUBMIT_ISSUE } from "@/store/issueModule.js";
+import { CURRLOC } from "@/store/userModule.js";
 import { SET_CURRLOC } from "@/store/userModule.js";
+import { USER } from "@/store/userModule.js";
 import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 import mapService from "@/services/mapService.js";
-
-// import cloudinary from "//widget.cloudinary.com/global/all.js";
 
 export default {
   components: {
@@ -61,7 +61,15 @@ export default {
         address: "",
         body: "",
         category: "pedestrian",
-        imgUrls: []
+        imgUrls: [],
+        nonIssueReportCount: 0,
+        likes: {
+          likeHappy: 0,
+          likeSad: 0,
+          likeAngry: 0,
+          likeShocked: 0,
+          likeDisgusted: 0
+        }
       },
       center: {
         lat: 10,
@@ -83,7 +91,7 @@ export default {
   },
   computed: {
     currLoc() {
-      return this.$store.getters[GET_CURRLOC];
+      return this.$store.getters[CURRLOC];
     }
   },
   methods: {
@@ -118,9 +126,17 @@ export default {
       const file = event.target.files[0];
       this.selectedFile = event.target.files[0];
     },
-    onSubmit() {},
+    onSubmit() {
+      var userId = this.$store.getters[USER]._id;
+      var issueToSubmit = JSON.parse(JSON.stringify(this.newIssue));
+      issueToSubmit.loc = JSON.parse(JSON.stringify(this.center));
+      if (!this.isAnon) {
+        issueToSubmit.reportedBy = userId;
+      }
+      this.$store.dispatch({ type: SUBMIT_ISSUE, issueToSubmit });
+    },
     setLocationSelf() {
-      var loc = this.$store.getters[GET_CURRLOC];
+      var loc = this.$store.getters[CURRLOC];
       if (loc) {
         this.center = JSON.parse(JSON.stringify(loc));
       } else {

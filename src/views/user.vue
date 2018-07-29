@@ -31,7 +31,7 @@
 <script>
 // import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { LOAD_ISSUES } from '@/store/issueModule.js';
-import { GET_USER } from '@/store/userModule.js';
+import { USER } from '@/store/userModule.js';
 import { GET_COMMENTS } from '@/store/commentModule.js';
 import { UPDATE_USER } from '@/store/userModule.js';
 // import { Carousel, Slide } from 'vue-carousel';
@@ -54,7 +54,7 @@ export default {
 
 
     created() {
-        this.user = this.$store.getters[GET_USER]
+        this.user = this.$store.getters[USER]
         this.getIssues();
         this.getComments();
     },

@@ -1,12 +1,17 @@
 <template>
   <section class="home container">
+    <div class="view-pick">
+      <font-awesome-icon icon="list-ul" title="List View" @click="changeCurrView('list')" /> 
+      | 
+      <font-awesome-icon icon="map-marked-alt" title="Map View" @click="changeCurrView('map')" />
+    </div>
     <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
 
     <GmapMap
       v-show="currView === 'map'"
       :center="center"
       ref="map"
-      :zoom="7"
+      :zoom="17"
       map-type-id="terrain"
     >
       <GmapMarker
@@ -14,25 +19,32 @@
         :clickable="true"
         :draggable="false"
       />
+
+      <GmapMarker
+        v-for="issue in issues" :key="issue._id"
+        :position="issue.loc"
+        :clickable="true"
+        :draggable="false"
+        :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+      />
     </GmapMap>
   </section>
 </template>
 
 <script>
-// @ is an alias to /src
-import { ISSUES_TO_DISPLAY, ISSUES_VIEW } from '@/store/issueModule.js';
+import {
+  SET_ISSUES_VIEW,
+  ISSUES_TO_DISPLAY,
+  ISSUES_VIEW
+} from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
 import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
-import { gmapApi } from 'vue2-google-maps';
 
 export default {
   name: 'home',
 
   data() {
     return {
-      center: {
-        lat: 10,
-        lng: 10
-      },
       mapLoaded: false
     };
   },
@@ -46,7 +58,17 @@ export default {
       return this.$store.getters[ISSUES_VIEW];
     },
 
-    google: gmapApi
+    center() {
+      var userLoc = this.$store.getters[CURRLOC];
+      if (!userLoc) return { lat: 32, lng: 34 };
+      else return userLoc;
+    }
+  },
+
+  methods: {
+    changeCurrView(viewType) {
+      this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
+    }
   },
 
   mounted() {
@@ -60,3 +82,23 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.view-pick {
+  color: lightgrey;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-bottom: 15px;
+}
+
+svg {
+  cursor: pointer;
+  margin: 0 5px;
+  &:hover {
+    color: rgb(77, 76, 76);
+  }
+}
+
+.vue-map-container {
+  height: 70vh;
+}
+</style>
