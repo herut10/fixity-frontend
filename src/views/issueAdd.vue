@@ -1,5 +1,5 @@
 <template>
-    <section class="flex column align-center">
+    <section @resize="myFunction" class="issue-add container flex column align-center">
       <GmapMap
         :center="center"
         @click="setCenter"
@@ -10,6 +10,7 @@
           :position="center"
           :clickable="true"
           :draggable="false"
+          :icon="`img/map-icons/${newIssue.category}-open.png`"
         />
       </GmapMap>
       <form class="flex column align-center" >
@@ -18,23 +19,21 @@
       <button @click="setLocationSelf">my location</button>
         </div>
       <input v-model="newIssue.title" type="text" placeholder="title" maxlength="25"/>
-      <textarea v-model="newIssue.title" type="text" placeholder="title" ></textarea>
-      <select>
+      <textarea v-model="newIssue.body" placeholder="enter description" ></textarea>
+      <select v-model="newIssue.category">
         <option value="pedestrian">Pedestrian</option>
         <option value="garbage">Garbage</option>
-        <option value="road hazzard">Road Hazzard</option>
+        <option value="construction">Construction</option>
       </select>
       <label>
         Submit as anonymous
         <input type="checkbox"/>
       </label>
-      <button>upload picture</button>
-      <input type="file" @change="onFileChanged">
+      <button @click="openWidget" id="upload_widget_opener">Upload images</button>
       
       <button @click="onSubmit">submit</button>
 
       </form>
-      <button @click="openWidget" id="upload_widget_opener">Upload multiple images</button>
 
 
     </section>
@@ -42,8 +41,10 @@
 
 <script>
 import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
+import { GET_CURRLOC } from "@/store/userModule.js";
 import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 import mapService from "@/services/mapService.js";
+console.log(GET_CURRLOC);
 
 // import cloudinary from "//widget.cloudinary.com/global/all.js";
 
@@ -51,25 +52,28 @@ export default {
   components: {
     autoComplete
   },
+
   data() {
     return {
       newIssue: {
         title: "",
         address: "",
         body: "",
-        category: ""
+        category: "pedestrian",
+        imgUrls: []
       },
       center: {
         lat: 10,
         lng: 10
       },
+      isAnon:false,
       selectedFile: null
     };
   },
   watch: {
     center: {
       handler(center, oldCenter) {
-        mapService.converCoordsToAddress(center).then(address => {
+        mapService.convertCoordsToAddress(center).then(address => {
           this.newIssue.address = address;
         });
       },
@@ -77,13 +81,21 @@ export default {
     }
   },
   methods: {
+    myFunction(val) {
+      console.log(val);
+      console.log("hi");
+    },
     placeChanged(val) {
       var loc = val.geometry.location;
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
     },
     openWidget() {
       cloudinary.openUploadWidget(
-        { cloud_name: "demo", upload_preset: "a5vxnzbp" },
+        {
+          cloud_name: "djewvb6ty",
+          upload_preset: "qtz1qjeq",
+          sources: ["local"]
+        },
         function(error, result) {
           console.log(error, result);
         }
@@ -91,7 +103,6 @@ export default {
     },
     onFileChanged(event) {
       const file = event.target.files[0];
-      console.log(file);
       this.selectedFile = event.target.files[0];
     },
     onSubmit() {},
@@ -108,7 +119,11 @@ export default {
     }
   },
   created() {
-    this.setLocationSelf();
+    var loc = this.$store.getters[GET_CURRLOC];
+    if (loc) this.center = loc;
+    else {
+      this.setLocationSelf();
+    }
   }
 };
 </script>

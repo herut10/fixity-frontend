@@ -1,53 +1,57 @@
 <template>
   <div id="app">
-    <app-header />
+    <app-header @openAbout="openAbout" />
     <navbar />
-    <router-view/>
+    <about ref="about" />
+    <div class="curtain hidden"></div>
+    <router-view />
   </div>
 </template>
 
 <script>
+import mapService from '@/services/mapService.js'
 import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
 import navbar from '@/components/generalCmps/navbarCmp.vue';
+import about from '@/views/about.vue';
 import { LOAD_ISSUES } from '@/store/issueModule.js';
+import { LOAD_CURRLOC } from '@/store/userModule.js';
 
 export default {
   name: 'app',
 
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
-    // this.$store.dispatch({ type: LOAD_CURRLOC });
+    this.$store.dispatch({ type: LOAD_CURRLOC });
+  },
+
+  methods: {
+    openAbout() {
+      this.$refs.about.$el.classList.toggle('about-open');
+      this.$el.children[3].classList.toggle('hidden');
+    }
   },
 
   components: {
     appHeader,
-    navbar
+    navbar,
+    about
   }
 };
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
-.navbar {
-  background-color: #312e2e;
+
+.curtain {
+  background-color: rgba(0, 0, 0, 0.637);
+  width: 100vw;
+  height: 100vh;
   position: fixed;
-  bottom: 0;
-  padding: 15px;
-  width: 100%;
-  z-index: 1;
-  a {
-    font-weight: bold;
-    color: white;
-    &.router-link-exact-active {
-      color: #fdc612;
-    }
-  }
+  top: 0;
+  z-index: 0;
 }
 </style>

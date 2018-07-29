@@ -13,11 +13,21 @@ function query(getBy) {
 
 function getIssueById(issueId) {
     return axios.get(`${ISSUE_URL}/${issueId}`)
-        .then(res=> res.data)
-        .catch(err=> console.warn(err))
+        .then(res => res.data)
+        .catch(err => console.warn(err))
+}
+
+function updateIssue(issueId, updatedIssue) {
+    return axios.put(`${ISSUE_URL}/${issueId}`, updatedIssue)
+        .then(res => res.data)
+        .catch(err => {
+            console.warn(err)
+            return Promise.reject(err)
+        })
 }
 
 export default {
     query,
     getIssueById,
+    updateIssue
 }

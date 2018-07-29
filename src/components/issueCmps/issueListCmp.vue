@@ -2,7 +2,9 @@
     <section class="issue-list">
         <ul class="clean-list flex column align-center flex-wrap">
             <li v-for="issue in issues" :key="issue._id" class="issue">
-                <issue-preview-cmp :issue="issue"></issue-preview-cmp>
+                <router-link :to="`/issue/${issue._id}`">
+                    <issue-preview-cmp v-if="mapLoaded" :issue="issue"></issue-preview-cmp>
+                </router-link>
             </li>
         </ul>
     </section>
@@ -12,20 +14,59 @@
 import issuePreviewCmp from './issuePreviewCmp.vue';
 
 export default {
-    name: 'issueList',
+  name: 'issueList',
 
-    props: {
-        issues: {
-            type: Array
-        }
+  props: {
+    issues: {
+      type: Array
     },
+    mapLoaded: null
+  },
 
-    components: {
-        issuePreviewCmp
-    }
-}
+  components: {
+    issuePreviewCmp
+  }
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@media (min-width: 527px) {
+  .issue-list {
+    ul {
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
 
+    .issue {
+      width: 35vw;
+      min-width: 220px;
+      max-width: 355px;
+    }
+  }
+}
+
+@media (min-width: 570px) {
+  .issue-list {
+    li.issue {
+      margin: 0 20px 40px;
+    }
+  }
+}
+
+ul {
+ margin-top: 0;
+}
+
+.issue {
+  background-color: #f4efe2;
+  border: 7px solid #c5c0b5;
+  box-shadow: -2px 2px #7e7e7e;
+  width: 100%;
+  height: 400px;
+  margin: 0 10px 30px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+}
 </style>
