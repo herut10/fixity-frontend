@@ -57,6 +57,9 @@ export default {
 
     actions: {
         [LOAD_ISSUES](context, {getBy}) {
+            if(!getBy) getBy = {};
+            console.log(getBy);
+            
             return issueService.query(getBy)
                 .then(issues => {
                     context.commit({ type: SET_ISSUES, issues })

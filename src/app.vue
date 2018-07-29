@@ -20,7 +20,7 @@ export default {
   name: 'app',
 
   created() {
-    this.$store.dispatch({ type: LOAD_ISSUES });
+    this.$store.dispatch({ type: LOAD_ISSUES,});
     this.$store.dispatch({ type: LOAD_CURRLOC });
   },
 
