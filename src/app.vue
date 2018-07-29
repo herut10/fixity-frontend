@@ -14,13 +14,14 @@ import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
 import navbar from '@/components/generalCmps/navbarCmp.vue';
 import about from '@/views/about.vue';
 import { LOAD_ISSUES } from '@/store/issueModule.js';
+import { LOAD_CURRLOC } from '@/store/userModule.js';
 
 export default {
   name: 'app',
 
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
-    // this.$store.dispatch({ type: LOAD_CURRLOC });
+    this.$store.dispatch({ type: LOAD_CURRLOC });
   },
 
   methods: {
