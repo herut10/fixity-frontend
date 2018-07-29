@@ -44,7 +44,6 @@ import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
 import { GET_CURRLOC } from "@/store/userModule.js";
 import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 import mapService from "@/services/mapService.js";
-console.log(GET_CURRLOC);
 
 // import cloudinary from "//widget.cloudinary.com/global/all.js";
 

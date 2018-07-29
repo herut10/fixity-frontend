@@ -3,6 +3,7 @@
 import issueService from '../services/issueService.js';
 
 export const SET_ISSUES = 'issue/mutations/setIssues';
+export const SET_ISSUES_VIEW = 'issue/mutations/setIssuesView';
 
 export const ISSUES_TO_DISPLAY = 'issue/getters/issuesToDisplay';
 export const MARKERS_TO_DISPLAY = 'issue/getters/markersToDisplay';
@@ -28,8 +29,8 @@ export default {
             state.issues.splice(issueIdx, 1, updatedIssue);
         },
 
-        setIssuesView(state, payload) {
-            state.issuesView = 'list';
+        [SET_ISSUES_VIEW](state, { viewType }) {
+            state.issuesView = viewType;
         }
     },
 
@@ -37,7 +38,7 @@ export default {
         [ISSUES_TO_DISPLAY](state) {
             return state.issues;
         },
-        
+
         [MARKERS_TO_DISPLAY](state) {
             // console.log(state);
 
@@ -49,17 +50,16 @@ export default {
                 }
             })
         },
-        
-        [ISSUES_VIEW](state) {    
+
+        [ISSUES_VIEW](state) {
             return state.issuesView;
         }
     },
 
     actions: {
-        [LOAD_ISSUES](context, {getBy}) {
-            if(!getBy) getBy = {};
-            console.log(getBy);
-            
+        [LOAD_ISSUES](context, { getBy }) {
+            if (!getBy) getBy = {};
+
             return issueService.query(getBy)
                 .then(issues => {
                     context.commit({ type: SET_ISSUES, issues })

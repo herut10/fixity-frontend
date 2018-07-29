@@ -8,8 +8,16 @@ import * as VueGoogleMaps from 'vue2-google-maps';
 import VueCarousel from 'vue-carousel';
 import '@/assets/scss/main.scss';
 
-axios.defaults.withCredentials = true
-Vue.config.productionTip = false
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faMapMarkedAlt, faListUl } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faMapMarkedAlt);
+library.add(faListUl);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+axios.defaults.withCredentials = true;
+Vue.config.productionTip = false;
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -19,6 +27,12 @@ Vue.use(VueGoogleMaps, {
 })
 
 Vue.use(VueCarousel);
+
+Vue.filter('distanceUnit', distance => {
+  if (!distance) return '';
+  if (distance.toString().length <= 3) return 'meters from you';
+  else return 'KMs from you';
+})
 
 new Vue({
   router,
