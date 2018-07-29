@@ -1,20 +1,28 @@
 <template>
   <section class="home container">
-    <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues"></issue-list-cmp>
+    <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
+
     <GmapMap
-        ref="map"
-        :center="center"
-        :zoom="7"
-        map-type-id="terrain"
-      >
-      </GmapMap>
+      v-show="currView === 'map'"
+      :center="center"
+      ref="map"
+      :zoom="7"
+      map-type-id="terrain"
+    >
+      <GmapMarker
+        :position="center"
+        :clickable="true"
+        :draggable="false"
+      />
+    </GmapMap>
   </section>
 </template>
 
 <script>
 // @ is an alias to /src
-import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
+import { ISSUES_TO_DISPLAY, ISSUES_VIEW } from '@/store/issueModule.js';
 import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
+import { gmapApi } from 'vue2-google-maps';
 
 export default {
   name: 'home',
@@ -32,7 +40,13 @@ export default {
   computed: {
     issues() {
       return this.$store.getters[ISSUES_TO_DISPLAY];
-    }
+    },
+
+    currView() {
+      return this.$store.getters[ISSUES_VIEW];
+    },
+
+    google: gmapApi
   },
 
   mounted() {

@@ -5,6 +5,16 @@
     src: url('~@/assets/fonts/kalam/Kalam-Regular.ttf');
 }
 
+@font-face {
+    font-family: 'Josefin Sans';
+    src: url('~@/assets/fonts/Josefin_Sans/JosefinSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Rubik';
+    src: url('~@/assets/fonts/Rubik/Rubik-Regular.ttf');
+}
+
 * {
     box-sizing: border-box;
 }
@@ -12,46 +22,19 @@
 html, body, h1, h2, h3, h4, h5, h6 {
     margin: 0;
     font-family: 'Kalam', cursive;
+    color: black;
 }
 
 button, input, a {
     font-family: 'Kalam', cursive;
 }
 
-.issue-list {
-    .issue {
-        // border-radius: 20px;
-        border: 4px solid #efecec;
-        box-shadow: -1px 1px #aeadad;
-        width: 100%;
-        height: 350px;
-        margin: 5px;
-    }
+a {
+    text-decoration: none;
 }
 
-.issue-preview {
-    height: 100%;
-    box-shadow: inset -1px 1px #aeadad;
-    // border-radius: 20px;
-    padding: 10px;
-
-    h2 {
-        text-transform: capitalize;
-        font-size: 1.2em;
-    }
-
-    h3 {
-        font-size: 1em;
-    }
-
-    h4 {
-        text-transform: capitalize;
-        font-size: .8em;
-    }
-    img {
-        max-width: 100px;
-        max-height: 100px;
-    }
+button {
+    cursor: pointer;
 }
 
 .VueCarousel-wrapper, .VueCarousel-inner, .VueCarousel-slide {
@@ -65,4 +48,9 @@ body>iframe {
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) !important;
+}
+
+.about.about-open {
+    right: 0;
+    z-index: 1;
 }
