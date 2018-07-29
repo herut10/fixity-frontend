@@ -10,24 +10,21 @@ export const GET_CURRLOC = 'user/getters/getCurrLoc';
 
 export default {
     state: {
-        user:{
-            "_id" : "5b58233fcdbd016cc0b475f8",
-            "username" : "notAdmin",
-            "password" : "passworddd",
-            "imgUrl" : "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
-            "isAdmin" : false
+        user: {
+            "_id": "5b58233fcdbd016cc0b475f8",
+            "username": "notAdmin",
+            "password": "passworddd",
+            "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
+            "isAdmin": false
         },
-        currLoc:null,
+        currLoc: null,
     },
 
     mutations: {
         [SET_CURRLOC](state, {
             currLoc
         }) {
-            
-            state.currLoc = currLoc
-            console.log(state.currLoc);
-
+            state.currLoc = JSON.parse(JSON.stringify(currLoc))
         }
     },
 
@@ -36,7 +33,7 @@ export default {
             return state.user;
         },
         [GET_CURRLOC](state) {
-            return state.currLoc
+            return JSON.parse(JSON.stringify(state.currLoc))
         }
     },
 

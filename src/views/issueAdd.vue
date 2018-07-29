@@ -1,5 +1,5 @@
 <template>
-    <section @resize="myFunction" class="issue-add container flex column align-center">
+    <section class="issue-add container flex column align-center">
       <GmapMap
         :center="center"
         @click="setCenter"
@@ -13,13 +13,13 @@
           :icon="`img/map-icons/${newIssue.category}-open.png`"
         />
       </GmapMap>
-      <form class="flex column align-center" >
+      <form action.prevent="" class="flex column align-center" >
         <div class="flex justify-center">
       <autoComplete @place_changed="placeChanged" :placeholder="'heyo'" v-model="newIssue.address" ></autoComplete>
-      <button @click="setLocationSelf">my location</button>
+      <button @click.prevent="setLocationSelf">my location</button>
         </div>
-      <input v-model="newIssue.title" type="text" placeholder="title" maxlength="25"/>
-      <textarea v-model="newIssue.body" placeholder="enter description" ></textarea>
+      <input v-model="newIssue.title" type="text" placeholder="title" required maxlength="25"/>
+      <textarea v-model="newIssue.body" placeholder="enter description" required ></textarea>
       <select v-model="newIssue.category">
         <option value="pedestrian">Pedestrian</option>
         <option value="garbage">Garbage</option>
@@ -29,12 +29,13 @@
         Submit as anonymous
         <input type="checkbox"/>
       </label>
-      <button @click="openWidget" id="upload_widget_opener">Upload images</button>
+      <button @click.prevent="openWidget" id="upload_widget_opener">Upload images</button>
       
-      <button @click="onSubmit">submit</button>
-
+      <button @click.prevent="onSubmit">submit</button>
+{{currLoc}}
       </form>
-
+    <pre>{{newIssue}}</pre>
+    
 
     </section>
 </template>
@@ -42,9 +43,9 @@
 <script>
 import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
 import { GET_CURRLOC } from "@/store/userModule.js";
+import { SET_CURRLOC } from "@/store/userModule.js";
 import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 import mapService from "@/services/mapService.js";
-console.log(GET_CURRLOC);
 
 // import cloudinary from "//widget.cloudinary.com/global/all.js";
 
@@ -66,7 +67,7 @@ export default {
         lat: 10,
         lng: 10
       },
-      isAnon:false,
+      isAnon: false,
       selectedFile: null
     };
   },
@@ -80,26 +81,38 @@ export default {
       deep: true
     }
   },
+  computed: {
+    currLoc() {
+      return this.$store.getters[GET_CURRLOC];
+    }
+  },
   methods: {
-    myFunction(val) {
-      console.log(val);
-      console.log("hi");
-    },
     placeChanged(val) {
       var loc = val.geometry.location;
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
     },
     openWidget() {
-      cloudinary.openUploadWidget(
-        {
-          cloud_name: "djewvb6ty",
-          upload_preset: "qtz1qjeq",
-          sources: ["local"]
-        },
-        function(error, result) {
-          console.log(error, result);
-        }
-      );
+      new Promise((reject, resolve) => {
+        cloudinary.openUploadWidget(
+          {
+            cloud_name: "djewvb6ty",
+            upload_preset: "qtz1qjeq",
+            sources: ["local"]
+          },
+          function(result, error) {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+      })
+        .then(images => {
+          images.forEach(image => {
+            this.newIssue.imgUrls.push(image.secure_url);
+          });
+        })
+        .catch(res => {
+          console.log("catch", res);
+        });
     },
     onFileChanged(event) {
       const file = event.target.files[0];
@@ -107,23 +120,28 @@ export default {
     },
     onSubmit() {},
     setLocationSelf() {
-      navigator.geolocation.getCurrentPosition(position => {
-        [this.center.lat, this.center.lng] = [
-          position.coords.latitude,
-          position.coords.longitude
-        ];
-      });
+      var loc = this.$store.getters[GET_CURRLOC];
+      if (loc) {
+        this.center = JSON.parse(JSON.stringify(loc));
+      } else {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          this.$store.commit({
+            type: SET_CURRLOC,
+            currLoc: this.center
+          });
+        });
+      }
     },
     setCenter(ev) {
       [this.center.lat, this.center.lng] = [ev.latLng.lat(), ev.latLng.lng()];
     }
   },
   created() {
-    var loc = this.$store.getters[GET_CURRLOC];
-    if (loc) this.center = loc;
-    else {
-      this.setLocationSelf();
-    }
+    this.setLocationSelf();
   }
 };
 </script>
