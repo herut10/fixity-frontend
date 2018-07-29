@@ -1,6 +1,7 @@
 
 <template>
     <section v-if = "user" class="main-user-container flex column">
+        <button @click="openWidget" id="upload_widget_opener">Upload Picture</button>
         <div class="img-container"><img class="user-img" :src="user.imgUrl"/></div>
         <h1>{{user.username}}</h1>
         <div><button :disabled="!toggle" @click="toggleBtn">User Reports</button>
@@ -65,15 +66,27 @@ export default {
                 .then(comments=> {
                     this.comments = comments;
                 }).catch(err => console.warn(err));
-        }
-    },
+        },
+
+        openWidget() {
+            cloudinary.openUploadWidget({
+                cloud_name: "djewvb6ty",
+                upload_preset: "qtz1qjeq",
+                sources: ["local"]
+                },
+                function(error, result) {
+                console.log(error, result);
+                }   
+            );
+        },
+    },    
 
     directives: {
     },
 
     components: {
     
-    }
+    },
 };
 </script>
 
