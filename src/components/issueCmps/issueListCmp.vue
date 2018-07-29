@@ -58,8 +58,10 @@ ul {
 }
 
 .issue {
-  background-color: #f4efe2;
-  border: 7px solid #c5c0b5;
+  background-color: #fee575;
+  // background-color: #f4efe2;
+  // border: 7px solid #c5c0b5;
+  border-radius: 15px;
   box-shadow: -2px 2px #7e7e7e;
   width: 100%;
   height: 400px;
