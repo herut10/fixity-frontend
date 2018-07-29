@@ -100,7 +100,6 @@ export default {
 
     toggleModal() {
       this.openModal = (this.openModal)? false : true;
-      if(this.openModal) this.$refs.commentContent.focus();
     }
   },
 
