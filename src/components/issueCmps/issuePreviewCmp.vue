@@ -104,7 +104,7 @@ export default {
 
 <style lang="scss" scoped>
 .issue-preview {
-  box-shadow: inset -2px 2px #7e7e7e;
+  // box-shadow: inset -2px 2px #7e7e7e;
   color: black;
   height: 100%;
   padding: 12px 10px 6px 10px;
@@ -137,6 +137,7 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
+  width: 103%;
 }
 
 .issue-info {

@@ -10,13 +10,19 @@ function query(getBy) {
     
     return axios.get(ISSUE_URL, { params: {getBy}})
         .then(res => res.data)
-        .catch(err => console.warn(err));
+        .catch(err => {
+            console.warn(err)
+            return Promise.reject(err)
+        });
 }
 
 function getIssueById(issueId) {
     return axios.get(`${ISSUE_URL}/${issueId}`)
         .then(res => res.data)
-        .catch(err => console.warn(err))
+        .catch(err => {
+            console.warn(err)
+            return Promise.reject(err)
+        });
 }
 
 function updateIssue(issueId, updatedIssue) {
