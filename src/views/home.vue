@@ -6,7 +6,7 @@
       <font-awesome-icon icon="map-marked-alt" title="Map View" @click="changeCurrView('map')" />
     </div>
     <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
-
+    
     <GmapMap
       v-show="currView === 'map'"
       :center="center"
@@ -28,6 +28,8 @@
         :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
       />
     </GmapMap>
+
+    
   </section>
 </template>
 
@@ -36,12 +38,12 @@ import {
   SET_ISSUES_VIEW,
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
-} from '@/store/issueModule.js';
-import { CURRLOC } from '@/store/userModule.js';
-import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
+} from "@/store/issueModule.js";
+import { CURRLOC } from "@/store/userModule.js";
+import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
 
 export default {
-  name: 'home',
+  name: "home",
 
   data() {
     return {
@@ -51,6 +53,9 @@ export default {
 
   computed: {
     issues() {
+      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {
+      });
+
       return this.$store.getters[ISSUES_TO_DISPLAY];
     },
 

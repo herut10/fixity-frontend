@@ -15,6 +15,7 @@ import navbar from "@/components/generalCmps/navbarCmp.vue";
 import about from "@/views/about.vue";
 import { LOAD_ISSUES } from "@/store/issueModule.js";
 import { LOAD_CURRLOC } from "@/store/userModule.js";
+import { ADD_ISSUE } from "@/store/issueModule.js";
 
 export default {
   name: "app",
@@ -22,7 +23,19 @@ export default {
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
     this.$store.dispatch({ type: LOAD_CURRLOC });
-    this.$socket.emit("emit_method", 15);//testing sockets
+    // this.$socket.emit("emit_method", 15);//testing sockets
+  },
+  sockets: {
+    issueAdded(issueToSubmit) {
+      debugger;
+      this.$store.commit({
+        type: ADD_ISSUE,
+        issueToSubmit
+      });
+    },
+    errorAdding() {
+      console.log("errorAdding");
+    }
   },
 
   methods: {

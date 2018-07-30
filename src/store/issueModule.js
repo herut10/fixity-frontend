@@ -100,20 +100,6 @@ export default {
                     })
                 })
         },
-        [SUBMIT_ISSUE](context, {
-            issueToSubmit
-        }) {
-            var tempIssueIdx = context.commit({
-                type: ADD_ISSUE,
-                issueToSubmit
-            }) //optimistic adding
-            issueService.addIssue(issueToSubmit)
-                .then(res => {
-                    debugger
-                    issueToSubmit._id = res._id
-                })
-
-        }
 
     }
 }
