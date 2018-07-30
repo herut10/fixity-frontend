@@ -3,7 +3,7 @@
       <GmapMap
         :center="center"
         @click="setCenter"
-        :zoom="7"
+        :zoom="17"
         map-type-id="terrain"
       >
         <GmapMarker
@@ -32,7 +32,7 @@
       <button @click.prevent="openWidget" id="upload_widget_opener">Upload images</button>
       
       <button @click.prevent="onSubmit">submit</button>
-{{currLoc}}
+      {{center}}
       </form>
     <pre>{{newIssue}}</pre>
     
@@ -61,6 +61,7 @@ export default {
         address: "",
         body: "",
         category: "pedestrian",
+        status: "open",
         imgUrls: [],
         nonIssueReportCount: 0,
         likes: {
@@ -79,6 +80,7 @@ export default {
       selectedFile: null
     };
   },
+
   watch: {
     center: {
       handler(center, oldCenter) {
@@ -130,10 +132,13 @@ export default {
       var userId = this.$store.getters[USER]._id;
       var issueToSubmit = JSON.parse(JSON.stringify(this.newIssue));
       issueToSubmit.loc = JSON.parse(JSON.stringify(this.center));
+      issueToSubmit.loc.lat = issueToSubmit.loc.lat;
+      issueToSubmit.loc.lng = issueToSubmit.loc.lng;
       if (!this.isAnon) {
         issueToSubmit.reportedBy = userId;
       }
-      this.$store.dispatch({ type: SUBMIT_ISSUE, issueToSubmit });
+      this.$socket.emit("issueAdd", issueToSubmit);
+      this.$router.push("/");
     },
     setLocationSelf() {
       var loc = this.$store.getters[CURRLOC];
