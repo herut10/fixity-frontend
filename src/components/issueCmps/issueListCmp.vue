@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 527px) {
+@media (min-width: 547px) {
   .issue-list {
     ul {
       flex-direction: row;
@@ -45,7 +45,7 @@ export default {
   }
 }
 
-@media (min-width: 570px) {
+@media (min-width: 589px) {
   .issue-list {
     li.issue {
       margin: 0 20px 40px;
@@ -58,7 +58,7 @@ ul {
 }
 
 .issue {
-  background-color: #fee575;
+  background-color: #f8d843;
   // background-color: #f4efe2;
   // border: 7px solid #c5c0b5;
   border-radius: 15px;

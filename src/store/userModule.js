@@ -2,13 +2,14 @@
 import userService from '../services/userService.js';
 
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
+export const SET_USER = 'user/mutations/setUser';
+
 export const USER = 'user/getters/getUser';
 export const CURRLOC = 'user/getters/getCurrLoc';
-export const SET_USER = 'user/getters/getCurrLoc';
+export const USER_LIKES = 'user/getters/getUserLikes';
+
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const UPDATE_USER = 'user/action/getCurrLoc';
-
-
 
 export default {
     state: {
@@ -17,7 +18,13 @@ export default {
             "username": "notAdmin",
             "password": "passworddd",
             "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
-            "isAdmin": false
+            "isAdmin": false,
+            "likes": [
+                {
+                    "issueId": "5b586f5d375dd438bca4205b",
+                    "likeType": "likeAngry"
+                }
+            ]
         },
         currLoc: null
     },
@@ -28,7 +35,7 @@ export default {
         }) {
             state.currLoc = JSON.parse(JSON.stringify(currLoc))
         },
-        [SET_USER](state,{user}) {
+        [SET_USER](state, { user }) {
             state.user = user;
         }
     },
@@ -40,7 +47,10 @@ export default {
         [CURRLOC](state) {
             return JSON.parse(JSON.stringify(state.currLoc))
         },
-        
+        [USER_LIKES](state) {
+            return state.user.likes;
+        }
+
     },
 
     actions: {
@@ -61,13 +71,13 @@ export default {
                     return coords;
                 })
         },
-        [UPDATE_USER](contex, {user}) {
+        [UPDATE_USER](contex, { user }) {
             return userService.updateUser(user)
-                .then(user=> {
-                contex.commit({type:SET_USER, user})                        
-            })
-                .catch(err=> console.warn(err));
-            },
+                .then(user => {
+                    contex.commit({ type: SET_USER, user })
+                })
+                .catch(err => console.warn(err));
+        },
 
     }
 }

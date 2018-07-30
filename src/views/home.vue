@@ -1,9 +1,9 @@
 <template>
   <section class="home container">
     <div class="view-pick">
-      <font-awesome-icon icon="list-ul" title="List View" @click="changeCurrView('list')" /> 
+      <font-awesome-icon icon="list-ul" class="active" ref="listIcon" @click="changeCurrView('list')" /> 
       | 
-      <font-awesome-icon icon="map-marked-alt" title="Map View" @click="changeCurrView('map')" />
+      <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
     </div>
     <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
 
@@ -68,6 +68,8 @@ export default {
   methods: {
     changeCurrView(viewType) {
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
+      this.$refs.listIcon.classList.toggle('active');
+      this.$refs.mapIcon.classList.toggle('active');
     }
   },
 
@@ -88,12 +90,16 @@ export default {
   color: lightgrey;
   font-family: Arial, Helvetica, sans-serif;
   padding-bottom: 15px;
+  
 }
 
 svg {
   cursor: pointer;
   margin: 0 5px;
   &:hover {
+    color: rgb(77, 76, 76);
+  }
+  &.active {
     color: rgb(77, 76, 76);
   }
 }

@@ -41,7 +41,7 @@ Vue.use(VueGoogleMaps, {
 Vue.use(VueCarousel);
 
 Vue.filter('distanceUnit', distance => {
-  if (!distance) return '';
+  if (!distance || distance === 'Distance Unknown') return '';
   if (distance.toString().length <= 3) return 'meters from you';
   else return 'KMs from you';
 })

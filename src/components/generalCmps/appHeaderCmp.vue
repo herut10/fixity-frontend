@@ -4,9 +4,7 @@
             <img src="img/logo/logo-traffic-light.png" class="logo-img" />
             <img src="img/logo/logo-txt.png" class="logo-txt" />
         </div>
-        <!-- <router-link to="/about"> -->
-            <button class="about" @click="$emit('openAbout')">i</button>
-        <!-- </router-link> -->
+        <button class="about" @click="$emit('openAbout')">i</button>
     </section>
 </template>
 
@@ -45,7 +43,7 @@ export default {
     font-weight: bold;
     font-size: 1em;
     border-radius: 50%;
-    border: 1px solid black;
+    border: none;
     background-color: white;
     width: 30px;
     height: 30px;
