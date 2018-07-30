@@ -1,25 +1,24 @@
 
 <template>
-    <section v-if = "user" class="main-user-container flex column">
+    <section v-if = "user" class="main-user-container">
+        <div class="top-user-container flex column">
         <button @click="openWidget" id="upload_widget_opener">Upload Picture</button>
         <div class="img-container"><img class="user-img" :src="user.imgUrl"/></div>
-        <h1>{{user.username}}</h1>
-        <div><button :disabled="toggleContent" @click="toggleBtn">User Reports</button>
-        <button :disabled="toggleComment" @click="toggleBtn">User Comments</button></div>
-        
+        <H1>{{user.username}}</H1>
+        <div class="toggle-btns"><button :disabled="!toggleStatus" @click="toggleContent">User Reports</button>
+        <button :disabled="toggleStatus" @click="toggleContent">User Comments</button></div>
+        </div>
         <div class="user-info flex">
-        <transition-group v-if ="toggleContent" name="slide-left" class="transition-content flex column" >
-        <div class="content "  v-for="issue in issues" :key="issue._id">
-            <div class="box-content">
-            <div>{{issue.title}}</div>
-            </div>
+        <transition-group   name="slide-left" class="transition-content" >
+        <div class="issue-container flex" @click="routeToIssue(issue._id)" v-if ="!toggleStatus" v-for="issue in issues" :key="issue._id">
+            <div class="issue-img-container" :style="{backgroundImage: `url('${issue.imgUrls[0]}')`}"></div>
+            <div class="issue-content flex column"><H3>{{issue.title}}</H3>
+            <div>{{issue.desc}}</div></div>
         </div>
         </transition-group>
-        <transition-group  v-if ="toggleComment" name="slide-right" class="transition-content righ-content">
-        <div class="content" v-for="comment in comments" :key="comment._id">
-           <div class="box-content">
-            <div>{{comment.txt}}</div>
-           </div>
+        <transition-group  name="slide-right" class="transition-content comment-content">
+        <div class="comment-container" v-if ="toggleStatus" v-for="comment in comments" :key="comment._id">
+            <h3>{{comment.txt}}</h3>
         </div>
         </transition-group>
         </div>
@@ -40,8 +39,9 @@ export default {
 
     data() {
         return {
-        toggleContent:false,
-        toggleComment:true,
+        // toggleIssues:false,
+        // toggleComments:true,
+        toggleStatus:false,
         user:null,
         issues:null,
         comments:null,
@@ -61,15 +61,28 @@ export default {
 
 
     methods: {
-        toggleBtn() {
-            setTimeout(()=>{
-                this.toggleComment = (this.toggleComment)? false : true;
-            },100)
+        issuesBtn() {
+            this.toggleComments = false;
+            this.toggleIssues = true;
+            // this.toggleComments = false;
+            // setTimeout(()=>{
+            //     this.toggleIssues = true;
+            // },500)
 
-            setTimeout(()=>{
-                this.toggleContent = (this.toggleComment)? false : true;
-            },100)
+        },
+        commentsBtn() {
+            this.toggleIssues = false;
+            this.toggleComments = true;
+            // this.toggleIssues = false;
+            // setTimeout(()=>{
+            //     this.toggleComments = true;
+            // },500)
+
             
+        },
+
+        toggleContent() {
+            this.toggleStatus = !this.toggleStatus;
         },
         getIssues() {
             this.$store.dispatch({type:LOAD_ISSUES, getBy:{reportedBy : this.user._id}})
@@ -109,6 +122,9 @@ export default {
                 console.log("catch", res);
                 });
             },
+            routeToIssue(issueId) {
+                this.$router.push(`/issue/${issueId}`)
+            }
     },    
 
     directives: {
@@ -123,42 +139,49 @@ export default {
 <style lang="scss" scoped>
     .main-user-container {
         max-width: 500px;
-        max-height: 500px;
         background: #fee575;
         margin: 0 auto;
         margin-top:100px;
-
-        .img-container {
-            
-            margin: 0 auto;
-
-            .user-img {
-                width: 150px;
-                height: 150px;
-                border-radius: 50%;
-                margin: 20px;
-                object-fit: cover;
+        .top-user-container {
+           align-items: center;
+            .img-container {
+                text-align: center;
+                .user-img {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 50%;
+                    margin: 20px;
+                    object-fit: cover;
+                }
+            }
+            .toggle-btns{
+                width: 100%; 
+                text-align: center;
+                button {
+                    width: 50%;
+                }   
             }
         }
 
+
+        
         
         .slide-left-leave-active,
         .slide-left-enter-active {
-            transition: all 1s ease;
+        transition: 1s ease-in-out;
         }
         .slide-left-enter {
-            transform: translate(-200%, 0);
-            opacity: 0;
+        transform: translate(-100%, 0);
+        opacity: 0;
         }
         .slide-left-leave-to {
-            transform: translate(-200%, 0);
-            opacity: 0;
+        transform: translate(-100%, 0);
+        opacity: 0;
         }
 
-        
         .slide-right-leave-active,
         .slide-right-enter-active {
-            transition: 1s;
+            transition: all 1s ease-in-out;
         }
         .slide-right-enter {
             transform: translate(100%, 0);
@@ -170,20 +193,38 @@ export default {
         }
 
         .user-info {
+            position: relative;
             .transition-content {
-                background-color: aqua;
-                width: 100%;
-                
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right:0;
+                position: absolute;
             }
-            .content {
-                width: 100%;
-                border: 1px solid gray;
-            }
-            
+                .issue-container {
+                    border:1px solid gray;
+                    margin-bottom: 3px;
+                    cursor: pointer;
+                    .issue-img-container {
+                        background-position: center center;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        min-width: 20%;
+                    }
+                    .issue-content {
+                        padding: 0 7px;
+                    }
+                }
+                .comment-container {
+                    border:1px solid gray;
+                }
             
         }
+            
+                }
+        
 
-    }
+    
 
 
 </style>
