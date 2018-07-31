@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "user" class="main-user-container">
+    <section v-if = "user && issues && comments " class="main-user-container">
         <div class="top-user-container flex column">
             <button @click="openWidget" id="upload_widget_opener">Upload Picture</button>
             <div class="img-container"><img class="user-img" :src="user.imgUrl"/></div>
@@ -11,16 +11,13 @@
             </div>
         </div>
         <div class="user-info flex">
-            <transition-group name="slide-left" class="transition-content" >
-                <user-Issues v-if="!toggleStatus" v-for="issue in issues"
-                :key="issue._id" :issue="issue"
+            <transition name="slide-left" class="transition-content" >
+                <user-Issues v-show="!toggleStatus" :userIssues="issues"
                 @click.native="routeToIssue(issue._id)"></user-Issues>
-            </transition-group>
-            <transition-group  name="slide-right" class="transition-content">
-                <user-comments v-if ="toggleStatus" v-for="comment in comments"
-                :key="comment._id" :comment="comment"
-                @click.native="routeToIssue(comment.issueId)"></user-comments>
-            </transition-group>
+            </transition>
+            <transition  name="slide-right" class="transition-content">
+                <user-comments v-show ="toggleStatus" :userComments="comments"></user-comments>
+            </transition>
         </div>
     </section>
 </template>
@@ -57,7 +54,8 @@ export default {
         getIssues() {
             this.$store.dispatch({type:LOAD_ISSUES, getBy:{reportedBy : this.user._id}})
                 .then(issues => {
-                    this.issues = issues})
+                    this.issues = issues
+                    })
                     .catch(err => console.warn(err));
         },
 

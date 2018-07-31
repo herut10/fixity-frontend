@@ -41,7 +41,7 @@ export default {
 
         [ADD_COMMENT](context, { payload }) {
             return commentService.addComment(payload.comment)
-                .then(iss => {
+                .then(comment => {
                     comment.commenter = payload.commenter;
                     context.commit({ type: SET_COMMENT, comment });
                     return comment;

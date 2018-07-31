@@ -1,7 +1,7 @@
 
 <template>
-    <section v-if="issue">
-        <div class="issue-container flex">
+    <section v-if="userIssues">
+        <div class="issue-container flex" v-for="issue in userIssues" :key="issue._id">
             <div class="issue-img-container" 
             :style="{backgroundImage: `url('${issue.imgUrls[0]}')`}"></div>
             <div class="issue-content flex column">
@@ -16,13 +16,14 @@
 
 export default {
     name: "userIssues",
-    props: ["issue"],
+    props: ["userIssues"],
 
     data() {
         return {
-        issues: null
         };
     },
+    created () {
+    }
 };
 </script>
 

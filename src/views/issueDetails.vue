@@ -107,7 +107,15 @@ export default {
             commenter
           }
         })
-        .then(comment => console.log("comment added"))
+        .then(comment => {
+          this.$notify({
+          group: 'foo',
+          title: 'Comment Status',
+          text: 'Your comment was added',
+          type:'success',
+          duration:5000,
+        });
+        })
         .catch(err => console.warn(err));
       this.toggleModal();
     },
@@ -132,6 +140,14 @@ export default {
           this.issue = updatedIssue;
         })
         .catch(err=>console.warn(err));
+        var status = (updatedIssue.status = 'closed')? 'closed' : 'modified';
+        this.$notify({
+          group: 'foo',
+          title: 'Report Status',
+          text: 'The Report is now'+' '+ status,
+          type:'success',
+          duration:3000,
+        });
     }
   },
 

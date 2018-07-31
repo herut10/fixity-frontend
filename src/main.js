@@ -10,6 +10,7 @@ import '@/assets/scss/main.scss';
 import socketio from 'socket.io-client'
 import VueSocketio from 'vue-socket.io';
 import moment from 'moment';
+import Notifications from 'vue-notification'
 
 let socketURL = 'http://localhost:3000'
 if (process.env.NODE_ENV !== 'development') {
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 Vue.use(VueSocketio, socketio(socketURL));
+Vue.use(Notifications)
 
 
 

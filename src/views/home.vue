@@ -6,7 +6,6 @@
       <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
     </div>
     <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
-    
     <GmapMap
       v-show="currView === 'map'"
       :center="center"
@@ -43,7 +42,7 @@ import {
 } from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
-import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
+import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
 
 export default {
   name: "home",
@@ -56,8 +55,7 @@ export default {
 
   computed: {
     issues() {
-      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {
-      });
+      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {});
 
       return this.$store.getters[ISSUES_TO_DISPLAY];
     },
@@ -77,28 +75,44 @@ export default {
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
-      this.$refs.listIcon.classList.toggle('active');
-      this.$refs.mapIcon.classList.toggle('active');
+      this.$refs.listIcon.classList.toggle("active");
+      this.$refs.mapIcon.classList.toggle("active");
     },
     resolveIssue(issue) {
-      if(issue.status === 'closed') return;
+      if (issue.status === "closed") return;
       var user = this.$store.getters[USER];
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(issue));
-      var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
-      if(user._id === updatedIssue.reportedBy||
-      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5))
-      updatedIssue.status = 'closed';
-      else if(userDistance <=0.5) updatedIssue.nonIssueReportCount++;
+      var userDistance = utilsService.getDistanceFromLatLngInKm(
+        updatedIssue.loc,
+        userLoc
+      );
+      if (
+        user._id === updatedIssue.reportedBy ||
+        (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
+      )
+        updatedIssue.status = "closed";
+      else if (userDistance <= 0.5) updatedIssue.nonIssueReportCount++;
       else return;
-      this.$store.dispatch({type:UPDATE_ISSUE, issueId:updatedIssue._id, updatedIssue})
-        .then(updatedIssue=> console.log('issue updated'))
-        .catch(err=>console.warn(err));
-    },    
+      this.$store
+        .dispatch({
+          type: UPDATE_ISSUE,
+          issueId: updatedIssue._id,
+          updatedIssue
+        })
+        .then(updatedIssue => console.log("issue updated"))
+        .catch(err => console.warn(err));
+        this.$notify({
+          group: 'foo',
+          title: 'Report Status',
+          text: 'Report status', status,
+          type:'success',
+          duration:3000,
+        });
+    },
 
     openIssuePreview(issue) {
-      console.log('issue opened', issue);
-      
+      console.log("issue opened", issue);
     }
   },
 
@@ -118,7 +132,7 @@ export default {
 <style lang="scss" scoped>
 .view-pick {
   color: lightgrey;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   padding-bottom: 15px;
 }
 

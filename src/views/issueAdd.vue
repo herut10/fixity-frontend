@@ -117,6 +117,13 @@ export default {
         issueToSubmit.reportedBy = userId;
       }
       this.$socket.emit('issueAdd', issueToSubmit);
+      this.$notify({
+        group: "foo",
+        title: "Important message",
+        text: this.newIssue.title + ' '+"added successfuly!",
+        type:'success',
+        duration: 5000,
+      });
       this.$router.push('/');
     },
     setLocationSelf() {

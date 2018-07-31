@@ -2,22 +2,24 @@
   <div id="app">
     <app-header @openAbout="toggleAbout" />
     <navbar />
-    <about ref="about" />
+        <about ref="about" />
+        <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
   </div>
 </template>
 
 <script>
-import mapService from '@/services/mapService.js';
-import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
-import navbar from '@/components/generalCmps/navbarCmp.vue';
-import about from '@/views/about.vue';
-import { LOAD_CURRLOC } from '@/store/userModule.js';
-import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from '@/store/issueModule.js';
+import mapService from "@/services/mapService.js";
+import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
+import navbar from "@/components/generalCmps/navbarCmp.vue";
+import about from "@/views/about.vue";
+// import notifications from "@/components/generalCmps/notificationCmp.vue";
+import { LOAD_CURRLOC } from "@/store/userModule.js";
+import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from "@/store/issueModule.js";
 
 export default {
-  name: 'app',
+  name: "app",
 
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
@@ -33,7 +35,7 @@ export default {
     },
 
     errorAdding() {
-      console.log('errorAdding');
+      console.log("errorAdding");
     },
 
     issueLikesChanged(updatedIssue) {
@@ -43,15 +45,16 @@ export default {
 
   methods: {
     toggleAbout() {
-      this.$refs.about.$el.classList.toggle('about-open');
-      this.$refs.curtain.classList.toggle('curtain-show');
+      this.$refs.about.$el.classList.toggle("about-open");
+      this.$refs.curtain.classList.toggle("curtain-show");
     }
   },
 
   components: {
     appHeader,
     navbar,
-    about
+    about,
+    // notifications
   }
 };
 </script>
@@ -72,7 +75,7 @@ export default {
   z-index: 2;
   opacity: 0;
   visibility: hidden;
-  transition: all .4s;
+  transition: all 0.4s;
   &.curtain-show {
     visibility: visible;
     opacity: 1;
