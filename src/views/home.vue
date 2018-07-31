@@ -43,7 +43,7 @@ import {
 } from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
-import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
+import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
 
 export default {
   name: "home",
@@ -56,8 +56,7 @@ export default {
 
   computed: {
     issues() {
-      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {
-      });
+      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {});
 
       return this.$store.getters[ISSUES_TO_DISPLAY];
     },
@@ -77,13 +76,12 @@ export default {
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
-      this.$refs.listIcon.classList.toggle('active');
-      this.$refs.mapIcon.classList.toggle('active');
+      this.$refs.listIcon.classList.toggle("active");
+      this.$refs.mapIcon.classList.toggle("active");
     },
 
     openIssuePreview(issue) {
-      console.log('issue opened', issue);
-      
+      console.log("issue opened", issue);
     }
   },
 
@@ -103,7 +101,7 @@ export default {
 <style lang="scss" scoped>
 .view-pick {
   color: lightgrey;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   padding-bottom: 15px;
 }
 

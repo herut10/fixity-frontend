@@ -31,22 +31,21 @@ import {
 import {
   FontAwesomeIcon
 } from '@fortawesome/vue-fontawesome';
+import VModal from 'vue-js-modal'
 
 library.add(faMapMarkedAlt);
 library.add(faListUl);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
 axios.defaults.crossDomain = true;
-
-
 
 Vue.config.productionTip = false;
 
-cloudinary.config({
-  cloud_name: 'djewvb6ty',
-  api_key: '746648462286187',
-  api_secret: 'S5ch4dT2yLZxSoCrrn9pu6sDdF0'
-});
+
+
+Vue.use(VModal, {
+  dialog: true
+})
+
 
 
 
@@ -66,7 +65,7 @@ Vue.filter('distanceUnit', distance => {
 })
 
 Vue.filter('relativeTime', time => {
-    return moment(time).fromNow();
+  return moment(time).fromNow();
 })
 
 new Vue({
