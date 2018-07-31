@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     upload(files) {
-      console.log("uploading...");
       var uploadPrms = [];
       var that = this;
       var formData;
