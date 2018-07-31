@@ -92,12 +92,15 @@ export default {
             issueId,
             updatedIssue
         }) {
+            console.log(issueId, updatedIssue);
+            
             return issueService.updateIssue(issueId, updatedIssue)
                 .then(updatedIssue => {
                     context.commit({
                         type: UPDATE_ISSUE,
                         updatedIssue
                     })
+                    return updatedIssue;
                 })
         },
 

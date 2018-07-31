@@ -75,6 +75,21 @@ export default {
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
       this.$refs.listIcon.classList.toggle('active');
       this.$refs.mapIcon.classList.toggle('active');
+    },
+    resolveIssue() {
+      if(this.issue.status === 'closed') return;
+      var user = this.$store.getters[USER];
+      var userLoc = this.$store.getters[CURRLOC];
+      var updatedIssue = JSON.parse(JSON.stringify(this.issue));
+      var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
+      if(user._id === updatedIssue.reportedBy||
+      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5))
+      updatedIssue.status = 'closed';
+      else if(userDistance <=0.5) updatedIssue.nonIssueReportCount++;
+      else return;
+      this.$store.dispatch({type:UPDATE_ISSUE, issueId:updatedIssue._id, updatedIssue})
+        .then(updatedIssue=> console.log('issue updated'))
+        .catch(err=>console.warn(err));
     }
   },
 
