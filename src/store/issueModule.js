@@ -81,18 +81,13 @@ export default {
                 })
         },
 
-        [GET_ISSUE_BY_ID](context, {
-            issueId
-        }) {
+        [GET_ISSUE_BY_ID](context, { issueId }) {
             return issueService.getIssueById(issueId)
                 .then(issue => issue)
         },
 
-        [UPDATE_ISSUE](context, {
-            issueId,
-            updatedIssue
-        }) {
-            return issueService.updateIssue(issueId, updatedIssue)
+        [UPDATE_ISSUE](context, { updatedIssue }) {
+            return issueService.updateIssue(updatedIssue._id, updatedIssue)
                 .then(updatedIssue => {
                     context.commit({
                         type: UPDATE_ISSUE,

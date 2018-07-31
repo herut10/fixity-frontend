@@ -1,24 +1,23 @@
 <template>
   <div id="app">
-    <app-header @openAbout="openAbout" />
+    <app-header @openAbout="toggleAbout" />
     <navbar />
     <about ref="about" />
-    <div class="curtain hidden"></div>
+    <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
   </div>
 </template>
 
 <script>
-import mapService from "@/services/mapService.js";
-import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
-import navbar from "@/components/generalCmps/navbarCmp.vue";
-import about from "@/views/about.vue";
-import { LOAD_ISSUES } from "@/store/issueModule.js";
-import { LOAD_CURRLOC } from "@/store/userModule.js";
-import { ADD_ISSUE } from "@/store/issueModule.js";
+import mapService from '@/services/mapService.js';
+import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
+import navbar from '@/components/generalCmps/navbarCmp.vue';
+import about from '@/views/about.vue';
+import { LOAD_CURRLOC } from '@/store/userModule.js';
+import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from '@/store/issueModule.js';
 
 export default {
-  name: "app",
+  name: 'app',
 
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
@@ -27,21 +26,25 @@ export default {
   },
   sockets: {
     issueAdded(issueToSubmit) {
-      debugger;
       this.$store.commit({
         type: ADD_ISSUE,
         issueToSubmit
       });
     },
+
     errorAdding() {
-      console.log("errorAdding");
+      console.log('errorAdding');
+    },
+
+    issueLikesChanged(updatedIssue) {
+      this.$store.commit({ type: UPDATE_ISSUE, updatedIssue });
     }
   },
 
   methods: {
-    openAbout() {
-      this.$refs.about.$el.classList.toggle("about-open");
-      this.$el.children[3].classList.toggle("hidden");
+    toggleAbout() {
+      this.$refs.about.$el.classList.toggle('about-open');
+      this.$refs.curtain.classList.toggle('curtain-show');
     }
   },
 
@@ -61,11 +64,18 @@ export default {
 }
 
 .curtain {
-  background-color: rgba(0, 0, 0, 0.637);
+  background-color: rgba(0, 0, 0, 0.49);
   width: 100vw;
   height: 100vh;
   position: fixed;
   top: 0;
-  z-index: 0;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .4s;
+  &.curtain-show {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 </style>

@@ -9,6 +9,7 @@ import VueCarousel from 'vue-carousel';
 import '@/assets/scss/main.scss';
 import socketio from 'socket.io-client'
 import VueSocketio from 'vue-socket.io';
+import moment from 'moment';
 
 let socketURL = 'http://localhost:3000'
 if (process.env.NODE_ENV !== 'development') {
@@ -44,6 +45,10 @@ Vue.filter('distanceUnit', distance => {
   if (!distance || distance === 'Distance Unknown') return '';
   if (distance.toString().length <= 3) return 'meters from you';
   else return 'KMs from you';
+})
+
+Vue.filter('relativeTime', time => {
+    return moment(time).fromNow();
 })
 
 new Vue({

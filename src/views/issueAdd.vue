@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
-import { SUBMIT_ISSUE } from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import { SET_CURRLOC } from "@/store/userModule.js";
-import { USER } from "@/store/userModule.js";
-import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
-import mapService from "@/services/mapService.js";
+import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
+import { SUBMIT_ISSUE } from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import { SET_CURRLOC } from '@/store/userModule.js';
+import { USER } from '@/store/userModule.js';
+import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
+import mapService from '@/services/mapService.js';
 
 export default {
   components: {
@@ -57,11 +57,11 @@ export default {
   data() {
     return {
       newIssue: {
-        title: "",
-        address: "",
-        body: "",
-        category: "pedestrian",
-        status: "open",
+        title: '',
+        address: '',
+        body: '',
+        category: 'pedestrian',
+        status: 'open',
         imgUrls: [],
         nonIssueReportCount: 0,
         likes: {
@@ -105,9 +105,9 @@ export default {
       new Promise((reject, resolve) => {
         cloudinary.openUploadWidget(
           {
-            cloud_name: "djewvb6ty",
-            upload_preset: "qtz1qjeq",
-            sources: ["local"]
+            cloud_name: 'djewvb6ty',
+            upload_preset: 'qtz1qjeq',
+            sources: ['local']
           },
           function(result, error) {
             if (error) reject(error);
@@ -121,7 +121,7 @@ export default {
           });
         })
         .catch(res => {
-          console.log("catch", res);
+          console.log('catch', res);
         });
     },
     onFileChanged(event) {
@@ -130,6 +130,10 @@ export default {
     },
     onSubmit() {
       var userId = this.$store.getters[USER]._id;
+      if (this.newIssue.imgUrls.length === 0)
+        this.newIssue.imgUrls.push(
+          'https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png'
+        );
       var issueToSubmit = JSON.parse(JSON.stringify(this.newIssue));
       issueToSubmit.loc = JSON.parse(JSON.stringify(this.center));
       issueToSubmit.loc.lat = issueToSubmit.loc.lat;
@@ -137,8 +141,8 @@ export default {
       if (!this.isAnon) {
         issueToSubmit.reportedBy = userId;
       }
-      this.$socket.emit("issueAdd", issueToSubmit);
-      this.$router.push("/");
+      this.$socket.emit('issueAdd', issueToSubmit);
+      this.$router.push('/');
     },
     setLocationSelf() {
       var loc = this.$store.getters[CURRLOC];

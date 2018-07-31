@@ -24,11 +24,13 @@
         v-for="issue in issues" :key="issue._id"
         :position="issue.loc"
         :clickable="true"
+        @click="openIssuePreview(issue)"
         :draggable="false"
         :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
       />
     </GmapMap>
 
+    <!-- <issue-preview-cmp :issue:"issue" /> -->
     
   </section>
 </template>
@@ -41,6 +43,7 @@ import {
 } from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
+import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
 
 export default {
   name: "home",
@@ -72,9 +75,15 @@ export default {
 
   methods: {
     changeCurrView(viewType) {
+      if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
       this.$refs.listIcon.classList.toggle('active');
       this.$refs.mapIcon.classList.toggle('active');
+    },
+
+    openIssuePreview(issue) {
+      console.log('issue opened', issue);
+      
     }
   },
 
@@ -85,7 +94,8 @@ export default {
   },
 
   components: {
-    issueListCmp
+    issueListCmp,
+    issuePreviewCmp
   }
 };
 </script>
@@ -93,9 +103,8 @@ export default {
 <style lang="scss" scoped>
 .view-pick {
   color: lightgrey;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding-bottom: 15px;
-  
 }
 
 svg {
