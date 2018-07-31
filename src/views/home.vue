@@ -1,5 +1,13 @@
 <template>
-  <section class="home container">
+  <section class="home">
+    <div class="site-entrance flex column justify-center">
+      <h1 class="title">Be the change you wish to see in the world.</h1>
+      <div class="subtitles">
+        <h3>Report issues around you for the benefit of others.</h3>
+        <h3>Form groups to make your city a better place.</h3>
+      </div>
+    </div>
+
     <div class="view-pick">
       <font-awesome-icon icon="list-ul" class="active" ref="listIcon" @click="changeCurrView('list')" /> 
       | 
@@ -40,13 +48,13 @@ import {
   SET_ISSUES_VIEW,
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
-} from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
+} from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
 
 export default {
-  name: "home",
+  name: 'home',
 
   data() {
     return {
@@ -56,8 +64,7 @@ export default {
 
   computed: {
     issues() {
-      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {
-      });
+      this.$store.getters[ISSUES_TO_DISPLAY].forEach(issue => {});
 
       return this.$store.getters[ISSUES_TO_DISPLAY];
     },
@@ -83,7 +90,6 @@ export default {
 
     openIssuePreview(issue) {
       console.log('issue opened', issue);
-      
     }
   },
 
@@ -101,6 +107,70 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 460px) {
+  .site-entrance {
+    .title {
+      font-size: 3em;
+    }
+
+    .subtitles {
+      h3 {
+        font-size: 1.4em;
+      }
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  div.site-entrance {
+    background-position: center;
+  }
+}
+
+@media (min-width: 992px) {
+  div.site-entrance {
+    height: calc(100vh - 60px);
+  }
+}
+
+@media (min-width: 1015px) {
+  div.site-entrance {
+    text-align: start;
+  }
+
+  .subtitles {
+    h3 {
+      text-indent: 40px;
+      &:last-of-type {
+        text-indent: 120px;
+      }
+    }
+  }
+}
+
+.site-entrance {
+  color: white;
+  text-align: center;
+  background-image: url('../../public/img/site-entrance.jpg');
+  background-size: cover;
+  background-position: -100px;
+  padding: 15px;
+  height: calc(100vh - 110px);
+  width: 100%;
+}
+
+.title {
+  font-size: 2.5em;
+  font-weight: lighter;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.2em;
+  font-weight: lighter;
+  margin: 15px 0;
+}
+
 .view-pick {
   color: lightgrey;
   font-family: 'Open Sans', sans-serif;

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <app-header @openAbout="toggleAbout" />
-    <navbar />
+    <footerNavbar />
     <about ref="about" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
@@ -11,7 +11,7 @@
 <script>
 import mapService from '@/services/mapService.js';
 import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
-import navbar from '@/components/generalCmps/navbarCmp.vue';
+import footerNavbar from '@/components/generalCmps/footerNavbarCmp.vue';
 import about from '@/views/about.vue';
 import { LOAD_CURRLOC } from '@/store/userModule.js';
 import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from '@/store/issueModule.js';
@@ -50,7 +50,7 @@ export default {
 
   components: {
     appHeader,
-    navbar,
+    footerNavbar,
     about
   }
 };

@@ -20,18 +20,22 @@ Vue.use(VueSocketio, socketio(socketURL));
 
 
 
-import cloudinary from 'cloudinary'
+import cloudinary from 'cloudinary';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  library
-} from '@fortawesome/fontawesome-svg-core';
-import {
+  faClipboard,
+  faInfoCircle,
+  faUserCircle,
+  faHome,
   faMapMarkedAlt,
   faListUl
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  FontAwesomeIcon
-} from '@fortawesome/vue-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+library.add(faClipboard);
+library.add(faInfoCircle);
+library.add(faUserCircle);
+library.add(faHome);
 library.add(faMapMarkedAlt);
 library.add(faListUl);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
