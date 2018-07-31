@@ -20,6 +20,10 @@
         </div>
       <input v-model="newIssue.title" type="text" placeholder="title" required maxlength="25"/>
       <textarea v-model="newIssue.body" placeholder="enter description" required ></textarea>
+      <label>
+        upload pictures
+        <imgUpload @imgsUploaded="saveURLs"></imgUpload>
+      </label>
       <select v-model="newIssue.category">
         <option value="pedestrian">Pedestrian</option>
         <option value="garbage">Garbage</option>
@@ -29,29 +33,25 @@
         Submit as anonymous
         <input type="checkbox"/>
       </label>
-      <button @click.prevent="openWidget" id="upload_widget_opener">Upload images</button>
-      
       <button @click.prevent="onSubmit">submit</button>
-      {{center}}
       </form>
-    <pre>{{newIssue}}</pre>
-    
-
     </section>
 </template>
 
 <script>
-import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
-import { SUBMIT_ISSUE } from '@/store/issueModule.js';
-import { CURRLOC } from '@/store/userModule.js';
-import { SET_CURRLOC } from '@/store/userModule.js';
-import { USER } from '@/store/userModule.js';
-import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
-import mapService from '@/services/mapService.js';
-
+import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
+import { SUBMIT_ISSUE } from "@/store/issueModule.js";
+import { CURRLOC } from "@/store/userModule.js";
+import { SET_CURRLOC } from "@/store/userModule.js";
+import { USER } from "@/store/userModule.js";
+import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
+import mapService from "@/services/mapService.js";
+import utilsService from "@/services/utilsService.js";
+import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
 export default {
   components: {
-    autoComplete
+    autoComplete,
+    imgUpload
   },
 
   data() {
@@ -76,8 +76,7 @@ export default {
         lat: 10,
         lng: 10
       },
-      isAnon: false,
-      selectedFile: null
+      isAnon: false
     };
   },
 
@@ -97,36 +96,12 @@ export default {
     }
   },
   methods: {
+    saveURLs(URLs) {
+      this.newIssue.imgUrls = URLs;
+    },
     placeChanged(val) {
       var loc = val.geometry.location;
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
-    },
-    openWidget() {
-      new Promise((reject, resolve) => {
-        cloudinary.openUploadWidget(
-          {
-            cloud_name: 'djewvb6ty',
-            upload_preset: 'qtz1qjeq',
-            sources: ['local']
-          },
-          function(result, error) {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-      })
-        .then(images => {
-          images.forEach(image => {
-            this.newIssue.imgUrls.push(image.secure_url);
-          });
-        })
-        .catch(res => {
-          console.log('catch', res);
-        });
-    },
-    onFileChanged(event) {
-      const file = event.target.files[0];
-      this.selectedFile = event.target.files[0];
     },
     onSubmit() {
       var userId = this.$store.getters[USER]._id;
@@ -172,7 +147,8 @@ export default {
 </script>
 
 
-<style scoped>
+
+<style lang="scss" scoped>
 .vue-map-container {
   width: 100%;
   height: 200px;

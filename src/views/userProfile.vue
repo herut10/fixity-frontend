@@ -2,7 +2,10 @@
 <template>
     <section v-if = "user" class="main-user-container">
         <div class="top-user-container flex column">
-        <button @click="openWidget" id="upload_widget_opener">Upload Picture</button>
+        <label>
+            upload pictures
+            <imgUpload :single="true" @imgsUploaded="saveURLs"></imgUpload>
+        </label>
         <div class="img-container"><img class="user-img" :src="user.imgUrl"/></div>
         <H1>{{user.username}}</H1>
         <div class="toggle-btns"><button :disabled="!toggleStatus" @click="toggleContent">User Reports</button>
@@ -29,202 +32,171 @@
 
 <script>
 // import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
-import { LOAD_ISSUES } from '@/store/issueModule.js';
-import { USER } from '@/store/userModule.js';
-import { GET_COMMENTS } from '@/store/commentModule.js';
-import { UPDATE_USER } from '@/store/userModule.js';
+import { LOAD_ISSUES } from "@/store/issueModule.js";
+import { USER } from "@/store/userModule.js";
+import { GET_COMMENTS } from "@/store/commentModule.js";
+import { UPDATE_USER } from "@/store/userModule.js";
+import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
 // import { Carousel, Slide } from 'vue-carousel';
 
 export default {
+  data() {
+    return {
+      // toggleIssues:false,
+      // toggleComments:true,
+      toggleStatus: false,
+      user: null,
+      issues: null,
+      comments: null
+    };
+  },
 
-    data() {
-        return {
-        // toggleIssues:false,
-        // toggleComments:true,
-        toggleStatus:false,
-        user:null,
-        issues:null,
-        comments:null,
-        }
-    },  
+  computed: {},
 
-    computed:{
+  created() {
+    this.user = this.$store.getters[USER];
+    this.getIssues();
+    this.getComments();
+  },
 
+  methods: {
+    issuesBtn() {
+      this.toggleComments = false;
+      this.toggleIssues = true;
+      // this.toggleComments = false;
+      // setTimeout(()=>{
+      //     this.toggleIssues = true;
+      // },500)
+    },
+    commentsBtn() {
+      this.toggleIssues = false;
+      this.toggleComments = true;
+      // this.toggleIssues = false;
+      // setTimeout(()=>{
+      //     this.toggleComments = true;
+      // },500)
     },
 
-
-    created() {
-        this.user = this.$store.getters[USER]
-        this.getIssues();
-        this.getComments();
+    toggleContent() {
+      this.toggleStatus = !this.toggleStatus;
+    },
+    getIssues() {
+      this.$store
+        .dispatch({ type: LOAD_ISSUES, getBy: { reportedBy: this.user._id } })
+        .then(issues => {
+          this.issues = issues;
+        })
+        .catch(err => console.warn(err));
     },
 
-
-    methods: {
-        issuesBtn() {
-            this.toggleComments = false;
-            this.toggleIssues = true;
-            // this.toggleComments = false;
-            // setTimeout(()=>{
-            //     this.toggleIssues = true;
-            // },500)
-
-        },
-        commentsBtn() {
-            this.toggleIssues = false;
-            this.toggleComments = true;
-            // this.toggleIssues = false;
-            // setTimeout(()=>{
-            //     this.toggleComments = true;
-            // },500)
-
-            
-        },
-
-        toggleContent() {
-            this.toggleStatus = !this.toggleStatus;
-        },
-        getIssues() {
-            this.$store.dispatch({type:LOAD_ISSUES, getBy:{reportedBy : this.user._id}})
-                .then(issues => {
-                    this.issues = issues})
-                    .catch(err => console.warn(err));
-        },
-
-        getComments() {
-            this.$store.dispatch({type:GET_COMMENTS, getBy:{commenterId : this.user._id}})
-                .then(comments=> {
-                    this.comments = comments;
-                }).catch(err => console.warn(err));
-        },
-
-        openWidget() {
-            new Promise((reject, resolve) => {
-                cloudinary.openUploadWidget({
-                    cloud_name: "djewvb6ty",
-                    upload_preset: "qtz1qjeq",
-                    sources: ["local"]
-                },
-                function(result, error) {
-                    if (error) reject(error);
-                    else resolve(result);
-                }
-                );
-            })
-                .then(image => {
-                    this.user.imgUrl = image[0].secure_url;
-                    this.$store.dispatch({type:UPDATE_USER, user:this.user})
-                        .then(user=>{
-                            this.user = this.$store.getters[GET_USER]
-                        }).catch(err=>console.warn(err))
-                })
-                .catch(res => {
-                console.log("catch", res);
-                });
-            },
-            routeToIssue(issueId) {
-                this.$router.push(`/issue/${issueId}`)
-            }
-    },    
-
-    directives: {
+    getComments() {
+      this.$store
+        .dispatch({ type: GET_COMMENTS, getBy: { commenterId: this.user._id } })
+        .then(comments => {
+          this.comments = comments;
+        })
+        .catch(err => console.warn(err));
     },
 
-    components: {
-    
+    saveURLs(URLs) {
+      this.user.imgUrl = URLs;
+      this.$store
+        .dispatch({ type: UPDATE_USER, user: this.user })
+        .then(user => {
+          this.user = this.$store.getters[GET_USER];
+        })
+        .catch(err => console.warn(err));
     },
+    routeToIssue(issueId) {
+      this.$router.push(`/issue/${issueId}`);
+    }
+  },
+
+  directives: {},
+
+  components: { imgUpload }
 };
 </script>
 
 <style lang="scss" scoped>
-    .main-user-container {
-        max-width: 500px;
-        background: #fee575;
-        margin: 0 auto;
-        margin-top:100px;
-        .top-user-container {
-           align-items: center;
-            .img-container {
-                text-align: center;
-                .user-img {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 50%;
-                    margin: 20px;
-                    object-fit: cover;
-                }
-            }
-            .toggle-btns{
-                width: 100%; 
-                text-align: center;
-                button {
-                    width: 50%;
-                }   
-            }
-        }
+.main-user-container {
+  max-width: 500px;
+  background: #fee575;
+  margin: 0 auto;
+  margin-top: 100px;
+  .top-user-container {
+    align-items: center;
+    .img-container {
+      text-align: center;
+      .user-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 20px;
+        object-fit: cover;
+      }
+    }
+    .toggle-btns {
+      width: 100%;
+      text-align: center;
+      button {
+        width: 50%;
+      }
+    }
+  }
 
+  .slide-left-leave-active,
+  .slide-left-enter-active {
+    transition: 1s ease-in-out;
+  }
+  .slide-left-enter {
+    transform: translate(-100%, 0);
+    opacity: 0;
+  }
+  .slide-left-leave-to {
+    transform: translate(-100%, 0);
+    opacity: 0;
+  }
 
-        
-        
-        .slide-left-leave-active,
-        .slide-left-enter-active {
-        transition: 1s ease-in-out;
-        }
-        .slide-left-enter {
-        transform: translate(-100%, 0);
-        opacity: 0;
-        }
-        .slide-left-leave-to {
-        transform: translate(-100%, 0);
-        opacity: 0;
-        }
+  .slide-right-leave-active,
+  .slide-right-enter-active {
+    transition: all 1s ease-in-out;
+  }
+  .slide-right-enter {
+    transform: translate(100%, 0);
+    opacity: 0;
+  }
+  .slide-right-leave-to {
+    transform: translate(100%, 0);
+    opacity: 0;
+  }
 
-        .slide-right-leave-active,
-        .slide-right-enter-active {
-            transition: all 1s ease-in-out;
-        }
-        .slide-right-enter {
-            transform: translate(100%, 0);
-            opacity: 0;
-        }
-        .slide-right-leave-to {
-            transform: translate(100%, 0);
-            opacity: 0;
-        }
-
-        .user-info {
-            position: relative;
-            .transition-content {
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right:0;
-                position: absolute;
-            }
-                .issue-container {
-                    border:1px solid gray;
-                    margin-bottom: 3px;
-                    cursor: pointer;
-                    .issue-img-container {
-                        background-position: center center;
-                        background-size: cover;
-                        background-repeat: no-repeat;
-                        min-width: 20%;
-                    }
-                    .issue-content {
-                        padding: 0 7px;
-                    }
-                }
-                .comment-container {
-                    border:1px solid gray;
-                }
-            
-        }
-            
-                }
-        
-
-    
-
-
+  .user-info {
+    position: relative;
+    .transition-content {
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+    }
+    .issue-container {
+      border: 1px solid gray;
+      margin-bottom: 3px;
+      cursor: pointer;
+      .issue-img-container {
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-width: 20%;
+      }
+      .issue-content {
+        padding: 0 7px;
+      }
+    }
+    .comment-container {
+      border: 1px solid gray;
+    }
+  }
+}
 </style>
