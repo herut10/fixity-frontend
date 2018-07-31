@@ -1,12 +1,13 @@
 <template>
     <section class="issue-preview flex column space-between">
-        <carousel :perPage="1" :autoplay="true" :autoplayTimeout="2000" :paginationEnabled="false">
+      <!-- <img src="img/resolved.png" /> -->
+        <carousel :perPage="1" :autoplay="true" :autoplayTimeout="2000" :paginationEnabled="false" :loop="true">
             
-            <!-- <slide v-for="issueImgUrl in issue.imgUrls" :key="issueImgUrl">
-                <div class="issue-img" :title="issue.title" :style="{backgroundImage: `url('${issueImgUrl}')`}"></div>
-            </slide> -->
+            <slide v-for="issueImgUrl in issue.imgUrls" :key="issueImgUrl">
+                <div class="issue-img" :title="issue.title" :style="{backgroundImage: `url('${issueImgUrl}')`, backgroundSize: issueImgSize}"></div>
+            </slide>
 
-            <slide>
+            <!-- <slide>
                 <div class="issue-img" :title="issue.title" :style="{backgroundImage: `url('${issue.imgUrls[0]}')`}"></div>
             </slide>
             <slide>
@@ -14,7 +15,7 @@
             </slide>
             <slide>
                 <div class="issue-img" :title="issue.title" :style="{backgroundImage: `url('${issue.imgUrls[0]}')`}"></div>
-            </slide>
+            </slide> -->
         </carousel>
         
         <div class="issue-info">
@@ -24,7 +25,11 @@
             <h4>{{issue.category}}</h4>
         </div>
 
-        <issue-likes-cmp v-model="issueLike" :issue="issue" />
+        <div class="issue-footer flex space-between">
+          <h5 class="issue-time">Reported {{issue.createdAt | relativeTime}}</h5>
+          <issue-likes-cmp :issue="issue" />
+        </div>
+
     </section>
 </template>
 
@@ -45,7 +50,6 @@ export default {
 
   data() {
     return {
-      issueLike: '',
       issueAddress: ''
     };
   },
@@ -54,9 +58,17 @@ export default {
     issueDistanceFromUser() {
       var userLoc = this.$store.getters[CURRLOC];
       if (!userLoc) return 'Distance Unknown';
-      var distance = utilsService.getDistanceFromLatLngInKm(userLoc, this.issue.loc);
+      var distance = utilsService.getDistanceFromLatLngInKm(
+        userLoc,
+        this.issue.loc
+      );
       if (distance < 1) return (distance * 1000).toFixed(0);
       else return distance.toFixed(2);
+    },
+
+    issueImgSize() {
+      if (this.issue.imgUrls[0] === 'https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png') return 'contain';
+      else return 'cover';
     }
   },
 
@@ -91,10 +103,10 @@ export default {
     text-transform: capitalize;
     font-size: 0.8em;
   }
-  img {
-    max-width: 100px;
-    max-height: 100px;
-  }
+  // img {
+  //   max-width: 100px;
+  //   max-height: 100px;
+  // }
 }
 
 .VueCarousel {
@@ -106,10 +118,26 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
-  width: 118%;
+  width: 100%;
 }
 
 .issue-info {
   text-align: left;
 }
+
+.issue-time {
+  color: rgb(175, 172, 172);
+  font-weight: normal;
+  height: fit-content;
+  align-self: flex-end;
+}
+
+
+// resolve img:
+//     position: absolute;
+//     top: 32%;
+//     z-index: 2;
+//     left: 10%;
+//     height: 852px;
+//     height: 200px;
 </style>

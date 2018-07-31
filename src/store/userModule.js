@@ -6,7 +6,6 @@ export const SET_USER = 'user/mutations/setUser';
 
 export const USER = 'user/getters/getUser';
 export const CURRLOC = 'user/getters/getCurrLoc';
-export const USER_LIKES = 'user/getters/getUserLikes';
 
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const UPDATE_USER = 'user/action/getCurrLoc';
@@ -48,9 +47,6 @@ export default {
             console.log(state.currLoc);
             
             return JSON.parse(JSON.stringify(state.currLoc))
-        },
-        [USER_LIKES](state) {
-            return state.user.likes;
         }
 
     },

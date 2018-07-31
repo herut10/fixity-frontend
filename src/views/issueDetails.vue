@@ -127,7 +127,7 @@ export default {
       updatedIssue.status = 'closed';
       else if(userDistance <=0.5) updatedIssue.nonIssueReportCount++;
       else return;
-      this.$store.dispatch({type:UPDATE_ISSUE, issueId:updatedIssue._id, updatedIssue})
+      this.$store.dispatch({type:UPDATE_ISSUE, updatedIssue})
         .then(updatedIssue=> {
           this.issue = updatedIssue;
         })

@@ -33,17 +33,16 @@ export default {
 }
 
 a {
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   color: white;
   text-shadow: -2px 1px black;
   margin: 0 20px;
   transition: all 0.3s;
   &.router-link-exact-active {
-    color: #f03a17;
-    font-weight: bold;
+    color: #69c8b2;
   }
   &:hover {
-    color: #fdc612;
+    color: #498b7c;
   }
 }
 </style>

@@ -1,31 +1,31 @@
 <template>
     <section class="issue-likes flex">
-        <div class="likeHappy flex column">
-            <span ref="likeHappy" title="Happy" @click.prevent="$emit('input', 'likeHappy')">😃</span>
+        <div class="likeHappy flex column" @mouseover="showLikesCount">
             <span>{{issue.likes.likeHappy}}</span>
+            <span ref="likeHappy" title="Happy" @click.prevent="changeIssueLikes('likeHappy')">😃</span>
         </div>
         <div class="likeSad flex column">
-            <span ref="likeSad" title="Sad" @click.prevent="$emit('input', 'likeSad')">😢</span>
             <span>{{issue.likes.likeSad}}</span>
+            <span ref="likeSad" title="Sad" @click.prevent="changeIssueLikes('likeSad')">😢</span>
         </div>
         <div class="likeAngry flex column">
-            <span ref="likeAngry" title="Angry" @click.prevent="$emit('input', 'likeAngry')">😡</span>
             <span>{{issue.likes.likeAngry}}</span>
+            <span ref="likeAngry" title="Angry" @click.prevent="changeIssueLikes('likeAngry')">😡</span>
         </div>
         <div class="likeShocked flex column">
-            <span ref="likeShocked" title="Shocked" @click.prevent="$emit('input', 'likeShocked')">😮</span>
             <span>{{issue.likes.likeShocked}}</span>
+            <span ref="likeShocked" title="Shocked" @click.prevent="changeIssueLikes('likeShocked')">😮</span>
         </div>
         <div class="likeDisgusted flex column">
-            <span ref="likeDisgusted" title="Disgusted" @click.prevent="$emit('input', 'likeDisgusted')">🤢</span>
             <span>{{issue.likes.likeDisgusted}}</span>
+            <span ref="likeDisgusted" title="Disgusted" @click.prevent="changeIssueLikes('likeDisgusted')">🤢</span>
         </div>
     </section>
 </template>
 
 <script>
 import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from '@/store/issueModule.js';
-import { USER, USER_LIKES, UPDATE_USER } from '@/store/userModule.js';
+import { USER, UPDATE_USER } from '@/store/userModule.js';
 
 export default {
   name: 'issueLikes',
@@ -36,15 +36,20 @@ export default {
     }
   },
 
+  mounted() {
+    var user = this.$store.getters[USER];
+    var issueLiked = user.likes.find(
+      userLike => userLike.issueId === this.issue._id
+    );
+    if (issueLiked) this.$refs[issueLiked.likeType].classList.add('clicked');
+  },
+
   methods: {
     changeIssueLikes(likeType) {
       //TODO: only logged in user can like. if user is not logged- open the modal for signing up.
-      //TODO: connect likes with user, so that when user logs in the emoji is marked clicked if he already clicked on it.
-      
       var user = this.$store.getters[USER];
       var updatedUser = JSON.parse(JSON.stringify(user));
-
-      var userLikes = this.$store.getters[USER_LIKES];
+      var userLikes = user.likes;
       var issueLiked = userLikes.find(
         userLike => userLike.issueId === this.issue._id
       );
@@ -52,17 +57,14 @@ export default {
         var updatedIssue = JSON.parse(JSON.stringify(this.issue));
         updatedIssue.likes[likeType]++;
         this.$store
-          .dispatch({
-            type: UPDATE_ISSUE,
-            issueId: updatedIssue._id,
-            updatedIssue
-          })
+          .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
             // EventBusService.$emit(SHOW_MSG, { txt: 'Todo deleted', type: 'success' })
             console.log('Like updated successfully');
             updatedUser.likes.push({ issueId: this.issue._id, likeType });
-
+            this.updateUser(updatedUser);
             this.$refs[likeType].classList.toggle('clicked');
+            this.$socket.emit('issueLikesChanged', updatedIssue);
           })
           .catch(() => {
             // EventBusService.$emit(SHOW_MSG, { txt: 'Problem with server! Could not delete todo', type: 'danger' })
@@ -73,7 +75,10 @@ export default {
         var likeIdx = updatedUser.likes.findIndex(
           like => like.issueId === this.issue._id
         );
-        if (issueLiked.likeType === likeType) {
+        if (
+          issueLiked.likeType === likeType &&
+          updatedIssue.likes[likeType] > 0
+        ) {
           updatedIssue.likes[likeType]--;
           updatedUser.likes.splice(likeIdx, 1);
         } else {
@@ -82,30 +87,34 @@ export default {
           updatedUser.likes[likeIdx].likeType = likeType;
         }
         this.$store
-          .dispatch({
-            type: UPDATE_ISSUE,
-            issueId: updatedIssue._id,
-            updatedIssue
-          })
+          .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
+            this.updateUser(updatedUser);
             this.$refs[likeType].classList.toggle('clicked');
             this.$refs[issueLiked.likeType].classList.toggle('clicked');
             console.log('Like updated successfully');
+            this.$socket.emit('issueLikesChanged', updatedIssue);
           })
           .catch(() => {
             // EventBusService.$emit(SHOW_MSG, { txt: 'Problem with server! Could not delete todo', type: 'danger' })
             console.log('Problem liking issue');
           });
-
-        this.$store
-          .dispatch({ type: UPDATE_USER, user: updatedUser })
-          .then(() => {
-            console.log('User like updated successfully');
-          })
-          .catch(() => {
-            console.log('Problem updating user likes');
-          });
       }
+    },
+
+    updateUser(userToUpdate) {
+      this.$store
+        .dispatch({ type: UPDATE_USER, user: userToUpdate })
+        .then(() => {
+          console.log('User like updated successfully');
+        })
+        .catch(() => {
+          console.log('Problem updating user likes');
+        });
+    },
+
+    showLikesCount() {
+
     }
   }
 };
@@ -113,11 +122,13 @@ export default {
 
 <style lang="scss" scoped>
 .issue-likes {
-  justify-content: flex-end;
+  width: fit-content;
+  align-self: flex-end;
 }
 
-.issue-likes div span:first-child {
+.issue-likes div span:last-child {
   cursor: pointer;
+  font-size: 1.3em;
   opacity: 0.6;
   &:hover,
   &.clicked {
@@ -125,9 +136,10 @@ export default {
   }
 }
 
-.issue-likes div span:last-child {
+.issue-likes div span:first-child {
+  display: none;
   text-align: center;
   font-size: 0.6em;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 </style>
