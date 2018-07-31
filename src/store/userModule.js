@@ -48,6 +48,8 @@ export default {
             return state.user;
         },
         [CURRLOC](state) {
+            console.log(state.currLoc);
+            
             return JSON.parse(JSON.stringify(state.currLoc))
         }
 
