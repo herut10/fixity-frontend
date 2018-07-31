@@ -27,7 +27,6 @@ export default {
   },
   sockets: {
     issueAdded(issueToSubmit) {
-      debugger;
       this.$store.commit({
         type: ADD_ISSUE,
         issueToSubmit
