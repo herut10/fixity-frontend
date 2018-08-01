@@ -1,10 +1,12 @@
 <template>
   <section class="home">
     <div class="site-entrance flex column justify-center">
-      <h1 class="title">Be the change you wish to see in the world.</h1>
-      <div class="subtitles">
-        <h3>Report issues around you for the benefit of others.</h3>
-        <h3>Form groups to make your city a better place.</h3>
+      <div class="container">
+        <h1 class="title">Be the change you wish to see in the world.</h1>
+        <div class="subtitles">
+          <h3>Report issues around you for the benefit of others.</h3>
+          <h3>Form groups to make your city a better place.</h3>
+        </div>
       </div>
     </div>
 
@@ -52,14 +54,14 @@ import {
   SET_ISSUES_VIEW,
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
-} from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
-import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
-import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
+} from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
+import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
+import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
 
 export default {
-  name: "home",
+  name: 'home',
 
   data() {
     return {
@@ -102,45 +104,53 @@ export default {
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
-      this.$refs.listIcon.classList.toggle("active");
-      this.$refs.mapIcon.classList.toggle("active");
+      this.$refs.listIcon.classList.toggle('active');
+      this.$refs.mapIcon.classList.toggle('active');
     },
-    resolveIssue(issue) {
-      if (issue.status === "closed") return;
+    resolveIssue() {
+      if(this.issue.status === 'closed') {
+        this.notify('Report already closed', 'warn');
+        return;
+      }  
       var user = this.$store.getters[USER];
       var userLoc = this.$store.getters[CURRLOC];
-      var updatedIssue = JSON.parse(JSON.stringify(issue));
-      var userDistance = utilsService.getDistanceFromLatLngInKm(
-        updatedIssue.loc,
-        userLoc
-      );
-      if (
-        user._id === updatedIssue.reportedBy ||
-        (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
-      )
-        updatedIssue.status = "closed";
-      else if (userDistance <= 0.5) updatedIssue.nonIssueReportCount++;
-      else return;
-      this.$store
-        .dispatch({
-          type: UPDATE_ISSUE,
-          issueId: updatedIssue._id,
-          updatedIssue
+      var updatedIssue = JSON.parse(JSON.stringify(this.issue));
+      var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
+      if(this.authorizedToClose(user, updatedIssue, userDistance)) {
+        updatedIssue.status = 'closed';
+        this.notify('The report is now closed', 'success');
+      } else if(userDistance <=0.5){
+        updatedIssue.nonIssueReportCount++;
+        this.notify('The report is now modified', 'success');
+      } else {
+        
+        this.notify('Failed to modify report', 'warn');
+        return;
+      }  
+      this.$store.dispatch({type:UPDATE_ISSUE, updatedIssue})
+        .then(updatedIssue=> {
+          this.issue = updatedIssue;
         })
-        .then(updatedIssue => console.log("issue updated"))
-        .catch(err => console.warn(err));
-      this.$notify({
-        group: "foo",
-        title: "Report Status",
-        text: "Report status",
-        status,
-        type: "success",
-        duration: 3000
-      });
+        .catch(err=>console.warn(err));
+    },
+
+    authorizedToClose(user, updatedIssue, userDistance) {
+      return user._id === updatedIssue.reportedBy||user.isAdmin||
+      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5);
+    },
+
+    notify(text, type) {
+        this.$notify({
+          group: 'foo',
+          title: 'Report Status',
+          text: text,
+          type: type,
+          duration: 3000,
+        });
     },
 
     openIssuePreview(issue) {
-      console.log("issue opened", issue);
+      console.log('issue opened', issue);
     }
   },
 
@@ -203,10 +213,9 @@ export default {
 .site-entrance {
   color: white;
   text-align: center;
-  background-image: url("../../public/img/site-entrance.jpg");
+  background-image: url('../../public/img/site-entrance.jpg');
   background-size: cover;
   background-position: -100px;
-  padding: 15px;
   margin-bottom: 10px;
   height: calc(100vh - 110px);
   width: 100%;
@@ -214,7 +223,7 @@ export default {
 
 .title {
   font-size: 2.5em;
-  font-weight: lighter;
+  line-height: 1.2em;
   text-shadow: -1px 1px 9px #454444;
   margin-bottom: 10px;
 }
@@ -232,8 +241,10 @@ h3 {
 
 .view-pick {
   color: lightgrey;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  display: inline-block;
   padding-bottom: 15px;
+  margin-right: 15px;
 }
 
 svg {
@@ -245,6 +256,13 @@ svg {
   &.active {
     color: rgb(77, 76, 76);
   }
+}
+
+input {
+  padding: 3px;
+  color: #439475;
+  border-radius: 4px;
+  border: 1px solid #aeaeae;
 }
 
 .vue-map-container {

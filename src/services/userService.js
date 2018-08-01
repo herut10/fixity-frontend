@@ -24,5 +24,6 @@ function registerUser(user) {
 
 export default {
     updateUser,
-    registerUser
+    registerUser,
+    login,
 }

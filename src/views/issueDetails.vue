@@ -1,45 +1,67 @@
 
 <template>
-    <section v-if = "issue" class="details-container flex column" >
-      <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="12" map-type-id="terrain" style="min-width: 500px; min-height: 200px">
-        <GmapMarker :position="issue.loc"/>
-      </GmapMap>
-
-      <h1 class="title">{{issue.title}}</h1>
-      <div class="issue-container flex space-between">
-        <div>Description: {{issue.desc}}</div>
-        <div>
-          <div>Category: {{issue.category}}</div>
-          <div>Status: {{issue.status}}</div>
-          <button @click= "resolveIssue">Resolve Issue</button>
+    <section v-if = "issue" class="issue-details container flex column" >
+        <div class="issue-header flex space-between align-center">
+            <h1 class="issue-title">{{issue.title}}</h1>
+            <button @click= "resolveIssue">
+              <font-awesome-icon icon="check" />
+              Resolve
+            </button>
         </div>
-      </div>
 
-
-      <carousel :per-page="1" >
-        <slide v-for="(img,idx) in issue.imgUrls" :key="idx">
-          <img :src="img" >
-        </slide>
-        
-      </carousel>
-
-
-            <h2>Comments:</h2><button class="add-btn" @click = "toggleModal">Add Comment</button>
-        <div class="comments-container" v-for ='comment in comments' :key="comment._id">
-            <div class="card-container">
-            <img :src = "comment.commenter.imgUrl"><div class="comment-box">{{comment.txt}}</div>
+        <div class="issue-content">
+            <div class="issue-info">
+                <p>{{issue.desc}}</p>
+                <h5>
+                  Category: <label>{{issue.category}}</label>
+                </h5>
+                <h5>
+                  Status: <label>{{issue.status}}</label>
+                </h5>
+                <h5>
+                  Reported <label>{{issue.createdAt | relativeTime}}</label> 
+                </h5>
             </div>
+
+            <carousel :perPage="1" :paginationEnabled="false" :navigationEnabled="issue.imgUrls.length>1">
+              <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
+                <img :src="imgUrl" :title="issue.title" :alt="issue.title" />
+              </slide>
+            </carousel>
+
+            <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
+                <GmapMarker
+                  :position="issue.loc"
+                  :clickable="false"
+                  :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+                  />
+            </GmapMap>
         </div>
-        
+
+        <div class="issue-comments">
+            <h2>Comments</h2>
+            <button class="add-btn" @click = "toggleModal">Add</button>
+            <div class="comments-container" v-for ='comment in comments' :key="comment._id">
+                <div class="comment-container flex">
+                    <div class="commenter">
+                        <img :src = "comment.commenter.imgUrl">
+                        <h6>{{comment.commenter.username}}</h6>
+                    </div>
+                    <div class="comment-content flex column space-between">
+                        <p>{{comment.txt}}</p>
+                        <p class="comment-time">{{comment.createdAt | relativeTime}}</p>
+                    </div>
+                </div>
+            </div>
+            
             <div v-if="openModal" class="reply-box flex" >
               <div class="reply">comment:
-              <button @click="toggleModal">X</button>
+                <button @click="toggleModal">X</button>
                 <div contenteditable="true" ref="commentContent" v-focus = true></div>
-                <button  @click="addComment">Add Comment</button>
+                <button @click="addComment">Add Comment</button>
               </div>
             </div>
-
-
+        </div>
     </section>
 </template>
 
@@ -47,7 +69,10 @@
 import utilsService from '@/services/utilsService.js'
 import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
 import { UPDATE_ISSUE } from "@/store/issueModule.js";
+import { DELETE_ISSUE } from "@/store/issueModule.js";
 import { GET_COMMENTS } from "@/store/commentModule.js";
+import { LOAD_COMMENTS } from "@/store/commentModule.js";
+import { DELETE_COMMENTS } from "@/store/commentModule.js";
 import { USER } from "@/store/userModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import { ADD_COMMENT } from "@/store/commentModule.js";
@@ -56,18 +81,18 @@ import { Carousel, Slide } from "vue-carousel";
 export default {
   data() {
     return {
-      issue: {},
+      issue: null,
       comments: [],
-      openModal: false
+      openModal: false,
+      user:{},
     };
   },
-
-  computed: {},
 
   created() {
     let issueId = this.$route.params.issueId;
     this.getIssue(issueId);
     this.getComments(issueId);
+    this.user = this.$store.getters[USER];
   },
 
   methods: {
@@ -75,8 +100,6 @@ export default {
       this.$store
         .dispatch({ type: GET_ISSUE_BY_ID, issueId })
         .then(issue => {
-          console.log(issue);
-
           this.issue = issue;
         })
         .catch(err => console.warn(err));
@@ -93,28 +116,21 @@ export default {
 
     addComment() {
       var txt = this.$refs.commentContent.innerText;
-      var commenter = this.$store.getters[USER];
       this.$store
         .dispatch({
           type: ADD_COMMENT,
           payload: {
             comment: {
               issueId: this.issue._id,
-              commenterId: commenter._id,
+              commenterId: this.user._id,
               txt,
               createdAt: Date.now()
             },
-            commenter
+            commenter: this.user,
           }
         })
         .then(comment => {
-          this.$notify({
-          group: 'foo',
-          title: 'Comment Status',
-          text: 'Your comment was added',
-          type:'success',
-          duration:5000,
-        });
+          this.notify('Your comment was added', 'success','Comment Status')
         })
         .catch(err => console.warn(err));
       this.toggleModal();
@@ -125,31 +141,64 @@ export default {
     },
 
     resolveIssue() {
-      if(this.issue.status === 'closed') return;
-      var user = this.$store.getters[USER];
+      if(this.issue.status === 'closed') {
+        this.notify('Report already closed', 'warn');
+        return;
+      }  
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
       var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
-      if(user._id === updatedIssue.reportedBy||
-      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5))
-      updatedIssue.status = 'closed';
-      else if(userDistance <=0.5) updatedIssue.nonIssueReportCount++;
-      else return;
+      if(this.authorizedToClose(this.user, updatedIssue, userDistance)) {
+        updatedIssue.status = 'closed';
+        this.notify('The report is now closed', 'success','Report Status');
+      } else if(userDistance <=0.5){
+        updatedIssue.nonIssueReportCount++;
+        this.notify('The report is now modified', 'success','Report Status');
+      } else {
+        this.notify('Failed to modify report', 'warn','Report Status');
+        return;
+      }  
       this.$store.dispatch({type:UPDATE_ISSUE, updatedIssue})
         .then(updatedIssue=> {
           this.issue = updatedIssue;
         })
         .catch(err=>console.warn(err));
-        var status = (updatedIssue.status = 'closed')? 'closed' : 'modified';
+    },
+
+    authorizedToClose(user, updatedIssue, userDistance) {
+      return user._id === updatedIssue.reportedBy||user.isAdmin||
+      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5);
+    },
+
+    notify(text, type, title) {
         this.$notify({
           group: 'foo',
-          title: 'Report Status',
-          text: 'The Report is now'+' '+ status,
-          type:'success',
-          duration:3000,
+          title: title,
+          text: text,
+          type: type,
+          duration: 5000,
         });
+    },
+    deleteIssue() {
+      this.$store.dispatch({type:DELETE_COMMENTS, deleteBy:{issueId:this.issue._id}})
+        .then(() => {
+          this.$store.dispatch({type:DELETE_ISSUE, issueId:this.issue._id})
+            .then(() => {
+              console.log('issue deleted');
+              this.notify(this.issue.title +' '+'deleted', 'success', 'Report Delete');
+              this.$router.push('/');
+            }).catch(err => console.warn(err))
+        })
+        .catch(err => console.warn(err));
+    },
+
+    deleteComment(commentId) {
+      this.$store.dispatch({type:DELETE_COMMENTS, deleteBy:{_id:commentId}})
+        .then(()=> {
+          this.comments = this.$store.getters[LOAD_COMMENTS];
+        }).catch(err=> console.warn)
     }
-  },
+  },  
 
   directives: {
     focus: {
@@ -167,65 +216,196 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.details-container {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  outline: 1px solid gray;
-  height: 100%;
-  margin-top: 50px;
-  margin-bottom: 100px;
-  padding-bottom: 20px;
-  .title {
-    text-align: center;
-    padding-top: 10px;
-  }
-  .issue-container {
-    padding: 10px;
-  }
-  img {
-    text-align: center;
-  }
-  // .VueCarousel {
-  // }
-  
-  .add-btn {
-    padding: 30px;
-    width: 100px;
-    margin: 0 auto;
-    margin-bottom: 10px;
-  }
-  .comments-container {
-    .comment-box {
-      margin: 0 auto;
-      width: 300px;
-      height: auto;
-      background: #e5e3df;
-      box-shadow: 10px 10px 9px -1px rgba(0, 0, 0, 0.64);
-    }
-    .card-container {
-      margin-bottom: 10px;
-      img {
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-  .reply-box {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(237, 237, 245, 0.596);
+@media (min-width: 980px) {
+  .issue-content {
+    // display: grid;
+    // grid-template-columns: 2fr 1fr;
   }
 
-  .reply {
-    width: 300px;
-    height: 200px;
-    background: grey;
-    opacity: 1;
+  // div.issue-info {
+  //   grid-column-start: 1;
+  //   grid-column-end: -1;
+  // }
+
+  div.issue-comments {
+    margin: 0 auto;
+    width: 450px;
   }
+
+  div.vue-map-container {
+    // grid-row-start: 1;
+    // grid-column-start: 2;
+    height: 200px;
+  }
+}
+
+.issue-details {
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.issue-header {
+  margin-bottom: 10px;
+  button {
+    color: #69c8a4;
+    font-size: 0.7em;
+    border-radius: 50%;
+    border: 1.5px solid #69c8a4;
+    background-color: white;
+    height: 5em;
+    transition: all 0.3s;
+    &:hover {
+      color: white;
+      border-color: #4b9076;
+      background-color: #69c8a4;
+    }
+  }
+}
+
+.issue-title {
+  font-size: 2em;
+  text-transform: capitalize;
+}
+
+svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.issue-info {
+  margin-bottom: 10px;
+  p {
+    font-style: italic;
+    margin: 0 0 15px 0;
+    &:first-letter {
+      text-transform: capitalize;
+    }
+  }
+}
+
+h5 {
+  color: rgb(175, 172, 172);
+  font-size: 0.75em;
+  font-weight: normal;
+  height: fit-content;
+  &:not(:last-of-type) {
+    text-transform: capitalize;
+  }
+}
+
+label {
+  color: #439475;
+}
+
+.VueCarousel {
+  margin: 0 auto 20px;
+  min-width: 245px;
+  max-width: 500px;
+  width: 100%;
+
+  img {
+    margin-bottom: 10px;
+    min-width: 245px;
+    max-width: 500px;
+    width: 100%;
+  }
+}
+
+.VueCarousel-navigation-button {
+  padding: 8px 0 8px 8px;
+}
+
+.issue-img {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}
+
+.vue-map-container {
+  width: 100%;
+  max-width: 500px;
+  height: 200px;
+  margin: 0 auto 20px;
+}
+
+.issue-comments {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+
+  h2 {
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+
+  button {
+    border-radius: 8px;
+    border: 1.5px solid #69c8a4;
+    background-color: white;
+    color: #69c8a4;
+    font-size: 0.9em;
+    float: right;
+    padding: 5px 10px;
+    transition: all 0.3s;
+    &:hover {
+      color: white;
+      border-color: #4b9076;
+      background-color: #69c8a4;
+    }
+  }
+}
+
+.comment-container {
+  margin-bottom: 10px;
+}
+
+.comment-content {
+  background: #f6f6f6;
+  width: 100%;
+  padding: 5px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.comment-time {
+  color: #c3bebe;
+  font-size: 0.7em;
+  align-self: flex-end;
+}
+
+.commenter {
+  margin-right: 10px;
+
+  img {
+    border-radius: 50%;
+    display: block;
+    width: 50px;
+    height: 50px;
+  }
+
+  h6 {
+    font-weight: normal;
+  }
+}
+
+.reply-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(237, 237, 245, 0.596);
+}
+
+.reply {
+  width: 300px;
+  height: 200px;
+  background: grey;
+  opacity: 1;
 }
 </style>
 

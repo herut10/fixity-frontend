@@ -9,7 +9,7 @@
             </router-link>
             <router-link to="/issueAdd">
                 <div class="navbar-icon">
-                    <font-awesome-icon icon="clipboard" />
+                    <font-awesome-icon icon="plus" />
                     <h6>Report</h6>
                 </div>
             </router-link>

@@ -20,18 +20,17 @@ export const LOGIN = 'user/actions/login'
 
 export default {
     state: {
-        user: null,
-        //  {
-        //     "_id": "5b58233fcdbd016cc0b475f8",
-        //     "username": "notAdmin",
-        //     "password": "passworddd",
-        //     "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
-        //     "isAdmin": false,
-        //     "likes": [{
-        //         "issueId": "5b586f5d375dd438bca4205b",
-        //         "likeType": "likeAngry"
-        //     }]
-        // },
+        user: {
+            "_id": "5b58233fcdbd016cc0b475f8",
+            "username": "notAdmin",
+            "password": "passworddd",
+            "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
+            "isAdmin": true,
+            "likes": [{
+                "issueId": "5b586f5d375dd438bca4205b",
+                "likeType": "likeAngry"
+            }]
+        },
         currLoc: null,
         hasBeenPrompted: false
     },
@@ -60,8 +59,6 @@ export default {
             return state.user;
         },
         [CURRLOC](state) {
-            console.log(state.currLoc);
-
             return JSON.parse(JSON.stringify(state.currLoc))
         },
 
@@ -92,6 +89,7 @@ export default {
 
             return userService.updateUser(user)
                 .then(user => {
+                    user.imgUrl = user.imgUrl[0];
                     context.commit({
                         type: SET_USER,
                         user

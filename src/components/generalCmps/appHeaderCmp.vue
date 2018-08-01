@@ -1,5 +1,6 @@
 <template>
-    <section class="app-header container flex space-between">
+  <section class="app-header">
+    <section class="container flex space-between">
         <router-link to="/">
             <div class="logo">
                 <img src="img/logo/logo-traffic-light.png" class="logo-img" />
@@ -14,6 +15,7 @@
             </div>
         </div>
     </section>
+  </section>
 </template>
 
 <script>
@@ -37,6 +39,9 @@ export default {
   height: 60px;
   width: 100%;
   z-index: 4;
+  .container {
+    height: 100%;
+  }
 }
 
 .logo {
