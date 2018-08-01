@@ -91,23 +91,25 @@ export default {
     .main-user-container {
         overflow: hidden;
         max-width: 100%;
-        background: #fee575;
         margin: 0 auto;
+    }    
 
-        .top-user-container {
-           align-items: center;
+    .top-user-container {
+        align-items: center;
+    }    
 
-            .img-container {
-                text-align: center;
+    .img-container {
+        text-align: center;
+    }    
 
-                .user-img {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 50%;
-                    margin: 20px;
-                    object-fit: cover;
-                }
-            }
+    .user-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 20px;
+        object-fit: cover;
+    }
+            
             .toggle-btns{
                 width: 100%; 
                 text-align: center;
@@ -117,7 +119,7 @@ export default {
                     border: none
                 }   
             }
-        }
+        
                 
         .commentsSlide {
             transform: translate(-50%, 0);
@@ -134,5 +136,5 @@ export default {
             
         }
             
-    }
+    
 </style>

@@ -110,30 +110,26 @@ export default {
         .dispatch({ type: GET_COMMENTS, getBy: { issueId: issueId } })
         .then(comments => {
           this.comments = comments;
+          console.log(this.comments);
+          
         })
         .catch(err => console.warn(err));
     },
 
     addComment() {
       var txt = this.$refs.commentContent.innerText;
-      this.$store
-        .dispatch({
-          type: ADD_COMMENT,
-          payload: {
-            comment: {
-              issueId: this.issue._id,
-              commenterId: this.user._id,
-              txt,
-              createdAt: Date.now()
+        var comment = {
+            comment:{
+            issueId: this.issue._id,
+            commenterId: this.user._id,
+            txt:txt,
+            createdAt: Date.now(),
             },
             commenter: this.user,
-          }
-        })
-        .then(comment => {
-          this.notify('Your comment was added', 'success','Comment Status')
-        })
-        .catch(err => console.warn(err));
-      this.toggleModal();
+        };
+        this.notify('Your comment was added', 'success','Comment Status')
+        this.$socket.emit("commentSent", comment);
+        this.toggleModal();
     },
 
     toggleModal() {
