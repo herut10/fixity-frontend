@@ -13,13 +13,13 @@
           :icon="`img/map-icons/${newIssue.category}-open.png`"
         />
       </GmapMap>
-      <form action.prevent="" class="flex column align-center" >
-        <div class="flex justify-center">
+      <form action.prevent="" class="flex column " >
+        <div class="location-input flex align-baseline">
       <autoComplete @place_changed="placeChanged" :placeholder="'Address (required)'" v-model="newIssue.address" ></autoComplete>
       <button @click.prevent="setLocationSelf">my location</button>
         </div>
       <input  v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
-      <textarea v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
+      <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
       <label>
         upload pictures
         <imgUpload @imgsUploaded="saveURLs"></imgUpload>
@@ -142,7 +142,9 @@ export default {
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
     },
     onSubmit() {
-      if (!(this.title && this.body && this.address)) {
+      if (
+        !(this.newIssue.title && this.newIssue.body && this.newIssue.address)
+      ) {
         this.$modal.show("dialog", {
           title: "MISSING DETAILS",
           text:
@@ -208,8 +210,17 @@ export default {
 
 
 <style lang="scss" scoped>
+label,
+select {
+  cursor: pointer;
+}
+.location-input {
+  width: 100%;
+}
 input[type="password"],
-input[type="text"] {
+input[type="text"],
+textarea,
+select {
   display: block;
   box-sizing: border-box;
   margin-bottom: 4px;
