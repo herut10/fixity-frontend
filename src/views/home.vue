@@ -53,14 +53,14 @@ import {
   SET_ISSUES_VIEW,
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
-} from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
-import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
-import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
+} from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
+import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
+import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
 
 export default {
-  name: "home",
+  name: 'home',
 
   data() {
     return {
@@ -93,7 +93,7 @@ export default {
       }
     },
     setCurrLoc(ev) {
-      if(!ev.name) return
+      if (!ev.name) return;
       this.currLoc = {};
       [this.currLoc.lat, this.currLoc.lng] = [
         ev.geometry.location.lat(),
@@ -103,11 +103,11 @@ export default {
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
-      this.$refs.listIcon.classList.toggle("active");
-      this.$refs.mapIcon.classList.toggle("active");
+      this.$refs.listIcon.classList.toggle('active');
+      this.$refs.mapIcon.classList.toggle('active');
     },
     resolveIssue(issue) {
-      if (issue.status === "closed") return;
+      if (issue.status === 'closed') return;
       var user = this.$store.getters[USER];
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(issue));
@@ -119,7 +119,7 @@ export default {
         user._id === updatedIssue.reportedBy ||
         (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
       )
-        updatedIssue.status = "closed";
+        updatedIssue.status = 'closed';
       else if (userDistance <= 0.5) updatedIssue.nonIssueReportCount++;
       else return;
       this.$store
@@ -128,20 +128,20 @@ export default {
           issueId: updatedIssue._id,
           updatedIssue
         })
-        .then(updatedIssue => console.log("issue updated"))
+        .then(updatedIssue => console.log('issue updated'))
         .catch(err => console.warn(err));
       this.$notify({
-        group: "foo",
-        title: "Report Status",
-        text: "Report status",
+        group: 'foo',
+        title: 'Report Status',
+        text: 'Report status',
         status,
-        type: "success",
+        type: 'success',
         duration: 3000
       });
     },
 
     openIssuePreview(issue) {
-      console.log("issue opened", issue);
+      console.log('issue opened', issue);
     }
   },
 
@@ -204,10 +204,9 @@ export default {
 .site-entrance {
   color: white;
   text-align: center;
-  background-image: url("../../public/img/site-entrance.jpg");
+  background-image: url('../../public/img/site-entrance.jpg');
   background-size: cover;
   background-position: -100px;
-  // padding: 15px;
   margin-bottom: 10px;
   height: calc(100vh - 110px);
   width: 100%;
@@ -233,8 +232,10 @@ h3 {
 
 .view-pick {
   color: lightgrey;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  display: inline-block;
   padding-bottom: 15px;
+  margin-right: 15px;
 }
 
 svg {
@@ -246,6 +247,13 @@ svg {
   &.active {
     color: rgb(77, 76, 76);
   }
+}
+
+input {
+  padding: 3px;
+  color: #439475;
+  border-radius: 4px;
+  border: 1px solid #aeaeae;
 }
 
 .vue-map-container {
