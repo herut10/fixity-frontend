@@ -10,14 +10,9 @@
                 <button :disabled="toggleStatus" @click="toggleContent">User Comments</button>
             </div>
         </div>
-        <div class="user-info flex">
-            <transition name="slide-left" class="transition-content" >
-                <user-Issues v-show="!toggleStatus" :userIssues="issues"
-                @click.native="routeToIssue(issue._id)"></user-Issues>
-            </transition>
-            <transition  name="slide-right" class="transition-content">
-                <user-comments v-show ="toggleStatus" :userComments="comments"></user-comments>
-            </transition>
+        <div class="user-info flex" v-bind:class="{ commentsSlide: toggleStatus, issuesSlide:!toggleStatus }">
+            <user-comments  :userComments="comments"></user-comments>
+            <user-Issues    :userIssues="issues"></user-Issues>
         </div>
     </section>
 </template>
@@ -103,12 +98,10 @@ export default {
 
 <style lang="scss" scoped>
     .main-user-container {
-        max-width: 500px;
-        height: 100vw;
+        max-width: 100%;
         background: #fee575;
         margin: 0 auto;
         margin-top:100px;
-        border: 1px solid black;
 
         .top-user-container {
            align-items: center;
@@ -135,41 +128,20 @@ export default {
             }
         }
                 
-        .slide-left-leave-active,
-        .slide-left-enter-active {
-            transition: 1s ease-in-out;
-        }
-        .slide-left-enter {
-            transform: translate(-100%, 0);
-            opacity: 0;
-        }
-        .slide-left-leave-to {
-            transform: translate(-100%, 0);
-            opacity: 0;
-        }
-
-        .slide-right-leave-active,
-        .slide-right-enter-active {
-            transition: 1s ease-in-out;
-        }
-        .slide-right-enter {
-            transform: translate(100%, 0);
-            opacity: 0;
-        }
-        .slide-right-leave-to {
-            transform: translate(100%, 0);
-            opacity: 0;
+        .commentsSlide {
+            transform: translate(-50%, 0);
+            transition-timing-function: ease-in;
+            transition-duration: 1.5s;
+            opacity: 1;
         }
 
         .user-info {
-            position: relative;
-
-            .transition-content {
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right:0;
-            }
+            overflow: hidden;
+            width: 200%;
+            transition-timing-function: ease-in;
+            transition-duration: 1.5s;
+            
+            
         }
             
     }

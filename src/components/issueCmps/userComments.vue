@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if="comments">
+    <section v-if="comments" style="width:100%">
         <div class="comment-container flex" v-for="comment in comments" :key="comment._id">
             <div class="issue-img-container"
             :style="{backgroundImage: `url('${comment.issue[0].imgUrls[0]}')`}"></div>
@@ -52,6 +52,7 @@ export default {
 <style lang="scss" scoped>
     .comment-container {
         border: 1px solid gray;
+        min-height: 45px;
         margin-bottom: 3px;
         cursor: pointer;
 
@@ -59,7 +60,7 @@ export default {
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
-            min-width: 20%;
+            min-width: 17%;
         }
         .issue-content {
             padding: 0 7px;
