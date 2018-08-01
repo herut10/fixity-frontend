@@ -1,4 +1,4 @@
-<!-- here i am trying to make changes -->
+<!-- this is the original - if anything goes wrong in the changes i must go back to this one -->
 <template>
     <section class="issue-likes flex">
         <div class="likeHappy flex column" @mouseover="showLikesCount">
