@@ -1,10 +1,12 @@
 <template>
   <section class="home">
     <div class="site-entrance flex column justify-center">
-      <h1 class="title">Be the change you wish to see in the world.</h1>
-      <div class="subtitles">
-        <h3>Report issues around you for the benefit of others.</h3>
-        <h3>Form groups to make your city a better place.</h3>
+      <div class="container">
+        <h1 class="title">Be the change you wish to see in the world.</h1>
+        <div class="subtitles">
+          <h3>Report issues around you for the benefit of others.</h3>
+          <h3>Form groups to make your city a better place.</h3>
+        </div>
       </div>
     </div>
 
@@ -187,7 +189,7 @@ export default {
   background-image: url('../../public/img/site-entrance.jpg');
   background-size: cover;
   background-position: -100px;
-  padding: 15px;
+  // padding: 15px;
   margin-bottom: 10px;
   height: calc(100vh - 110px);
   width: 100%;
@@ -195,7 +197,7 @@ export default {
 
 .title {
   font-size: 2.5em;
-  font-weight: lighter;
+  line-height: 1.2em;
   text-shadow: -1px 1px 9px #454444;
   margin-bottom: 10px;
 }

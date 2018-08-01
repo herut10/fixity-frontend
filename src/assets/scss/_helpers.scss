@@ -1,11 +1,7 @@
-@media (min-width: 617px) {
-    section.container, div.container {
-        padding: 0 25px;
-    }
-}
-
 .container {
-    padding: 0 15px;
+    max-width: 980px; //CHANGE TO 1280PX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IN DUE TIME
+    padding: 0 20px;
+    margin: 0 auto;
 }
 
 .flex {
@@ -14,6 +10,10 @@
 
 .column {
     flex-direction: column;
+}
+
+.space-around {
+    justify-content: space-around;
 }
 
 .space-between {

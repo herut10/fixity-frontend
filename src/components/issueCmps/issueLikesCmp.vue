@@ -1,31 +1,25 @@
 <!-- here i am trying to make changes -->
 <template>
-    <section class="issue-likes flex">
-        <div class="likeHappy flex column" @mouseover="showLikesCount">
-            <span>{{issue.likes.likeHappy}}</span>
-            <span ref="likeHappy" title="Happy" @click.prevent="changeIssueLikes('likeHappy')">😃</span>
-        </div>
-        <div class="likeSad flex column">
-            <span>{{issue.likes.likeSad}}</span>
-            <span ref="likeSad" title="Sad" @click.prevent="changeIssueLikes('likeSad')">😢</span>
-        </div>
-        <div class="likeAngry flex column">
-            <span>{{issue.likes.likeAngry}}</span>
-            <span ref="likeAngry" title="Angry" @click.prevent="changeIssueLikes('likeAngry')">😡</span>
-        </div>
-        <div class="likeShocked flex column">
-            <span>{{issue.likes.likeShocked}}</span>
-            <span ref="likeShocked" title="Shocked" @click.prevent="changeIssueLikes('likeShocked')">😮</span>
-        </div>
-        <div class="likeDisgusted flex column">
-            <span>{{issue.likes.likeDisgusted}}</span>
-            <span ref="likeDisgusted" title="Disgusted" @click.prevent="changeIssueLikes('likeDisgusted')">🤢</span>
-        </div>
+    <section class="issue-likes flex column">
+      <div class="likes-counts flex space-around" ref="likesCounts">
+          <span>{{issue.likes.likeHappy}}</span>
+          <span>{{issue.likes.likeSad}}</span>
+          <span>{{issue.likes.likeAngry}}</span>
+          <span>{{issue.likes.likeShocked}}</span>
+          <span>{{issue.likes.likeDisgusted}}</span>
+      </div>
+      <div class="emojis">
+          <span ref="likeHappy" title="Happy" @click.prevent="changeIssueLikes('likeHappy')">😃</span>
+          <span ref="likeSad" title="Sad" @click.prevent="changeIssueLikes('likeSad')">😢</span>
+          <span ref="likeAngry" title="Angry" @click.prevent="changeIssueLikes('likeAngry')">😡</span>
+          <span ref="likeShocked" title="Shocked" @click.prevent="changeIssueLikes('likeShocked')">😮</span>
+          <span ref="likeDisgusted" title="Disgusted" @click.prevent="changeIssueLikes('likeDisgusted')">🤢</span>
+      </div>
     </section>
 </template>
 
 <script>
-import dialogModal from '@/components/generalCmps/dialogModalCmp.js';
+// import dialogModal from '@/components/generalCmps/dialogModalCmp.js';
 import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { USER, UPDATE_USER } from '@/store/userModule.js';
 
@@ -67,7 +61,6 @@ export default {
         this.$store
           .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
-            // EventBusService.$emit(SHOW_MSG, { txt: 'Todo deleted', type: 'success' })
             console.log('Like updated successfully');
             updatedUser.likes.push({ issueId: this.issue._id, likeType });
             this.updateUser(updatedUser);
@@ -75,7 +68,6 @@ export default {
             this.$socket.emit('issueLikesChanged', updatedIssue);
           })
           .catch(() => {
-            // EventBusService.$emit(SHOW_MSG, { txt: 'Problem with server! Could not delete todo', type: 'danger' })
             console.log('Problem liking issue');
           });
       } else {
@@ -104,7 +96,6 @@ export default {
             this.$socket.emit('issueLikesChanged', updatedIssue);
           })
           .catch(() => {
-            // EventBusService.$emit(SHOW_MSG, { txt: 'Problem with server! Could not delete todo', type: 'danger' })
             console.log('Problem liking issue');
           });
       }
@@ -119,10 +110,6 @@ export default {
         .catch(() => {
           console.log('Problem updating user likes');
         });
-    },
-
-    showLikesCount() {
-
     }
   }
 };
@@ -132,22 +119,32 @@ export default {
 .issue-likes {
   width: fit-content;
   align-self: flex-end;
-}
-
-.issue-likes div span:last-child {
-  cursor: pointer;
-  font-size: 1.3em;
-  opacity: 0.6;
-  &:hover,
-  &.clicked {
-    opacity: 1;
+  &:hover {
+    .likes-counts {
+      transform: translate(0, -1px);
+      opacity: 1;
+    }
   }
 }
 
-.issue-likes div span:first-child {
-  display: none;
+.emojis {
+  span {
+    cursor: pointer;
+    font-size: 1.3em;
+    opacity: 0.6;
+    &:hover,
+    &.clicked {
+      opacity: 1;
+    }
+  }
+}
+
+.likes-counts {
+  opacity: 0;
   text-align: center;
   font-size: 0.6em;
   font-family: 'Open Sans', sans-serif;
+  transition: all .6s;
+  transform: translate(0, 5px);
 }
 </style>
