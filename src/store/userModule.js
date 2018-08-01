@@ -3,9 +3,11 @@ import userService from '../services/userService.js';
 
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
 export const SET_USER = 'user/mutations/setUser';
+export const SET_HASBEENPROMPTED = 'user/mutations/setHasBeenPrompted'
 
 export const USER = 'user/getters/getUser';
 export const CURRLOC = 'user/getters/getCurrLoc';
+export const HASBEENPROMPTED = 'user/getters/getHasBeenPrompted'
 
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const UPDATE_USER = 'user/actions/getCurrLoc';
@@ -15,19 +17,19 @@ export const LOGIN = 'user/actions/login'
 
 export default {
     state: {
-        user: null,
-        // {
-        //     "_id": "5b58233fcdbd016cc0b475f8",
-        //     "username": "notAdmin",
-        //     "password": "passworddd",
-        //     "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
-        //     "isAdmin": false,
-        //     "likes": [{
-        //         "issueId": "5b586f5d375dd438bca4205b",
-        //         "likeType": "likeAngry"
-        //     }]
-        // },
-        currLoc: null
+        user: {
+            "_id": "5b58233fcdbd016cc0b475f8",
+            "username": "notAdmin",
+            "password": "passworddd",
+            "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
+            "isAdmin": false,
+            "likes": [{
+                "issueId": "5b586f5d375dd438bca4205b",
+                "likeType": "likeAngry"
+            }]
+        },
+        currLoc: null,
+        hasBeenPrompted: false
     },
 
     mutations: {
@@ -44,12 +46,15 @@ export default {
     },
 
     getters: {
+        [HASBEENPROMPTED](state) {
+            return state.hasBeenPrompteds
+        },
         [USER](state) {
             return state.user;
         },
         [CURRLOC](state) {
             console.log(state.currLoc);
-            
+
             return JSON.parse(JSON.stringify(state.currLoc))
         }
 

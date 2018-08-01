@@ -64,11 +64,8 @@ export default {
     appHeader,
     navbar,
     about,
-<<<<<<< HEAD
     // notifications
-=======
     loginModal
->>>>>>> d63a6ee70ca67f3811fac48ec06599edebdc7b57
   }
 };
 </script>
