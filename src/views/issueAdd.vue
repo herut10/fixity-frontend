@@ -1,5 +1,5 @@
 <template>
-    <section class="issue-add container flex column align-center">
+    <section class="issue-add flex column align-center">
       <GmapMap
         :center="center"
         @click="setCenter"

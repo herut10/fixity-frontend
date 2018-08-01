@@ -1,25 +1,37 @@
 <template>
-    <section class="app-header">
+    <section class="app-header flex space-between">
         <router-link to="/">
             <div class="logo">
                 <img src="img/logo/logo-traffic-light.png" class="logo-img" />
                 <img src="img/logo/logo-txt.png" class="logo-txt" />
             </div>
         </router-link>
-        <button class="about" @click="$emit('openAbout')">i</button>
+        <div class="site-navigation flex align-center">
+            <header-navbar/>
+            <div class="navbar-icon">
+                <font-awesome-icon icon="info-circle" class="about" @click="$emit('openAbout')" />
+                <h6>About</h6>
+            </div>
+        </div>
     </section>
 </template>
 
 <script>
+import headerNavbar from '@/components/generalCmps/headerNavbarCmp.vue';
+
 export default {
-  name: 'appHeader'
+  name: 'appHeader',
+
+  components: {
+    headerNavbar
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .app-header {
-  background-color: #69c8b2;
-  box-shadow: 0px 2px #54a290;
+  background-color: #69c8a4;
+  box-shadow: 0px 2px #4b9076;
   position: fixed;
   top: 0;
   height: 60px;
@@ -28,7 +40,6 @@ export default {
 }
 
 .logo {
-  float: left;
   margin: 5px 2px;
 }
 
@@ -41,20 +52,28 @@ export default {
   height: 55.5px;
 }
 
-.about {
-  font-weight: bold;
-  font-size: 1em;
-  border-radius: 50%;
-  border: none;
-  background-color: white;
-  width: 30px;
-  height: 30px;
-  float: right;
-  margin: 15px 10px;
+.site-navigation {
+  font-size: 1.7em;
+  color: white;
+}
+
+.navbar-icon {
+  cursor: pointer;
+  color: white;
   transition: all 0.3s;
   &:hover {
-    background-color: #448475;
-    color: white;
+    color: #4b9076;
   }
+}
+
+svg {
+  margin: 0 15px;
+}
+
+h6 {
+  font-size: 0.35em;
+  font-weight: normal;
+  width: fit-content;
+  margin: 0 auto;
 }
 </style>
