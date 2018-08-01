@@ -1,7 +1,8 @@
 
 <template>
     <section v-if="userIssues" style="width:100%">
-        <div class="issue-container flex" v-for="issue in userIssues" :key="issue._id">
+        <div class="issue-container flex" v-for="issue in userIssues" :key="issue._id"
+        @click="routeToIssue(issue._id)">
             <div class="issue-img-container" 
             :style="{backgroundImage: `url('${issue.imgUrls[0]}')`}"></div>
             <div class="issue-content flex column">
@@ -23,6 +24,11 @@ export default {
         };
     },
     created () {
+    },
+    methods: {
+        routeToIssue(issueId) {
+            this.$router.push(`/issue/${issueId}`);
+        }  
     }
 };
 </script>

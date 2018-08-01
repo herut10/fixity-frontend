@@ -43,9 +43,16 @@ function updateIssue(issueId, updatedIssue) {
         })
 }
 
+function deleteIssue(issueId) {
+    return axios.delete(`${ISSUE_URL}/${issueId}`)
+        .then(() => issueId)
+        .catch(err => console.warn(err))
+}
+
 export default {
     query,
     getIssueById,
     updateIssue,
-    addIssue
+    addIssue,
+    deleteIssue,
 }
