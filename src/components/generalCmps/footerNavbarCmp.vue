@@ -49,33 +49,8 @@ export default {
 a {
   color: white;
   transition: all 0.3s;
-  &.router-link-exact-active {
-    color: #5eb594;
-  }
-  &:hover {
+    &:hover, &.router-link-exact-active {
     color: #4b9076;
   }
 }
 </style>
-
-
-
-
-.navbar-icon {
-  color: white;
-  transition: all 0.3s;
-  &:hover {
-    color: #4b9076;
-  }
-}
-
-svg {
-  margin: 0 15px;
-}
-
-h6 {
-  font-size: 0.35em;
-  font-weight: normal;
-  width: fit-content;
-  margin: 0 auto;
-}

@@ -7,18 +7,12 @@ import axios from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueCarousel from 'vue-carousel';
 import '@/assets/scss/main.scss';
-import socketio from 'socket.io-client'
+import socketio from 'socket.io-client';
 import VueSocketio from 'vue-socket.io';
 import moment from 'moment';
 
-let socketURL = 'http://localhost:3000'
-if (process.env.NODE_ENV !== 'development') {
-  socketURL = '/'
-}
-
+let socketURL = (process.env.NODE_ENV === 'development')? 'http://localhost:3000' : socketURL = '/';
 Vue.use(VueSocketio, socketio(socketURL));
-
-
 
 import cloudinary from 'cloudinary';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -42,8 +36,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 axios.defaults.crossDomain = true;
 
-
-
 Vue.config.productionTip = false;
 
 cloudinary.config({
@@ -51,8 +43,6 @@ cloudinary.config({
   api_key: '746648462286187',
   api_secret: 'S5ch4dT2yLZxSoCrrn9pu6sDdF0'
 });
-
-
 
 Vue.use(VueGoogleMaps, {
   load: {

@@ -38,11 +38,11 @@ export default {
   display: none;
 }
 
-.navbar-icon {
+a {
   color: white;
   transition: all 0.3s;
-  &:hover {
-    color: #4b9076;
+  &:hover, &.router-link-exact-active {
+    color: #3f7a64;
   }
 }
 
