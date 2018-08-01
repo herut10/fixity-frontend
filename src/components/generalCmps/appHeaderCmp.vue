@@ -1,5 +1,5 @@
 <template>
-    <section class="app-header flex space-between">
+    <section class="app-header container flex space-between">
         <router-link to="/">
             <div class="logo">
                 <img src="img/logo/logo-traffic-light.png" class="logo-img" />
@@ -40,7 +40,7 @@ export default {
 }
 
 .logo {
-  margin: 5px 2px;
+  margin: 5px 0;
 }
 
 .logo-txt {
@@ -67,7 +67,7 @@ export default {
 }
 
 svg {
-  margin: 0 15px;
+  margin: 0 0 0 15px;
 }
 
 h6 {
@@ -75,5 +75,6 @@ h6 {
   font-weight: normal;
   width: fit-content;
   margin: 0 auto;
+  margin-right: 0;
 }
 </style>

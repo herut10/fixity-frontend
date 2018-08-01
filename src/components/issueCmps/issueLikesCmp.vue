@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import dialogModal from '@/components/generalCmps/dialogModalCmp.js';
 import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { USER, UPDATE_USER } from '@/store/userModule.js';
 
@@ -48,6 +49,12 @@ export default {
     changeIssueLikes(likeType) {
       //TODO: only logged in user can like. if user is not logged- open the modal for signing up.
       var user = this.$store.getters[USER];
+      // var userPrompt = this.$store.state.isPrompted;
+      // if (!user && !userPrompt) {
+      //   this.$modal.show('dialog', dialogModal);
+      // } else {
+      //   this.$modal.show('loginModal');
+      // }
       var updatedUser = JSON.parse(JSON.stringify(user));
       var userLikes = user.likes;
       var issueLiked = userLikes.find(

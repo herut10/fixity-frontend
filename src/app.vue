@@ -62,7 +62,6 @@ export default {
     appHeader,
     footerNavbar,
     about,
-    //notifications,
     loginModal
   }
 };

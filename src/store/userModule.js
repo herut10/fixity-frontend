@@ -71,8 +71,8 @@ export default {
     actions: {
         [LOAD_CURRLOC](context) {
             return new Promise((resolve, reject) => {
-                    navigator.geolocation.watchPosition(resolve, reject)
-                })
+                navigator.geolocation.watchPosition(resolve, reject)
+            })
                 .then(res => {
                     var coords = res.coords;
 
