@@ -20,7 +20,8 @@ Vue.use(Notifications)
 import cloudinary from 'cloudinary';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faClipboard,
+  faCheck,
+  faPlus,
   faInfoCircle,
   faUserCircle,
   faHome,
@@ -29,7 +30,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faClipboard);
+library.add(faCheck);
+library.add(faPlus);
 library.add(faInfoCircle);
 library.add(faUserCircle);
 library.add(faHome);

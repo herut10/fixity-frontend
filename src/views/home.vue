@@ -1,59 +1,71 @@
 <template>
   <section class="home">
     <div class="site-entrance flex column justify-center">
-      <h1 class="title">Be the change you wish to see in the world.</h1>
-      <div class="subtitles">
-        <h3>Report issues around you for the benefit of others.</h3>
-        <h3>Form groups to make your city a better place.</h3>
+      <div class="container">
+        <h1 class="title">Be the change you wish to see in the world.</h1>
+        <div class="subtitles">
+          <h3>Report issues around you for the benefit of others.</h3>
+          <h3>Form groups to make your city a better place.</h3>
+        </div>
       </div>
     </div>
 
-    <div class="view-pick">
-      <font-awesome-icon icon="list-ul" class="active" ref="listIcon" @click="changeCurrView('list')" /> 
-      | 
-      <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
-    </div>
-    <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
-    <GmapMap
-      v-show="currView === 'map'"
-      :center="center"
-      ref="map"
-      :zoom="17"
-      map-type-id="terrain"
-    >
-      <GmapMarker
-        :position="center"
-        :clickable="true"
-        :draggable="false"
-      />
+    <section class="main container">
+      <div class="view-pick">
+        <font-awesome-icon icon="list-ul" class="active" ref="listIcon" @click="changeCurrView('list')" /> 
+        | 
+        <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
+      </div>
+      
+      <autoComplete @change.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
 
-      <GmapMarker
-        v-for="issue in issues" :key="issue._id"
-        :position="issue.loc"
-        :clickable="true"
-        @click="openIssuePreview(issue)"
-        :draggable="false"
-        :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
-      />
-    </GmapMap>
+      <issue-list-cmp :mapLoaded="mapLoaded" :currLoc="center" :issues="issues" v-show="currView === 'list'" />
+      <GmapMap
+        v-show="currView === 'map'"
+        :center="center"
+        ref="map"
+        :zoom="17"
+        map-type-id="terrain"
+      >
+        <GmapMarker
+          :position="center"
+          :clickable="true"
+          :draggable="false"
+        />
 
-    <!-- <issue-preview-cmp :issue:"issue" /> -->
-    
+        <GmapMarker
+          v-for="issue in issues" :key="issue._id"
+          :position="issue.loc"
+          :clickable="true"
+          @click="openIssuePreview(issue)"
+          :draggable="false"
+          :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+        />
+      </GmapMap>
+
+      <!-- <issue-preview-cmp :issue:"issue" /> -->
+    </section>    
   </section>
 </template>
 
 <script>
-import { SET_ISSUES_VIEW, ISSUES_TO_DISPLAY, ISSUES_VIEW } from "@/store/issueModule.js";
+import {
+  SET_ISSUES_VIEW,
+  ISSUES_TO_DISPLAY,
+  ISSUES_VIEW
+} from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
 import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
+import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 
 export default {
-  name: 'home',
+  name: "home",
 
   data() {
     return {
-      mapLoaded: false
+      mapLoaded: false,
+      currLoc: null
     };
   },
 
@@ -70,12 +82,24 @@ export default {
 
     center() {
       var userLoc = this.$store.getters[CURRLOC];
-      if (!userLoc) return { lat: 32, lng: 34 };
-      else return userLoc;
+      return this.currLoc || userLoc || { lat: 32, lng: 34 };
     }
   },
 
   methods: {
+    isAdressEmpty(ev) {
+      if (!ev.target.value) {
+        this.currLoc = null;
+      }
+    },
+    setCurrLoc(ev) {
+      if(!ev.name) return
+      this.currLoc = {};
+      [this.currLoc.lat, this.currLoc.lng] = [
+        ev.geometry.location.lat(),
+        ev.geometry.location.lng()
+      ];
+    },
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
@@ -119,8 +143,8 @@ export default {
           group: 'foo',
           title: 'Report Status',
           text: text,
-          type:type,
-          duration:3000,
+          type: type,
+          duration: 3000,
         });
     },
 
@@ -137,7 +161,8 @@ export default {
 
   components: {
     issueListCmp,
-    issuePreviewCmp
+    issuePreviewCmp,
+    autoComplete
   }
 };
 </script>
@@ -187,24 +212,31 @@ export default {
 .site-entrance {
   color: white;
   text-align: center;
-  background-image: url('../../public/img/site-entrance.jpg');
+  background-image: url("../../public/img/site-entrance.jpg");
   background-size: cover;
   background-position: -100px;
-  padding: 15px;
+  // padding: 15px;
+  margin-bottom: 10px;
   height: calc(100vh - 110px);
   width: 100%;
 }
 
 .title {
   font-size: 2.5em;
-  font-weight: lighter;
+  line-height: 1.2em;
+  text-shadow: -1px 1px 9px #454444;
   margin-bottom: 10px;
 }
 
 h3 {
   font-size: 1.2em;
   font-weight: lighter;
+  text-shadow: -1px 1px 9px #000000;
   margin: 15px 0;
+}
+
+.main {
+  padding-bottom: 10px;
 }
 
 .view-pick {

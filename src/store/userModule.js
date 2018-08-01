@@ -1,11 +1,16 @@
 'use strict';
 import userService from '../services/userService.js';
+import {
+    debug
+} from 'util';
 
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
 export const SET_USER = 'user/mutations/setUser';
+export const SET_HASBEENPROMPTED = 'user/mutations/setHasBeenPrompted'
 
 export const USER = 'user/getters/getUser';
 export const CURRLOC = 'user/getters/getCurrLoc';
+export const HASBEENPROMPTED = 'user/getters/getHasBeenPrompted'
 
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const UPDATE_USER = 'user/actions/getCurrLoc';
@@ -15,9 +20,7 @@ export const LOGIN = 'user/actions/login'
 
 export default {
     state: {
-        user: 
-        // null,
-        {
+        user: {
             "_id": "5b58233fcdbd016cc0b475f8",
             "username": "notAdmin",
             "password": "passworddd",
@@ -28,7 +31,8 @@ export default {
                 "likeType": "likeAngry"
             }]
         },
-        currLoc: null
+        currLoc: null,
+        hasBeenPrompted: false
     },
 
     mutations: {
@@ -41,16 +45,23 @@ export default {
             user
         }) {
             state.user = user;
+        },
+        [SET_HASBEENPROMPTED](state) {
+            state.hasBeenPrompted = !state.hasBeenPrompted
         }
     },
 
     getters: {
+        [HASBEENPROMPTED](state) {
+            return state.hasBeenPrompted
+        },
         [USER](state) {
             return state.user;
         },
         [CURRLOC](state) {
             return JSON.parse(JSON.stringify(state.currLoc))
-        }
+        },
+
 
     },
 

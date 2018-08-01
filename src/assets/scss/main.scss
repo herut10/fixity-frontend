@@ -1,8 +1,12 @@
 @import 'helpers';
-
 @font-face {
     font-family: 'Open Sans';
     src: url('~@/assets/fonts/Open_Sans/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('~@/assets/fonts/Roboto/Roboto-Regular.ttf');
 }
 
 * {
@@ -11,7 +15,17 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-    margin: 60px 0 51.6px 0;
+    margin: 60px 0;
+}
+
+@media(min-width: 992px) {
+    body {
+        margin: 0;
+    }
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
 }
 
 h1,
@@ -41,25 +55,4 @@ button {
 .VueCarousel-inner,
 .VueCarousel-slide {
     height: 100%;
-}
-
-body {
-    iframe {
-        width: 700px !important;
-        position: fixed !important;
-        float: left !important;
-        left: 50% !important;
-        top: -200% !important;
-        transform: translate(-50%, -50%) !important;
-        transition-duration: 1s !important;
-        &.open {
-            top: 50% !important;
-        }
-    }
-}
-
-@media(min-width:700px) {
-    body>iframe {
-        width: 100% !important;
-    }
 }

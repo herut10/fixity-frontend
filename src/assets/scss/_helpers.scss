@@ -1,9 +1,19 @@
+.container {
+    max-width: 980px; //CHANGE TO 1280PX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IN DUE TIME
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
 .flex {
     display: flex;
 }
 
 .column {
     flex-direction: column;
+}
+
+.space-around {
+    justify-content: space-around;
 }
 
 .space-between {
@@ -21,7 +31,9 @@
 .align-center {
     align-items: center;
 }
-
+.align-baseline{
+    align-items: baseline;
+}
 .flex-wrap {
     flex-wrap: wrap;
 }

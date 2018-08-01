@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <app-header @openAbout="toggleAbout" />
-    <footerNavbar />
     <about ref="about" />
     <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
     <loginModal></loginModal>
     <v-dialog/>
+    <footerNavbar />
 
 
     
@@ -16,9 +16,8 @@
 
 <script>
 import mapService from "@/services/mapService.js";
-import { setCurrThis } from "@/components/generalCmps/dialogModalCmp.js";
 import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
-import footerNavbar from '@/components/generalCmps/footerNavbarCmp.vue';
+import footerNavbar from "@/components/generalCmps/footerNavbarCmp.vue";
 import about from "@/views/about.vue";
 import { LOAD_CURRLOC, SET_USER } from "@/store/userModule.js";
 import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from "@/store/issueModule.js";
@@ -28,8 +27,6 @@ export default {
   name: "app",
 
   created() {
-    
-    setCurrThis(this);
     this.$store.dispatch({ type: LOAD_ISSUES });
     this.$store.dispatch({ type: LOAD_CURRLOC });
     // this.$socket.emit("emit_method", 15);//testing sockets

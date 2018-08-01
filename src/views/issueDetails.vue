@@ -1,46 +1,74 @@
 
 <template>
-    <section v-if = "issue" class="details-container flex column" >
-      <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="12" map-type-id="terrain" style="min-width: 500px; min-height: 200px">
-        <GmapMarker :position="issue.loc"/>
-      </GmapMap>
-
-      <h1 class="title">{{issue.title}}</h1>
-      <div class="issue-container flex space-between">
-        <div>Description: {{issue.desc}}</div>
-        <div>
-          <div>Category: {{issue.category}}</div>
-          <div>Status: {{issue.status}}</div>
-          <button @click= "resolveIssue">Resolve Issue</button>
-          <button v-if="user.isAdmin" @click = 'deleteIssue'>delete</button>
+    <section v-if = "issue" class="issue-details container flex column" >
+        <div class="issue-header flex space-between align-center">
+            <h1 class="issue-title">{{issue.title}}</h1>
+            <button @click= "resolveIssue">
+              <font-awesome-icon icon="check" />
+              Resolve
+            </button>
         </div>
-      </div>
+        <div class="issue-info">
+            <p>{{issue.desc}}</p>
+            <h5>
+              Category: <label>{{issue.category}}</label>
+            </h5>
+            <h5>
+              Status: <label>{{issue.status}}</label>
+            </h5>
+            <h5>
+              Reported <label>{{issue.createdAt | relativeTime}}</label> 
+            </h5>
+        </div>
 
+        <div class="issue-imgs">
+            <img v-for="(imgUrl,idx) in issue.imgUrls" :key="idx" :src="imgUrl" :title="issue.title" :alt="issue.title">
+        </div>
 
-      <carousel :per-page="1" >
-        <slide v-for="(img,idx) in issue.imgUrls" :key="idx">
-          <img :src="img" >
-        </slide>
-        
-      </carousel>
-
-
-            <h2>Comments:</h2><button class="add-btn" @click = "toggleModal">Add Comment</button>
-        <div class="comments-container" v-for ='comment in comments' :key="comment._id">
-            <div class="card-container">
-            <img :src = "comment.commenter.imgUrl"><div class="comment-box">{{comment.txt}}</div><button @click="deleteComment(comment._id)">delete comment</button>
+        <!-- <carousel
+          :perPage="1"
+          :autoplay="true"
+          :autoplayTimeout="2000"
+          :paginationActiveColor="'#413e3e'"
+          :paginationPadding="5"
+          :loop="true"
+        >
+          <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
+            <div
+              class="issue-img"
+              :title="issue.title"
+              :style="{backgroundImage: `url('${imgUrl}')`}"
+            >
             </div>
-        </div>
-        
+          </slide>
+        </carousel> -->
+
+        <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
+            <GmapMarker
+              :position="issue.loc"
+              :clickable="false"
+              :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+              />
+        </GmapMap>
+
+        <div class="issue-comments">
+            <h2>Comments</h2>
+            <button class="add-btn" @click = "toggleModal">Add</button>
+            <div class="comments-container" v-for ='comment in comments' :key="comment._id">
+                <div class="comment-container flex">
+                    <img :src = "comment.commenter.imgUrl">
+                    <p>{{comment.txt}}</p>
+                </div>
+            </div>
+            
             <div v-if="openModal" class="reply-box flex" >
               <div class="reply">comment:
-              <button @click="toggleModal">X</button>
+                <button @click="toggleModal">X</button>
                 <div contenteditable="true" ref="commentContent" v-focus = true></div>
-                <button  @click="addComment">Add Comment</button>
+                <button @click="addComment">Add Comment</button>
               </div>
             </div>
-
-
+        </div>
     </section>
 </template>
 
@@ -66,8 +94,6 @@ export default {
       user:{},
     };
   },
-
-  computed: {},
 
   created() {
     let issueId = this.$route.params.issueId;
@@ -156,8 +182,8 @@ export default {
           group: 'foo',
           title: title,
           text: text,
-          type:type,
-          duration:5000,
+          type: type,
+          duration: 5000,
         });
     },
     deleteIssue() {
@@ -197,65 +223,143 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.details-container {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  outline: 1px solid gray;
-  height: 100%;
-  margin-top: 50px;
-  margin-bottom: 100px;
+.issue-details {
+  padding-top: 10px;
   padding-bottom: 20px;
-  .title {
-    text-align: center;
-    padding-top: 10px;
+}
+
+.issue-header {
+  margin-bottom: 15px;
+  button {
+    color: #69c8a4;
+    font-size: 0.7em;
+    border-radius: 50%;
+    border: 1.5px solid #69c8a4;
+    background-color: white;
+    height: 5em;
+    transition: all 0.3s;
+    &:hover {
+      color: white;
+      border-color: #4b9076;
+      background-color: #69c8a4;
+    }
   }
-  .issue-container {
-    padding: 10px;
+}
+
+.issue-title {
+  font-size: 2em;
+  text-transform: capitalize;
+}
+
+svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.issue-info {
+  margin-bottom: 10px;
+  p {
+    font-style: italic;
+    margin: 0 0 15px 0;
+    &:first-letter {
+      text-transform: capitalize;
+    }
   }
+}
+
+h5 {
+  color: rgb(175, 172, 172);
+  font-size: 0.75em;
+  font-weight: normal;
+  height: fit-content;
+  &:not(:last-of-type) {
+    text-transform: capitalize;
+  }
+}
+
+label {
+  color: #439475;
+}
+
+.issue-imgs {
   img {
-    text-align: center;
-  }
-  // .VueCarousel {
-  // }
-  
-  .add-btn {
-    padding: 30px;
-    width: 100px;
-    margin: 0 auto;
+    width: 100%;
     margin-bottom: 10px;
   }
-  .comments-container {
-    .comment-box {
-      margin: 0 auto;
-      width: 300px;
-      height: auto;
-      background: #e5e3df;
-      box-shadow: 10px 10px 9px -1px rgba(0, 0, 0, 0.64);
-    }
-    .card-container {
-      margin-bottom: 10px;
-      img {
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-  .reply-box {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(237, 237, 245, 0.596);
+}
+
+// .VueCarousel {
+//   margin-bottom: 50px;
+//   height: 60vh;
+// }
+
+// .issue-img {
+//   background-position: center center;
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   height: 100%;
+//   width: 100%;
+// }
+
+.vue-map-container {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.issue-comments {
+  h2 {
+    display: inline-block;
+    margin-bottom: 15px;
   }
 
-  .reply {
-    width: 300px;
-    height: 200px;
-    background: grey;
-    opacity: 1;
+  button {
+    border-radius: 8px;
+    border: 1.5px solid #69c8a4;
+    background-color: white;
+    color: #69c8a4;
+    font-size: 0.9em;
+    float: right;
+    padding: 5px 10px;
+    transition: all 0.3s;
+    &:hover {
+      color: white;
+      border-color: #4b9076;
+      background-color: #69c8a4;
+    }
   }
+}
+
+.comment-container {
+  margin-bottom: 10px;
+  
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  p {
+    margin: 0;
+    height: auto;
+    background: #f9f8f7;
+  }
+}
+
+.reply-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(237, 237, 245, 0.596);
+}
+
+.reply {
+  width: 300px;
+  height: 200px;
+  background: grey;
+  opacity: 1;
 }
 </style>
 

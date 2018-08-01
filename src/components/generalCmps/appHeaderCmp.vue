@@ -1,5 +1,6 @@
 <template>
-    <section class="app-header flex space-between">
+  <section class="app-header">
+    <section class="container flex space-between">
         <router-link to="/">
             <div class="logo">
                 <img src="img/logo/logo-traffic-light.png" class="logo-img" />
@@ -14,6 +15,7 @@
             </div>
         </div>
     </section>
+  </section>
 </template>
 
 <script>
@@ -37,10 +39,13 @@ export default {
   height: 60px;
   width: 100%;
   z-index: 4;
+  .container {
+    height: 100%;
+  }
 }
 
 .logo {
-  margin: 5px 2px;
+  margin: 5px 0;
 }
 
 .logo-txt {
@@ -67,7 +72,7 @@ export default {
 }
 
 svg {
-  margin: 0 15px;
+  margin: 0 0 0 15px;
 }
 
 h6 {
@@ -75,5 +80,6 @@ h6 {
   font-weight: normal;
   width: fit-content;
   margin: 0 auto;
+  margin-right: 0;
 }
 </style>
