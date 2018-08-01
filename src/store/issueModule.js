@@ -14,6 +14,7 @@ export const LOAD_ISSUES = 'issue/actions/loadIssues';
 export const GET_ISSUE_BY_ID = 'issue/actions/getIssueById';
 export const UPDATE_ISSUE = 'issue/actions/updateIssue';
 export const SUBMIT_ISSUE = 'issue/actions/submitIssue';
+export const DELETE_ISSUE = 'issue/actions/deleteIssue';
 
 export default {
     state: {
@@ -96,6 +97,15 @@ export default {
                     return updatedIssue;
                 })
         },
+
+        [DELETE_ISSUE](context, {issueId}) {
+            issueService.deleteIssue(issueId)
+                .then(issueId => {
+                    var issues = context.getters[ISSUES_TO_DISPLAY];
+                    issues = issues.filter(issue=> issue._id !== issueId);
+                    context.commit({type:SET_ISSUES, issues})                    
+                }).catch(err => console.warn(err))
+        }
 
     }
 }

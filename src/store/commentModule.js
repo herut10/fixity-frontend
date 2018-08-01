@@ -4,6 +4,7 @@ import commentService from '../services/commentService.js';
 
 export const GET_COMMENTS = 'comments/action/getComments'
 export const ADD_COMMENT = 'comment/action/addComment'
+export const DELETE_COMMENTS = 'comments/action/deleteComments'
 export const SET_COMMENTS = 'comments/mutations/setComments'
 export const SET_COMMENT = 'comment/mutations/setComment'
 export const LOAD_COMMENTS = 'comment/getters/loadComments'
@@ -47,10 +48,14 @@ export default {
                     return comment;
                 }).catch(err => console.warn(err))
         },
-
-        
-
-
-
+        [DELETE_COMMENTS](context, {deleteBy}) {
+            return commentService.deleteComments(deleteBy)
+                .then(deleteBy => {
+                    var comments = context.getters[LOAD_COMMENTS]; 
+                    comments = (deleteBy._id)? 
+                    comments.filter(comment => comment._id !== deleteBy._id):[];
+                    context.commit({type:SET_COMMENTS, comments})  
+                }).catch(err => console.warn(err))
+        }
     }
 }

@@ -12,6 +12,7 @@
           <div>Category: {{issue.category}}</div>
           <div>Status: {{issue.status}}</div>
           <button @click= "resolveIssue">Resolve Issue</button>
+          <button v-if="user.isAdmin" @click = 'deleteIssue'>delete</button>
         </div>
       </div>
 
@@ -27,7 +28,7 @@
             <h2>Comments:</h2><button class="add-btn" @click = "toggleModal">Add Comment</button>
         <div class="comments-container" v-for ='comment in comments' :key="comment._id">
             <div class="card-container">
-            <img :src = "comment.commenter.imgUrl"><div class="comment-box">{{comment.txt}}</div>
+            <img :src = "comment.commenter.imgUrl"><div class="comment-box">{{comment.txt}}</div><button @click="deleteComment(comment._id)">delete comment</button>
             </div>
         </div>
         
@@ -47,7 +48,10 @@
 import utilsService from '@/services/utilsService.js'
 import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
 import { UPDATE_ISSUE } from "@/store/issueModule.js";
+import { DELETE_ISSUE } from "@/store/issueModule.js";
 import { GET_COMMENTS } from "@/store/commentModule.js";
+import { LOAD_COMMENTS } from "@/store/commentModule.js";
+import { DELETE_COMMENTS } from "@/store/commentModule.js";
 import { USER } from "@/store/userModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import { ADD_COMMENT } from "@/store/commentModule.js";
@@ -58,7 +62,8 @@ export default {
     return {
       issue: {},
       comments: [],
-      openModal: false
+      openModal: false,
+      user:{},
     };
   },
 
@@ -68,6 +73,7 @@ export default {
     let issueId = this.$route.params.issueId;
     this.getIssue(issueId);
     this.getComments(issueId);
+    this.user = this.$store.getters[USER];
   },
 
   methods: {
@@ -75,8 +81,6 @@ export default {
       this.$store
         .dispatch({ type: GET_ISSUE_BY_ID, issueId })
         .then(issue => {
-          console.log(issue);
-
           this.issue = issue;
         })
         .catch(err => console.warn(err));
@@ -93,28 +97,21 @@ export default {
 
     addComment() {
       var txt = this.$refs.commentContent.innerText;
-      var commenter = this.$store.getters[USER];
       this.$store
         .dispatch({
           type: ADD_COMMENT,
           payload: {
             comment: {
               issueId: this.issue._id,
-              commenterId: commenter._id,
+              commenterId: this.user._id,
               txt,
               createdAt: Date.now()
             },
-            commenter
+            commenter: this.user,
           }
         })
         .then(comment => {
-          this.$notify({
-          group: 'foo',
-          title: 'Comment Status',
-          text: 'Your comment was added',
-          type:'success',
-          duration:5000,
-        });
+          this.notify('Your comment was added', 'success','Comment Status')
         })
         .catch(err => console.warn(err));
       this.toggleModal();
@@ -125,31 +122,64 @@ export default {
     },
 
     resolveIssue() {
-      if(this.issue.status === 'closed') return;
-      var user = this.$store.getters[USER];
+      if(this.issue.status === 'closed') {
+        this.notify('Report already closed', 'warn');
+        return;
+      }  
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
       var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
-      if(user._id === updatedIssue.reportedBy||
-      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5))
-      updatedIssue.status = 'closed';
-      else if(userDistance <=0.5) updatedIssue.nonIssueReportCount++;
-      else return;
+      if(this.authorizedToClose(this.user, updatedIssue, userDistance)) {
+        updatedIssue.status = 'closed';
+        this.notify('The report is now closed', 'success','Report Status');
+      } else if(userDistance <=0.5){
+        updatedIssue.nonIssueReportCount++;
+        this.notify('The report is now modified', 'success','Report Status');
+      } else {
+        this.notify('Failed to modify report', 'warn','Report Status');
+        return;
+      }  
       this.$store.dispatch({type:UPDATE_ISSUE, updatedIssue})
         .then(updatedIssue=> {
           this.issue = updatedIssue;
         })
         .catch(err=>console.warn(err));
-        var status = (updatedIssue.status = 'closed')? 'closed' : 'modified';
+    },
+
+    authorizedToClose(user, updatedIssue, userDistance) {
+      return user._id === updatedIssue.reportedBy||user.isAdmin||
+      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5);
+    },
+
+    notify(text, type, title) {
         this.$notify({
           group: 'foo',
-          title: 'Report Status',
-          text: 'The Report is now'+' '+ status,
-          type:'success',
-          duration:3000,
+          title: title,
+          text: text,
+          type:type,
+          duration:5000,
         });
+    },
+    deleteIssue() {
+      this.$store.dispatch({type:DELETE_COMMENTS, deleteBy:{issueId:this.issue._id}})
+        .then(() => {
+          this.$store.dispatch({type:DELETE_ISSUE, issueId:this.issue._id})
+            .then(() => {
+              console.log('issue deleted');
+              this.notify(this.issue.title +' '+'deleted', 'success', 'Report Delete');
+              this.$router.push('/');
+            }).catch(err => console.warn(err))
+        })
+        .catch(err => console.warn(err));
+    },
+
+    deleteComment(commentId) {
+      this.$store.dispatch({type:DELETE_COMMENTS, deleteBy:{_id:commentId}})
+        .then(()=> {
+          this.comments = this.$store.getters[LOAD_COMMENTS];
+        }).catch(err=> console.warn)
     }
-  },
+  },  
 
   directives: {
     focus: {

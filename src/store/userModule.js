@@ -22,7 +22,7 @@ export default {
             "username": "notAdmin",
             "password": "passworddd",
             "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
-            "isAdmin": false,
+            "isAdmin": true,
             "likes": [{
                 "issueId": "5b586f5d375dd438bca4205b",
                 "likeType": "likeAngry"
@@ -49,8 +49,6 @@ export default {
             return state.user;
         },
         [CURRLOC](state) {
-            console.log(state.currLoc);
-            
             return JSON.parse(JSON.stringify(state.currLoc))
         }
 
@@ -80,6 +78,7 @@ export default {
 
             return userService.updateUser(user)
                 .then(user => {
+                    user.imgUrl = user.imgUrl[0];
                     context.commit({
                         type: SET_USER,
                         user

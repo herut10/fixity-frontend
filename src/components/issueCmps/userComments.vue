@@ -1,7 +1,8 @@
 
 <template>
     <section v-if="comments" style="width:100%">
-        <div class="comment-container flex" v-for="comment in comments" :key="comment._id">
+        <div class="comment-container flex" v-for="comment in comments" :key="comment._id"
+        @click="routeToIssue(comment.issue[0]._id)">
             <div class="issue-img-container"
             :style="{backgroundImage: `url('${comment.issue[0].imgUrls[0]}')`}"></div>
             <div class="issue-content flex column">
@@ -42,8 +43,15 @@ export default {
                 if(issue) {
                     comment.issue = issue;
                     return comment;
-                }    
+                }   
+                 
             }); 
+                console.log(this.comments);
+        },
+
+        routeToIssue(issueId) {
+            this.$router.push(`/issue/${issueId}`);
+            
         }
     }
 };

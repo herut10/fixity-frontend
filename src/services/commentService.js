@@ -14,9 +14,16 @@ function addComment(commentInfo) {
     return axios.post(`${ISSUE_URL}`,commentInfo)
         .then(res => res.data)
         .catch(err=>console.warn(err))
+};
+
+function deleteComments(deleteBy) {
+    return axios.delete(`${ISSUE_URL}`,{params:{deleteBy}} )
+        .then(()=> deleteBy)
+        .catch(err => console.warn(err));
 }
 
 export default {
     addComment,
     getComments,
+    deleteComments,
 }
