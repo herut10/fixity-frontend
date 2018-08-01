@@ -13,10 +13,10 @@ export default {
     },
 
     mutations: {
-        [SET_COMMENTS](state, {comments}) {
+        [SET_COMMENTS](state, { comments }) {
             state.comments = comments;
         },
-        [SET_COMMENT](state, {comment}) {
+        [SET_COMMENT](state, { comment }) {
             state.comments.push(comment);
         },
     },
@@ -28,25 +28,29 @@ export default {
     },
 
     actions: {
-        [GET_COMMENTS](context, {getBy}) {
+        [GET_COMMENTS](context, { getBy }) {
             return commentService.getComments(getBy)
                 .then(comments => {
                     context.commit({ type: SET_COMMENTS, comments });
                     return comments
                 })
-                .catch((err) => {console.warn(err)
+                .catch((err) => {
+                    console.warn(err)
                 });
-            },
-            
-            [ADD_COMMENT](context, {payload}) {
-                return commentService.addComment(payload.comment)
-                    .then(comment => {
-                        comment.commenter = payload.commenter;
-                        context.commit({ type: SET_COMMENT, comment });
-                        return comment;
-                    }).catch(err=> console.warn(err))    
-        }    
-            
+        },
+
+        [ADD_COMMENT](context, { payload }) {
+            return commentService.addComment(payload.comment)
+                .then(comment => {
+                    comment.commenter = payload.commenter;
+                    context.commit({ type: SET_COMMENT, comment });
+                    return comment;
+                }).catch(err => console.warn(err))
+        },
+
+        
+
+
 
     }
 }

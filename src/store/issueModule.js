@@ -93,6 +93,7 @@ export default {
                         type: UPDATE_ISSUE,
                         updatedIssue
                     })
+                    return updatedIssue;
                 })
         },
 

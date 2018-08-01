@@ -10,9 +10,12 @@ import '@/assets/scss/main.scss';
 import socketio from 'socket.io-client';
 import VueSocketio from 'vue-socket.io';
 import moment from 'moment';
+import Notifications from 'vue-notification';
+import VModal from 'vue-js-modal';
 
 let socketURL = (process.env.NODE_ENV === 'development')? 'http://localhost:3000' : socketURL = '/';
 Vue.use(VueSocketio, socketio(socketURL));
+Vue.use(Notifications)
 
 import cloudinary from 'cloudinary';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -33,16 +36,13 @@ library.add(faHome);
 library.add(faMapMarkedAlt);
 library.add(faListUl);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
 axios.defaults.crossDomain = true;
 
 Vue.config.productionTip = false;
 
-cloudinary.config({
-  cloud_name: 'djewvb6ty',
-  api_key: '746648462286187',
-  api_secret: 'S5ch4dT2yLZxSoCrrn9pu6sDdF0'
-});
+Vue.use(VModal, {
+  dialog: true
+})
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -60,7 +60,7 @@ Vue.filter('distanceUnit', distance => {
 })
 
 Vue.filter('relativeTime', time => {
-    return moment(time).fromNow();
+  return moment(time).fromNow();
 })
 
 new Vue({

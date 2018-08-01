@@ -4,7 +4,7 @@ import home from './views/home.vue'
 import about from './views/about.vue'
 import issueDetails from './views/issueDetails.vue'
 import issueAdd from './views/issueAdd.vue'
-import user from './views/userProfile.vue'
+import userProfile from './views/userProfile.vue'
 
 Vue.use(Router)
 
@@ -33,7 +33,7 @@ export default new Router({
     {
       path: '/user',
       name: 'user',
-      component: user
+      component: userProfile
     }
   ]
 })

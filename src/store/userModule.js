@@ -8,22 +8,25 @@ export const USER = 'user/getters/getUser';
 export const CURRLOC = 'user/getters/getCurrLoc';
 
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
-export const UPDATE_USER = 'user/action/getCurrLoc';
+export const UPDATE_USER = 'user/actions/getCurrLoc';
+export const SIGNUP = 'user/actions/signup'
+export const LOGIN = 'user/actions/login'
+
 
 export default {
     state: {
-        user: {
+        user: 
+        // null,
+        {
             "_id": "5b58233fcdbd016cc0b475f8",
             "username": "notAdmin",
             "password": "passworddd",
             "imgUrl": "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
             "isAdmin": false,
-            "likes": [
-                {
-                    "issueId": "5b586f5d375dd438bca4205b",
-                    "likeType": "likeAngry"
-                }
-            ]
+            "likes": [{
+                "issueId": "5b586f5d375dd438bca4205b",
+                "likeType": "likeAngry"
+            }]
         },
         currLoc: null
     },
@@ -34,7 +37,9 @@ export default {
         }) {
             state.currLoc = JSON.parse(JSON.stringify(currLoc))
         },
-        [SET_USER](state, { user }) {
+        [SET_USER](state, {
+            user
+        }) {
             state.user = user;
         }
     },
@@ -44,6 +49,8 @@ export default {
             return state.user;
         },
         [CURRLOC](state) {
+            console.log(state.currLoc);
+            
             return JSON.parse(JSON.stringify(state.currLoc))
         }
 
@@ -52,8 +59,8 @@ export default {
     actions: {
         [LOAD_CURRLOC](context) {
             return new Promise((resolve, reject) => {
-                navigator.geolocation.watchPosition(resolve, reject)
-            })
+                    navigator.geolocation.watchPosition(resolve, reject)
+                })
                 .then(res => {
                     var coords = res.coords;
 
@@ -67,10 +74,33 @@ export default {
                     return coords;
                 })
         },
-        [UPDATE_USER](contex, { user }) {
+        [UPDATE_USER](context, {
+            user
+        }) {
+
             return userService.updateUser(user)
                 .then(user => {
-                    contex.commit({ type: SET_USER, user })
+                    context.commit({
+                        type: SET_USER,
+                        user
+                    })
+                })
+                .catch(err => console.warn(err));
+        },
+        [SIGNUP](context, {
+            user
+        }) {
+            console.log('now in actions');
+
+            user.imgUrl = ''
+            user.isAdmin = false
+            user.likes = []
+            return userService.registerUser(user)
+                .then(user => {
+                    context.commit({
+                        type: SET_USER,
+                        user
+                    })
                 })
                 .catch(err => console.warn(err));
         },

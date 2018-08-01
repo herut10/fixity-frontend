@@ -3,23 +3,33 @@
     <app-header @openAbout="toggleAbout" />
     <footerNavbar />
     <about ref="about" />
+    <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
+    <loginModal></loginModal>
+    <v-dialog/>
+
+
+    
   </div>
 </template>
 
 <script>
-import mapService from '@/services/mapService.js';
-import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
+import mapService from "@/services/mapService.js";
+import { setCurrThis } from "@/components/generalCmps/dialogModalCmp.js";
+import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
 import footerNavbar from '@/components/generalCmps/footerNavbarCmp.vue';
-import about from '@/views/about.vue';
-import { LOAD_CURRLOC } from '@/store/userModule.js';
-import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from '@/store/issueModule.js';
+import about from "@/views/about.vue";
+import { LOAD_CURRLOC, SET_USER } from "@/store/userModule.js";
+import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from "@/store/issueModule.js";
+import loginModal from "@/components/generalCmps/loginModalCmp.vue";
 
 export default {
-  name: 'app',
+  name: "app",
 
   created() {
+    
+    setCurrThis(this);
     this.$store.dispatch({ type: LOAD_ISSUES });
     this.$store.dispatch({ type: LOAD_CURRLOC });
     // this.$socket.emit("emit_method", 15);//testing sockets
@@ -31,9 +41,12 @@ export default {
         issueToSubmit
       });
     },
+    userFound(user) {
+      this.$store.commit({ type: SET_USER, user });
+    },
 
     errorAdding() {
-      console.log('errorAdding');
+      console.log("errorAdding");
     },
 
     issueLikesChanged(updatedIssue) {
@@ -43,15 +56,17 @@ export default {
 
   methods: {
     toggleAbout() {
-      this.$refs.about.$el.classList.toggle('about-open');
-      this.$refs.curtain.classList.toggle('curtain-show');
+      this.$refs.about.$el.classList.toggle("about-open");
+      this.$refs.curtain.classList.toggle("curtain-show");
     }
   },
 
   components: {
     appHeader,
     footerNavbar,
-    about
+    about,
+    //notifications,
+    loginModal
   }
 };
 </script>
@@ -72,7 +87,7 @@ export default {
   z-index: 2;
   opacity: 0;
   visibility: hidden;
-  transition: all .4s;
+  transition: all 0.4s;
   &.curtain-show {
     visibility: visible;
     opacity: 1;

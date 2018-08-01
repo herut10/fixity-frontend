@@ -35,6 +35,9 @@
       </label>
       <button @click.prevent="onSubmit">submit</button>
       </form>
+
+
+      <button @click="show">show!</button>
     </section>
 </template>
 
@@ -48,6 +51,7 @@ import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 import mapService from "@/services/mapService.js";
 import utilsService from "@/services/utilsService.js";
 import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
+import dialogModal from "@/components/generalCmps/dialogModalCmp.js";
 export default {
   components: {
     autoComplete,
@@ -57,11 +61,11 @@ export default {
   data() {
     return {
       newIssue: {
-        title: '',
-        address: '',
-        body: '',
-        category: 'pedestrian',
-        status: 'open',
+        title: "",
+        address: "",
+        body: "",
+        category: "pedestrian",
+        status: "open",
         imgUrls: [],
         nonIssueReportCount: 0,
         likes: {
@@ -96,7 +100,17 @@ export default {
     }
   },
   methods: {
+    show() {
+      if (!this.$store.getters[USER]) {
+        this.$modal.show("dialog", dialogModal);
+      } else {
+        this.$modal.show("loginModal");
+      }
+      
+    },
     saveURLs(URLs) {
+      console.log(URLs);
+
       this.newIssue.imgUrls = URLs;
     },
     placeChanged(val) {
@@ -107,7 +121,7 @@ export default {
       var userId = this.$store.getters[USER]._id;
       if (this.newIssue.imgUrls.length === 0)
         this.newIssue.imgUrls.push(
-          'https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png'
+          "https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png"
         );
       var issueToSubmit = JSON.parse(JSON.stringify(this.newIssue));
       issueToSubmit.loc = JSON.parse(JSON.stringify(this.center));
@@ -117,6 +131,13 @@ export default {
         issueToSubmit.reportedBy = userId;
       }
       this.$socket.emit('issueAdd', issueToSubmit);
+      this.$notify({
+        group: "foo",
+        title: "Important message",
+        text: this.newIssue.title + ' '+"added successfuly!",
+        type:'success',
+        duration: 5000,
+      });
       this.$router.push('/');
     },
     setLocationSelf() {
