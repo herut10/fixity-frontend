@@ -7,34 +7,32 @@ import axios from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueCarousel from 'vue-carousel';
 import '@/assets/scss/main.scss';
-import socketio from 'socket.io-client'
+import socketio from 'socket.io-client';
 import VueSocketio from 'vue-socket.io';
 import moment from 'moment';
-import Notifications from 'vue-notification'
+import Notifications from 'vue-notification';
+import VModal from 'vue-js-modal';
 
-let socketURL = 'http://localhost:3000'
-if (process.env.NODE_ENV !== 'development') {
-  socketURL = '/'
-}
-
+let socketURL = (process.env.NODE_ENV === 'development')? 'http://localhost:3000' : socketURL = '/';
 Vue.use(VueSocketio, socketio(socketURL));
 Vue.use(Notifications)
 
-
-
-import cloudinary from 'cloudinary'
+import cloudinary from 'cloudinary';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  library
-} from '@fortawesome/fontawesome-svg-core';
-import {
+  faClipboard,
+  faInfoCircle,
+  faUserCircle,
+  faHome,
   faMapMarkedAlt,
   faListUl
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  FontAwesomeIcon
-} from '@fortawesome/vue-fontawesome';
-import VModal from 'vue-js-modal'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+library.add(faClipboard);
+library.add(faInfoCircle);
+library.add(faUserCircle);
+library.add(faHome);
 library.add(faMapMarkedAlt);
 library.add(faListUl);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -42,14 +40,9 @@ axios.defaults.crossDomain = true;
 
 Vue.config.productionTip = false;
 
-
-
 Vue.use(VModal, {
   dialog: true
 })
-
-
-
 
 Vue.use(VueGoogleMaps, {
   load: {

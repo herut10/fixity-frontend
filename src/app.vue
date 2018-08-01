@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <app-header @openAbout="toggleAbout" />
-    <navbar />
-        <about ref="about" />
-        <notifications group="foo" />
+    <footerNavbar />
+    <about ref="about" />
+    <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
     <loginModal></loginModal>
@@ -18,11 +18,12 @@
 import mapService from "@/services/mapService.js";
 import { setCurrThis } from "@/components/generalCmps/dialogModalCmp.js";
 import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
-import navbar from "@/components/generalCmps/navbarCmp.vue";
+import footerNavbar from '@/components/generalCmps/footerNavbarCmp.vue';
 import about from "@/views/about.vue";
 import { LOAD_CURRLOC, SET_USER } from "@/store/userModule.js";
 import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from "@/store/issueModule.js";
 import loginModal from "@/components/generalCmps/loginModalCmp.vue";
+
 export default {
   name: "app",
 
@@ -62,7 +63,7 @@ export default {
 
   components: {
     appHeader,
-    navbar,
+    footerNavbar,
     about,
     loginModal
   }

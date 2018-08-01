@@ -16,6 +16,7 @@ export const LOGIN = 'user/actions/login'
 export default {
     state: {
         user: 
+        // null,
         {
             "_id": "5b58233fcdbd016cc0b475f8",
             "username": "notAdmin",
