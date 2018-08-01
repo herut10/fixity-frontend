@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <app-header @openAbout="toggleAbout" />
-    <footerNavbar />
     <about ref="about" />
     <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
     <loginModal></loginModal>
     <v-dialog/>
+    <footerNavbar />
 
 
     
