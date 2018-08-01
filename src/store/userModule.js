@@ -20,9 +20,7 @@ export const LOGIN = 'user/actions/login'
 
 export default {
     state: {
-        user: 
-        // null,
-        {
+        user: {
             "_id": "5b58233fcdbd016cc0b475f8",
             "username": "notAdmin",
             "password": "passworddd",
@@ -55,7 +53,7 @@ export default {
 
     getters: {
         [HASBEENPROMPTED](state) {
-            return state.hasBeenPrompteds
+            return state.hasBeenPrompted
         },
         [USER](state) {
             return state.user;
@@ -72,8 +70,8 @@ export default {
     actions: {
         [LOAD_CURRLOC](context) {
             return new Promise((resolve, reject) => {
-                navigator.geolocation.watchPosition(resolve, reject)
-            })
+                    navigator.geolocation.watchPosition(resolve, reject)
+                })
                 .then(res => {
                     var coords = res.coords;
 

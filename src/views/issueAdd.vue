@@ -13,13 +13,13 @@
           :icon="`img/map-icons/${newIssue.category}-open.png`"
         />
       </GmapMap>
-      <form action.prevent="" class="flex column align-center" >
-        <div class="flex justify-center">
-      <autoComplete @place_changed="placeChanged" :placeholder="'heyo'" v-model="newIssue.address" ></autoComplete>
+      <form action.prevent="" class="flex column " >
+        <div class="location-input flex align-baseline">
+      <autoComplete @place_changed="placeChanged" :placeholder="'Address (required)'" v-model="newIssue.address" ></autoComplete>
       <button @click.prevent="setLocationSelf">my location</button>
         </div>
-      <input v-model="newIssue.title" type="text" placeholder="title" required maxlength="25"/>
-      <textarea v-model="newIssue.body" placeholder="enter description" required ></textarea>
+      <input  v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
+      <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
       <label>
         upload pictures
         <imgUpload @imgsUploaded="saveURLs"></imgUpload>
@@ -116,20 +116,22 @@ export default {
           buttons: [
             {
               title: "Tell me more",
-              handler: function() {
+              handler: () => {
                 that.$modal.hide("dialog");
                 that.$modal.show("loginModal");
               }
             },
             {
               title: "Maybe next time",
-              handler: function() {
+              handler: () => {
                 that.$modal.hide("dialog");
                 that.onSubmit();
               }
             }
           ]
         });
+      } else {
+        that.onSubmit();
       }
     },
     saveURLs(URLs) {
@@ -140,6 +142,21 @@ export default {
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
     },
     onSubmit() {
+      if (
+        !(this.newIssue.title && this.newIssue.body && this.newIssue.address)
+      ) {
+        this.$modal.show("dialog", {
+          title: "MISSING DETAILS",
+          text:
+            "One or more of the required field are missing, please make sure you fill them all.",
+          buttons: [
+            {
+              title: "close"
+            }
+          ]
+        });
+        return;
+      }
       var user = this.$store.getters[USER];
       var userId = user ? this.$store.getters[USER]._id : "";
       if (this.newIssue.imgUrls.length === 0)
@@ -193,6 +210,53 @@ export default {
 
 
 <style lang="scss" scoped>
+label,
+select {
+  cursor: pointer;
+}
+.location-input {
+  width: 100%;
+}
+input[type="password"],
+input[type="text"],
+textarea,
+select {
+  display: block;
+  box-sizing: border-box;
+  margin-bottom: 4px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 2;
+  border: 0;
+  border-bottom: 1px solid #dddedf;
+  padding: 4px 8px;
+  font-family: inherit;
+  transition: 0.5s all;
+  outline: none;
+}
+button,
+input[type="file"] {
+  background: white;
+  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 10px;
+  letter-spacing: 1px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  min-width: 140px;
+  margin-top: 8px;
+  color: #8b8c8d;
+  cursor: pointer;
+  border: 1px solid #dddedf;
+  text-transform: uppercase;
+  transition: 0.1s all;
+  font-size: 10px;
+  outline: none;
+  &:hover {
+    border-color: mix(#dddedf, black, 90%);
+    color: mix(#8b8c8d, black, 80%);
+  }
+}
 .vue-map-container {
   width: 100%;
   height: 200px;

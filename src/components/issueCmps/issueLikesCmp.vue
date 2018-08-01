@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// import dialogModal from '@/components/generalCmps/dialogModalCmp.js';
 import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from '@/store/issueModule.js';
 import { USER, UPDATE_USER } from '@/store/userModule.js';
 
@@ -33,6 +32,7 @@ export default {
   },
 
   mounted() {
+
     var user = this.$store.getters[USER];
     var issueLiked = user.likes.find(
       userLike => userLike.issueId === this.issue._id

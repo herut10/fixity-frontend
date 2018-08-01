@@ -1,9 +1,9 @@
 <template>
     <section class="issue-list">
         <ul class="clean-list">
-            <li v-for="issue in issues" :key="issue._id" class="issue">
+            <li v-for="issue in issuesToDisplay" :key="issue._id" class="issue">
                 <router-link :to="`/issue/${issue._id}`">
-                    <issue-preview-cmp v-if="mapLoaded" :issue="issue"></issue-preview-cmp>
+                    <issue-preview-cmp  v-if="mapLoaded" :issue="issue"></issue-preview-cmp>
                 </router-link>
             </li>
         </ul>
@@ -11,14 +11,44 @@
 </template>
 
 <script>
-import issuePreviewCmp from './issuePreviewCmp.vue';
+import issuePreviewCmp from "./issuePreviewCmp.vue";
+import utilsService from "@/services/utilsService.js";
 
 export default {
-  name: 'issueList',
+  name: "issueList",
+  methods: {
+    issueDistance(loc, issueLoc) {
+      return utilsService.getDistanceFromLatLngInKm(loc, issueLoc);
+    }
+  },
+  computed: {
+    issuesToDisplay() {
+      var issuesWithDistances = this.issues.map(issue => {
+        var newIssue = JSON.parse(JSON.stringify(issue));
+        newIssue.distance = this.issueDistance(this.currLoc, issue.loc);
+        return newIssue;
+      });
+      issuesWithDistances = issuesWithDistances.sort((a, b) => {
+        return a.distance - b.distance;
+      });
+      issuesWithDistances.forEach(issue => {
+        issue.distance =
+          issue.distance < 1
+            ? (issue.distance * 1000).toFixed(0)
+            : issue.distance.toFixed(2);
+      });
+      return issuesWithDistances;
+    }
+  },
 
   props: {
     issues: {
-      type: Array
+      type: Array,
+      required: true
+    },
+    currLoc: {
+      type: Object,
+      required: true
     },
     mapLoaded: null
   },
