@@ -15,7 +15,7 @@
         <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
       </div>
       
-      <autoComplete @change.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
+      <autoComplete @input.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
 
       <issue-list-cmp :mapLoaded="mapLoaded" :currLoc="center" :issues="issues" v-show="currView === 'list'" />
       <GmapMap
@@ -29,6 +29,7 @@
           :position="center"
           :clickable="true"
           :draggable="false"
+          :animation=2
         />
 
         <GmapMarker
@@ -91,7 +92,7 @@ export default {
       }
     },
     setCurrLoc(ev) {
-      if(!ev.name) return
+      if (!ev.name) return;
       this.currLoc = {};
       [this.currLoc.lat, this.currLoc.lng] = [
         ev.geometry.location.lat(),
