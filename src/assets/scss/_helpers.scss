@@ -1,3 +1,13 @@
+@media (min-width: 617px) {
+    section.container, div.container {
+        padding: 0 25px;
+    }
+}
+
+.container {
+    padding: 0 15px;
+}
+
 .flex {
     display: flex;
 }

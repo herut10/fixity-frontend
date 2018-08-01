@@ -36,12 +36,12 @@ export default {
 
 .footer-navbar {
   text-align: center;
-  box-shadow: inset 0px 2px #1d1c1c;
+  box-shadow: inset 0px 2px #232222;
   background-color: #413e3e;
   display: flex;
   position: fixed;
   bottom: 0;
-  padding: 15px 0;
+  padding: 10px 0;
   width: 100%;
   z-index: 2;
 }
@@ -49,8 +49,13 @@ export default {
 a {
   color: white;
   transition: all 0.3s;
-    &:hover, &.router-link-exact-active {
-    color: #4b9076;
+  &:hover,
+  &.router-link-exact-active {
+    color: #69c8a4;
   }
+}
+
+h6 {
+  font-weight: normal;
 }
 </style>

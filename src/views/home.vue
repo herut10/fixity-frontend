@@ -8,43 +8,48 @@
       </div>
     </div>
 
-    <div class="view-pick">
-      <font-awesome-icon icon="list-ul" class="active" ref="listIcon" @click="changeCurrView('list')" /> 
-      | 
-      <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
-    </div>
-    <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
-    <GmapMap
-      v-show="currView === 'map'"
-      :center="center"
-      ref="map"
-      :zoom="17"
-      map-type-id="terrain"
-    >
-      <GmapMarker
-        :position="center"
-        :clickable="true"
-        :draggable="false"
-      />
+    <section class="main container">
+      <div class="view-pick">
+        <font-awesome-icon icon="list-ul" class="active" ref="listIcon" @click="changeCurrView('list')" /> 
+        | 
+        <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
+      </div>
+      
+      <loc-search-cmp />
 
-      <GmapMarker
-        v-for="issue in issues" :key="issue._id"
-        :position="issue.loc"
-        :clickable="true"
-        @click="openIssuePreview(issue)"
-        :draggable="false"
-        :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
-      />
-    </GmapMap>
+      <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
+      <GmapMap
+        v-show="currView === 'map'"
+        :center="center"
+        ref="map"
+        :zoom="17"
+        map-type-id="terrain"
+      >
+        <GmapMarker
+          :position="center"
+          :clickable="true"
+          :draggable="false"
+        />
 
-    <!-- <issue-preview-cmp :issue:"issue" /> -->
-    
+        <GmapMarker
+          v-for="issue in issues" :key="issue._id"
+          :position="issue.loc"
+          :clickable="true"
+          @click="openIssuePreview(issue)"
+          :draggable="false"
+          :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+        />
+      </GmapMap>
+
+      <!-- <issue-preview-cmp :issue:"issue" /> -->
+    </section>    
   </section>
 </template>
 
 <script>
 import { SET_ISSUES_VIEW, ISSUES_TO_DISPLAY, ISSUES_VIEW } from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
+import locSearchCmp from '@/components/generalCmps/locSearchCmp.vue';
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
 import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
 
@@ -127,6 +132,7 @@ export default {
   },
 
   components: {
+    locSearchCmp,
     issueListCmp,
     issuePreviewCmp
   }
@@ -182,6 +188,7 @@ export default {
   background-size: cover;
   background-position: -100px;
   padding: 15px;
+  margin-bottom: 10px;
   height: calc(100vh - 110px);
   width: 100%;
 }
@@ -189,13 +196,19 @@ export default {
 .title {
   font-size: 2.5em;
   font-weight: lighter;
+  text-shadow: -1px 1px 9px #454444;
   margin-bottom: 10px;
 }
 
 h3 {
   font-size: 1.2em;
   font-weight: lighter;
+  text-shadow: -1px 1px 9px #000000;
   margin: 15px 0;
+}
+
+.main {
+    padding-bottom: 10px;
 }
 
 .view-pick {
