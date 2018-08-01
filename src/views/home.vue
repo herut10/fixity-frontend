@@ -91,6 +91,7 @@ export default {
       }
     },
     setCurrLoc(ev) {
+      if(!ev.name) return
       this.currLoc = {};
       [this.currLoc.lat, this.currLoc.lng] = [
         ev.geometry.location.lat(),
