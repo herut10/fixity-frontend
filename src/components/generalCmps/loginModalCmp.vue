@@ -21,7 +21,7 @@
           <div class="button-set">
             <button @click="doLogin" id="goto-signin-btn">Sign In</button>
             <button @click="doRegister" id="register-btn">Register</button>
-            <button id="guest-btn">Continue as guest</button>
+            <button @click="setDemo" id="demo-btn">Continue in demo mode</button>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
 </template>
 <script>
 const MODAL_WIDTH = 656;
-import { SIGNUP, LOGIN } from "@/store/userModule.js";
+import { SIGNUP, LOGIN, SET_USER } from "@/store/userModule.js";
 export default {
   name: "loginModal",
   data() {
@@ -56,6 +56,26 @@ export default {
     };
   },
   methods: {
+    setDemo() {
+      this.$store.commit({
+        type: SET_USER,
+        user: {
+          _id: "5b58233fcdbd016cc0b475f8",
+          username: "notAdmin",
+          password: "passworddd",
+          imgUrl:
+            "http://images.maariv.co.il/image/upload/f_auto,fl_lossy/t_ArticleControlMaarivTransformaionFaceDetect/443871",
+          isAdmin: false,
+          likes: [
+            {
+              issueId: "5b586f5d375dd438bca4205b",
+              likeType: "likeAngry"
+            }
+          ]
+        }
+      });
+      this.$modal.hide("loginModal");
+    },
     doRegister() {
       console.log("starting register");
       var user = JSON.parse(JSON.stringify(this.user));
@@ -65,7 +85,7 @@ export default {
     },
     doLogin() {
       var user = JSON.parse(JSON.stringify(this.user));
-      this.$socket.emit('loginUser', user);
+      this.$socket.emit("loginUser", user);
     }
   },
   created() {

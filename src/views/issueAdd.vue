@@ -33,25 +33,29 @@
         Submit as anonymous
         <input type="checkbox"/>
       </label>
-      <button @click.prevent="onSubmit">submit</button>
+      <button @click.prevent="promptUser">submit</button>
       </form>
 
-
-      <button @click="show">show!</button>
+        <modal name="hello-world">
+          hello, world!
+        </modal>
     </section>
 </template>
 
 <script>
 import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
 import { SUBMIT_ISSUE } from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
+import {
+  CURRLOC,
+  HASBEENPROMPTED,
+  SET_HASBEENPROMPTED
+} from "@/store/userModule.js";
 import { SET_CURRLOC } from "@/store/userModule.js";
 import { USER } from "@/store/userModule.js";
 import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 import mapService from "@/services/mapService.js";
 import utilsService from "@/services/utilsService.js";
 import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
-import dialogModal from "@/components/generalCmps/dialogModalCmp.js";
 export default {
   components: {
     autoComplete,
@@ -100,17 +104,35 @@ export default {
     }
   },
   methods: {
-    show() {
-      if (!this.$store.getters[USER]) {
-        this.$modal.show("dialog", dialogModal);
-      } else {
-        this.$modal.show("loginModal");
+    promptUser() {
+      var that = this;
+
+      if (!this.$store.getters[USER] && !this.$store.getters[HASBEENPROMPTED]) {
+        this.$store.commit(SET_HASBEENPROMPTED);
+        this.$modal.show("dialog", {
+          title: "YOU ARE NOT LOGGED IN",
+          text:
+            "Not being logged in prevents us from providing you with the best service that you deserve.",
+          buttons: [
+            {
+              title: "Tell me more",
+              handler: function() {
+                that.$modal.hide("dialog");
+                that.$modal.show("loginModal");
+              }
+            },
+            {
+              title: "Maybe next time",
+              handler: function() {
+                that.$modal.hide("dialog");
+                that.onSubmit();
+              }
+            }
+          ]
+        });
       }
-      
     },
     saveURLs(URLs) {
-      console.log(URLs);
-
       this.newIssue.imgUrls = URLs;
     },
     placeChanged(val) {
@@ -118,7 +140,8 @@ export default {
       [this.center.lat, this.center.lng] = [loc.lat(), loc.lng()];
     },
     onSubmit() {
-      var userId = this.$store.getters[USER]._id;
+      var user = this.$store.getters[USER];
+      var userId = user ? this.$store.getters[USER]._id : "";
       if (this.newIssue.imgUrls.length === 0)
         this.newIssue.imgUrls.push(
           "https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png"
@@ -130,15 +153,15 @@ export default {
       if (!this.isAnon) {
         issueToSubmit.reportedBy = userId;
       }
-      this.$socket.emit('issueAdd', issueToSubmit);
+      this.$socket.emit("issueAdd", issueToSubmit);
       this.$notify({
         group: "foo",
         title: "Important message",
-        text: this.newIssue.title + ' '+"added successfuly!",
-        type:'success',
-        duration: 5000,
+        text: this.newIssue.title + " " + "added successfuly!",
+        type: "success",
+        duration: 5000
       });
-      this.$router.push('/');
+      this.$router.push("/");
     },
     setLocationSelf() {
       var loc = this.$store.getters[CURRLOC];
