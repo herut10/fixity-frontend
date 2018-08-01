@@ -10,6 +10,7 @@
           :position="center"
           :clickable="true"
           :draggable="false"
+          :animation=2
           :icon="`img/map-icons/${newIssue.category}-open.png`"
         />
       </GmapMap>

@@ -8,56 +8,49 @@
               Resolve
             </button>
         </div>
-        <div class="issue-info">
-            <p>{{issue.desc}}</p>
-            <h5>
-              Category: <label>{{issue.category}}</label>
-            </h5>
-            <h5>
-              Status: <label>{{issue.status}}</label>
-            </h5>
-            <h5>
-              Reported <label>{{issue.createdAt | relativeTime}}</label> 
-            </h5>
-        </div>
 
-        <div class="issue-imgs">
-            <img v-for="(imgUrl,idx) in issue.imgUrls" :key="idx" :src="imgUrl" :title="issue.title" :alt="issue.title">
-        </div>
-
-        <!-- <carousel
-          :perPage="1"
-          :autoplay="true"
-          :autoplayTimeout="2000"
-          :paginationActiveColor="'#413e3e'"
-          :paginationPadding="5"
-          :loop="true"
-        >
-          <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
-            <div
-              class="issue-img"
-              :title="issue.title"
-              :style="{backgroundImage: `url('${imgUrl}')`}"
-            >
+        <div class="issue-content">
+            <div class="issue-info">
+                <p>{{issue.desc}}</p>
+                <h5>
+                  Category: <label>{{issue.category}}</label>
+                </h5>
+                <h5>
+                  Status: <label>{{issue.status}}</label>
+                </h5>
+                <h5>
+                  Reported <label>{{issue.createdAt | relativeTime}}</label> 
+                </h5>
             </div>
-          </slide>
-        </carousel> -->
 
-        <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
-            <GmapMarker
-              :position="issue.loc"
-              :clickable="false"
-              :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
-              />
-        </GmapMap>
+            <carousel :perPage="1" :paginationEnabled="false" :navigationEnabled="issue.imgUrls.length>1">
+              <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
+                <img :src="imgUrl" :title="issue.title" :alt="issue.title" />
+              </slide>
+            </carousel>
+
+            <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
+                <GmapMarker
+                  :position="issue.loc"
+                  :clickable="false"
+                  :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+                  />
+            </GmapMap>
+        </div>
 
         <div class="issue-comments">
             <h2>Comments</h2>
             <button class="add-btn" @click = "toggleModal">Add</button>
             <div class="comments-container" v-for ='comment in comments' :key="comment._id">
                 <div class="comment-container flex">
-                    <img :src = "comment.commenter.imgUrl">
-                    <p>{{comment.txt}}</p>
+                    <div class="commenter">
+                        <img :src = "comment.commenter.imgUrl">
+                        <h6>{{comment.commenter.username}}</h6>
+                    </div>
+                    <div class="comment-content flex column space-between">
+                        <p>{{comment.txt}}</p>
+                        <p class="comment-time">{{comment.createdAt | relativeTime}}</p>
+                    </div>
                 </div>
             </div>
             
@@ -88,7 +81,7 @@ import { Carousel, Slide } from "vue-carousel";
 export default {
   data() {
     return {
-      issue: {},
+      issue: null,
       comments: [],
       openModal: false,
       user:{},
@@ -219,13 +212,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 980px) {
+  .issue-content {
+    // display: grid;
+    // grid-template-columns: 2fr 1fr;
+  }
+
+  // div.issue-info {
+  //   grid-column-start: 1;
+  //   grid-column-end: -1;
+  // }
+
+  div.issue-comments {
+    margin: 0 auto;
+    width: 450px;
+  }
+
+  div.vue-map-container {
+    // grid-row-start: 1;
+    // grid-column-start: 2;
+    height: 200px;
+  }
+}
+
 .issue-details {
   padding-top: 10px;
   padding-bottom: 20px;
 }
 
 .issue-header {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   button {
     color: #69c8a4;
     font-size: 0.7em;
@@ -277,33 +293,44 @@ label {
   color: #439475;
 }
 
-.issue-imgs {
+.VueCarousel {
+  margin: 0 auto 20px;
+  min-width: 245px;
+  max-width: 500px;
+  width: 100%;
+
   img {
-    width: 100%;
     margin-bottom: 10px;
+    min-width: 245px;
+    max-width: 500px;
+    width: 100%;
   }
 }
 
-// .VueCarousel {
-//   margin-bottom: 50px;
-//   height: 60vh;
-// }
+.VueCarousel-navigation-button {
+  padding: 8px 0 8px 8px;
+}
 
-// .issue-img {
-//   background-position: center center;
-//   background-size: cover;
-//   background-repeat: no-repeat;
-//   height: 100%;
-//   width: 100%;
-// }
+.issue-img {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}
 
 .vue-map-container {
   width: 100%;
+  max-width: 500px;
   height: 200px;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
 }
 
 .issue-comments {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+
   h2 {
     display: inline-block;
     margin-bottom: 15px;
@@ -328,17 +355,36 @@ label {
 
 .comment-container {
   margin-bottom: 10px;
+}
 
-  img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
+.comment-content {
+  background: #f6f6f6;
+  width: 100%;
+  padding: 5px;
 
   p {
     margin: 0;
-    height: auto;
-    background: #f9f8f7;
+  }
+}
+
+.comment-time {
+  color: #c3bebe;
+  font-size: 0.7em;
+  align-self: flex-end;
+}
+
+.commenter {
+  margin-right: 10px;
+
+  img {
+    border-radius: 50%;
+    display: block;
+    width: 50px;
+    height: 50px;
+  }
+
+  h6 {
+    font-weight: normal;
   }
 }
 

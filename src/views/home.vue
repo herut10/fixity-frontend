@@ -17,7 +17,7 @@
         <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
       </div>
       
-      <autoComplete @change.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
+      <autoComplete @input.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
 
       <issue-list-cmp :mapLoaded="mapLoaded" :currLoc="center" :issues="issues" v-show="currView === 'list'" />
       <GmapMap
@@ -31,6 +31,7 @@
           :position="center"
           :clickable="true"
           :draggable="false"
+          :animation=2
         />
 
         <GmapMarker
@@ -53,14 +54,14 @@ import {
   SET_ISSUES_VIEW,
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
-} from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
-import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
-import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
+} from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
+import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
+import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
 
 export default {
-  name: "home",
+  name: 'home',
 
   data() {
     return {
@@ -93,7 +94,7 @@ export default {
       }
     },
     setCurrLoc(ev) {
-      if(!ev.name) return
+      if (!ev.name) return;
       this.currLoc = {};
       [this.currLoc.lat, this.currLoc.lng] = [
         ev.geometry.location.lat(),
@@ -103,8 +104,8 @@ export default {
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
-      this.$refs.listIcon.classList.toggle("active");
-      this.$refs.mapIcon.classList.toggle("active");
+      this.$refs.listIcon.classList.toggle('active');
+      this.$refs.mapIcon.classList.toggle('active');
     },
     resolveIssue() {
       if(this.issue.status === 'closed') {
@@ -149,7 +150,7 @@ export default {
     },
 
     openIssuePreview(issue) {
-      console.log("issue opened", issue);
+      console.log('issue opened', issue);
     }
   },
 
@@ -212,10 +213,9 @@ export default {
 .site-entrance {
   color: white;
   text-align: center;
-  background-image: url("../../public/img/site-entrance.jpg");
+  background-image: url('../../public/img/site-entrance.jpg');
   background-size: cover;
   background-position: -100px;
-  // padding: 15px;
   margin-bottom: 10px;
   height: calc(100vh - 110px);
   width: 100%;
@@ -241,8 +241,10 @@ h3 {
 
 .view-pick {
   color: lightgrey;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  display: inline-block;
   padding-bottom: 15px;
+  margin-right: 15px;
 }
 
 svg {
@@ -254,6 +256,13 @@ svg {
   &.active {
     color: rgb(77, 76, 76);
   }
+}
+
+input {
+  padding: 3px;
+  color: #439475;
+  border-radius: 4px;
+  border: 1px solid #aeaeae;
 }
 
 .vue-map-container {
