@@ -116,20 +116,22 @@ export default {
           buttons: [
             {
               title: "Tell me more",
-              handler: function() {
+              handler: () => {
                 that.$modal.hide("dialog");
                 that.$modal.show("loginModal");
               }
             },
             {
               title: "Maybe next time",
-              handler: function() {
+              handler: () => {
                 that.$modal.hide("dialog");
                 that.onSubmit();
               }
             }
           ]
         });
+      } else {
+        that.onSubmit();
       }
     },
     saveURLs(URLs) {

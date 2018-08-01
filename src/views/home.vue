@@ -15,9 +15,9 @@
         <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
       </div>
       
-      <loc-search-cmp />
+      <autoComplete @change.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
 
-      <issue-list-cmp :mapLoaded="mapLoaded" :issues="issues" v-show="currView === 'list'" />
+      <issue-list-cmp :mapLoaded="mapLoaded" :currLoc="center" :issues="issues" v-show="currView === 'list'" />
       <GmapMap
         v-show="currView === 'map'"
         :center="center"
@@ -47,18 +47,23 @@
 </template>
 
 <script>
-import { SET_ISSUES_VIEW, ISSUES_TO_DISPLAY, ISSUES_VIEW } from "@/store/issueModule.js";
+import {
+  SET_ISSUES_VIEW,
+  ISSUES_TO_DISPLAY,
+  ISSUES_VIEW
+} from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
-import locSearchCmp from '@/components/generalCmps/locSearchCmp.vue';
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
 import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
+import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 
 export default {
-  name: 'home',
+  name: "home",
 
   data() {
     return {
-      mapLoaded: false
+      mapLoaded: false,
+      currLoc: null
     };
   },
 
@@ -75,12 +80,23 @@ export default {
 
     center() {
       var userLoc = this.$store.getters[CURRLOC];
-      if (!userLoc) return { lat: 32, lng: 34 };
-      else return userLoc;
+      return this.currLoc || userLoc || { lat: 32, lng: 34 };
     }
   },
 
   methods: {
+    isAdressEmpty(ev) {
+      if (!ev.target.value) {
+        this.currLoc = null;
+      }
+    },
+    setCurrLoc(ev) {
+      this.currLoc = {};
+      [this.currLoc.lat, this.currLoc.lng] = [
+        ev.geometry.location.lat(),
+        ev.geometry.location.lng()
+      ];
+    },
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
@@ -111,13 +127,14 @@ export default {
         })
         .then(updatedIssue => console.log("issue updated"))
         .catch(err => console.warn(err));
-        this.$notify({
-          group: 'foo',
-          title: 'Report Status',
-          text: 'Report status', status,
-          type:'success',
-          duration:3000,
-        });
+      this.$notify({
+        group: "foo",
+        title: "Report Status",
+        text: "Report status",
+        status,
+        type: "success",
+        duration: 3000
+      });
     },
 
     openIssuePreview(issue) {
@@ -132,9 +149,9 @@ export default {
   },
 
   components: {
-    locSearchCmp,
     issueListCmp,
-    issuePreviewCmp
+    issuePreviewCmp,
+    autoComplete
   }
 };
 </script>
@@ -184,7 +201,7 @@ export default {
 .site-entrance {
   color: white;
   text-align: center;
-  background-image: url('../../public/img/site-entrance.jpg');
+  background-image: url("../../public/img/site-entrance.jpg");
   background-size: cover;
   background-position: -100px;
   padding: 15px;
@@ -208,7 +225,7 @@ h3 {
 }
 
 .main {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .view-pick {
