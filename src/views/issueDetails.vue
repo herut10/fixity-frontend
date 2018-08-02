@@ -46,6 +46,7 @@
                   <img v-else src = "http://via.placeholder.com/150x150">
 
                   <h6 v-if="user">{{user.username}}</h6>
+                  <h6 v-else>Unknown</h6>
                 </div>
               <div class="add-comment">
                 <form  class=" flex align-center space-between">

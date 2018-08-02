@@ -47,6 +47,11 @@ export default {
 
   created() {
     this.user = this.$store.getters[USER];
+    if (!this.user) {
+      this.$modal.show("loginModal");
+      this.$router.push("/");
+      return;
+    }
     this.getIssues();
     this.getComments();
   },
