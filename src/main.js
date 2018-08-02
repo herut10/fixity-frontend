@@ -7,7 +7,7 @@ import axios from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueCarousel from 'vue-carousel';
 import '@/assets/scss/main.scss';
-import socketio from 'socket.io-client';
+import socketio from 'socket.io-client/lib';
 import VueSocketio from 'vue-socket.io';
 import moment from 'moment';
 import Notifications from 'vue-notification';

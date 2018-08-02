@@ -25,11 +25,13 @@
         upload pictures
         <imgUpload @imgsUploaded="saveURLs"></imgUpload>
       </label>
-      <select v-model="newIssue.category">
+      <label class="flex" >Category:
+      <select  v-model="newIssue.category">
         <option value="pedestrian">Pedestrian</option>
         <option value="garbage">Garbage</option>
         <option value="construction">Construction</option>
       </select>
+      </label>
       <label>
         Submit as anonymous
         <input type="checkbox"/>
