@@ -74,15 +74,18 @@
 
 <script>
 import utilsService from "@/services/utilsService.js";
-import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
-import { UPDATE_ISSUE } from "@/store/issueModule.js";
-import { DELETE_ISSUE } from "@/store/issueModule.js";
-import { GET_COMMENTS } from "@/store/commentModule.js";
-import { LOAD_COMMENTS } from "@/store/commentModule.js";
-import { DELETE_COMMENTS } from "@/store/commentModule.js";
-import { USER } from "@/store/userModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import { ADD_COMMENT } from "@/store/commentModule.js";
+import {
+  GET_ISSUE_BY_ID,
+  UPDATE_ISSUE,
+  DELETE_ISSUE
+} from "@/store/issueModule.js";
+import {
+  DELETE_COMMENTS,
+  ADD_COMMENT,
+  LOAD_COMMENTS,
+  GET_COMMENTS
+} from "@/store/commentModule.js";
+import { USER, CURRLOC } from "@/store/userModule.js";
 import { Carousel, Slide } from "vue-carousel";
 
 export default {
