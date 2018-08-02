@@ -13,7 +13,7 @@
             </div> 
         </div>
         <div  class=" flex column">
-            <div class="toggle-btns">
+            <div class="toggle-btns flex">
                 <button :disabled="!toggleStatus" :class="{ active:!toggleStatus }" @click="toggleContent">User Reports</button>
                 <button :disabled="toggleStatus" :class="{active:toggleStatus}" @click="toggleContent">User Comments</button>
             </div>
@@ -164,9 +164,9 @@ export default {
 
 .toggle-btns {
   width: 90%;
-  text-align: center;
-  margin-bottom: 5px;
-  margin: 0 auto;
+    text-align: center;
+    margin-bottom: 10px;
+    align-self: center;
   button {
     &:first-child {
       border-radius: 8px 0 0 8px;
