@@ -31,7 +31,6 @@ import {
   faMapMarkedAlt,
   faListUl,
   faCamera,
-  faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
 import {
   FontAwesomeIcon
