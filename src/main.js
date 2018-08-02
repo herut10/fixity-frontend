@@ -15,10 +15,9 @@ import VModal from 'vue-js-modal';
 
 let socketURL = (process.env.NODE_ENV === 'development') ? 'http://localhost:3000' : socketURL = '/';
 Vue.use(VueSocketio, socketio(socketURL));
-Vue.use(Notifications)
-import {
-  library
-} from '@fortawesome/fontawesome-svg-core';
+Vue.use(Notifications);
+
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faCheck,
   faPlus,
@@ -30,9 +29,7 @@ import {
   faCamera,
   faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  FontAwesomeIcon
-} from '@fortawesome/vue-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(faArrowRight);
 library.add(faCheck);
@@ -44,20 +41,21 @@ library.add(faMapMarkedAlt);
 library.add(faListUl);
 library.add(faCamera);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+
 axios.defaults.crossDomain = true;
 
 Vue.config.productionTip = false;
 
 Vue.use(VModal, {
   dialog: true
-})
+});
 
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyAKgxLxUePB9fjgJ2D-IcAwXtx8BW9xEdg',
     libraries: 'places',
   },
-})
+});
 
 Vue.use(VueCarousel);
 

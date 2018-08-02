@@ -20,7 +20,7 @@
           <button @click.prevent="setLocationSelf">my location</button>
         </div>
         <input v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
-        <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
+        <textarea class="desc-input" v-model="newIssue.desc" placeholder="Description (required)"  ></textarea>
           <img-upload @imgsUploaded="saveURLs">Upload <font-awesome-icon icon="camera" class="active"/></img-upload>
         <label class="flex" >Category:
           <select  v-model="newIssue.category">
@@ -43,15 +43,14 @@
 </template>
 
 <script>
-import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
-import { SUBMIT_ISSUE } from '@/store/issueModule.js';
+import { ISSUES_TO_DISPLAY, SUBMIT_ISSUE } from '@/store/issueModule.js';
 import {
+  SET_CURRLOC,
+  USER,
   CURRLOC,
   HASBEENPROMPTED,
   SET_HASBEENPROMPTED
 } from '@/store/userModule.js';
-import { SET_CURRLOC } from '@/store/userModule.js';
-import { USER } from '@/store/userModule.js';
 import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
 import mapService from '@/services/mapService.js';
 import utilsService from '@/services/utilsService.js';
@@ -67,7 +66,7 @@ export default {
       newIssue: {
         title: '',
         address: '',
-        body: '',
+        desc: '',
         category: 'pedestrian',
         status: 'open',
         imgUrls: [],
@@ -147,7 +146,7 @@ export default {
     },
     onSubmit() {
       if (
-        !(this.newIssue.title && this.newIssue.body && this.newIssue.address)
+        !(this.newIssue.title && this.newIssue.desc && this.newIssue.address)
       ) {
         this.$modal.show('dialog', {
           title: 'MISSING DETAILS',
@@ -238,17 +237,16 @@ export default {
   }
 }
 
-
 label.anonymous,
-input[type='checkbox'],
+input[type="checkbox"],
 select {
   cursor: pointer;
 }
 .location-input {
   width: 100%;
 }
-input[type='password'],
-input[type='text'],
+input[type="password"],
+input[type="text"],
 textarea,
 select {
   display: block;
@@ -264,17 +262,17 @@ select {
   transition: 0.5s all;
   outline: none;
 }
-input[type='text'] {
+input[type="text"] {
   margin-right: 20px;
 }
 button,
-input[type='file'] {
+input[type="file"] {
   background: white;
   border-radius: 4px;
   box-sizing: border-box;
   padding: 10px;
   letter-spacing: 1px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   min-width: 140px;
   margin-top: 8px;
@@ -297,7 +295,7 @@ input[type='file'] {
   }
 }
 
-input[type='file'] {
+input[type="file"] {
   width: 100%;
 }
 

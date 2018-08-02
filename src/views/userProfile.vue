@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "user && issues && comments " class="userProfile main-user-container">
+    <section v-if = "user && issues && comments " class="user-profile main-user-container">
         <div class="top-user-container flex column">
             <H1>{{user.username}}</H1>
             <div class="img-container"><img :src="user.imgUrl"/>
@@ -28,14 +28,12 @@
 </template>
 
 <script>
-import userIssues from "@/components/issueCmps/userIssues.vue";
-import userComments from "@/components/issueCmps/userComments.vue";
-import { LOAD_ISSUES } from "@/store/issueModule.js";
-import { USER } from "@/store/userModule.js";
-import { GET_USER } from "@/store/userModule.js";
-import { GET_COMMENTS } from "@/store/commentModule.js";
-import { UPDATE_USER } from "@/store/userModule.js";
-import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
+import userIssues from '@/components/issueCmps/userIssues.vue';
+import userComments from '@/components/issueCmps/userComments.vue';
+import { LOAD_ISSUES } from '@/store/issueModule.js';
+import { USER,GET_USER,UPDATE_USER } from '@/store/userModule.js';
+import { GET_COMMENTS } from '@/store/commentModule.js';
+import imgUpload from '@/components/generalCmps/uploadImgCmp.vue';
 
 export default {
   data() {
@@ -49,6 +47,11 @@ export default {
 
   created() {
     this.user = this.$store.getters[USER];
+    if (!this.user) {
+      this.$modal.show('loginModal');
+      this.$router.push('/');
+      return;
+    }
     this.getIssues();
     this.getComments();
   },
@@ -84,7 +87,7 @@ export default {
     uploadPic() {
       this.$store
         .dispatch({ type: UPDATE_USER, user: this.user })
-        .then(user => console.log("user updated"))
+        .then(user => console.log('user updated'))
         .catch(err => console.warn(err));
     }
   },
@@ -105,7 +108,7 @@ export default {
   max-width: 100%;
   margin: 0 auto;
   h1 {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 2.5em;
   }
 }
@@ -171,10 +174,10 @@ export default {
   align-self: center;
   button {
     &:first-child {
-      border-radius: 8px 0 0 0;
+      border-radius: 8px 0 0 8px;
     }
     &:last-child {
-      border-radius: 0 8px 0 0;
+      border-radius: 0 8px 8px 0;
     }
     &:hover {
       color: white;

@@ -62,14 +62,14 @@ import {
   SET_ISSUES_VIEW,
   ISSUES_TO_DISPLAY,
   ISSUES_VIEW
-} from "@/store/issueModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
-import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
-import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
+} from '@/store/issueModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
+import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
+import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
 
 export default {
-  name: "home",
+  name: 'home',
 
   data() {
     return {
@@ -116,8 +116,8 @@ export default {
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
-      this.$refs.listIcon.classList.toggle("active");
-      this.$refs.mapIcon.classList.toggle("active");
+      this.$refs.listIcon.classList.toggle('active');
+      this.$refs.mapIcon.classList.toggle('active');
     },
     resolveIssue() {
       if (this.issue.status === 'closed') {
@@ -136,7 +136,7 @@ export default {
         this.notify('The report is now closed', 'success');
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify("The report is now modified", "success");
+        this.notify('The report is now modified', 'success');
       } else {
         this.notify('Failed to modify report', 'warn');
         return;

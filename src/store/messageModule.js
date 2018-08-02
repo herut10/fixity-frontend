@@ -2,12 +2,12 @@
 
 import commentService from '../services/commentService.js';
 
-export const GET_COMMENTS = 'comments/action/getComments'
-export const ADD_COMMENT = 'message/action/addComment'
-export const DELETE_COMMENTS = 'comments/action/deleteComments'
-export const SET_COMMENTS = 'comments/mutations/setComments'
-export const SET_COMMENT = 'message/mutations/setComment'
-export const LOAD_COMMENTS = 'message/getters/loadComments'
+export const GET_COMMENTS = 'comments/action/getComments';
+export const ADD_COMMENT = 'message/action/addComment';
+export const DELETE_COMMENTS = 'comments/action/deleteComments';
+export const SET_COMMENTS = 'comments/mutations/setComments';
+export const SET_COMMENT = 'message/mutations/setComment';
+export const LOAD_COMMENTS = 'message/getters/loadComments';
 export default {
     state: {
         comments: []
@@ -48,6 +48,7 @@ export default {
                     return message;
                 }).catch(err => console.warn(err))
         },
+        
         [DELETE_COMMENTS](context, {deleteBy}) {
             return commentService.deleteComments(deleteBy)
                 .then(deleteBy => {

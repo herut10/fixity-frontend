@@ -31,8 +31,10 @@ export default {
   },
 
   mounted() {
-
     var user = this.$store.getters[USER];
+    if (!user) {
+      return;
+    }
     var issueLiked = user.likes.find(
       userLike => userLike.issueId === this.issue._id
     );
@@ -41,14 +43,12 @@ export default {
 
   methods: {
     changeIssueLikes(likeType) {
-      //TODO: only logged in user can like. if user is not logged- open the modal for signing up.
       var user = this.$store.getters[USER];
-      // var userPrompt = this.$store.state.isPrompted;
-      // if (!user && !userPrompt) {
-      //   this.$modal.show('dialog', dialogModal);
-      // } else {
-      //   this.$modal.show('loginModal');
-      // }
+      if (!user) {
+        this.$modal.show('loginModal');
+        return;
+      }
+      
       var updatedUser = JSON.parse(JSON.stringify(user));
       var userLikes = user.likes;
       var issueLiked = userLikes.find(
@@ -142,8 +142,8 @@ export default {
   opacity: 0;
   text-align: center;
   font-size: 0.6em;
-  font-family: 'Open Sans', sans-serif;
-  transition: all .6s;
+  font-family: "Open Sans", sans-serif;
+  transition: all 0.6s;
   transform: translate(0, 5px);
 }
 </style>

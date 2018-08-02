@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "footerNavbar"
+  name: 'footerNavbar'
 };
 </script>
 

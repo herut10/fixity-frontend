@@ -47,13 +47,16 @@
             <h2>Communicate</h2>
               <div class="new-message comment-container flex row">
                 <div class="commenter">
-                  <img :src = "user.imgUrl">
-                  <h6>{{user.username}}</h6>
+                  <img v-if="user" :src = "user.imgUrl">
+                  <img v-else src = "http://via.placeholder.com/150x150">
+
+                  <h6 v-if="user">{{user.username}}</h6>
+                  <h6 v-else>Unknown</h6>
                 </div>
               <div class="add-comment">
-                <form @click.prevent="addComment" class=" flex align-center space-between">
-                  <input class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
-                  <button class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
+                <form  class=" flex align-center space-between">
+                  <input v-on:keyup.enter="addComment" class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
+                  <button @click.prevent="addComment" class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
                 </form>
               </div>
             </div>
@@ -76,15 +79,18 @@
 
 <script>
 import utilsService from '@/services/utilsService.js';
-import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
-import { UPDATE_ISSUE } from '@/store/issueModule.js';
-import { DELETE_ISSUE } from '@/store/issueModule.js';
-import { GET_COMMENTS } from '@/store/commentModule.js';
-import { LOAD_COMMENTS } from '@/store/commentModule.js';
-import { DELETE_COMMENTS } from '@/store/commentModule.js';
-import { USER } from '@/store/userModule.js';
-import { CURRLOC } from '@/store/userModule.js';
-import { ADD_COMMENT } from '@/store/commentModule.js';
+import {
+  GET_ISSUE_BY_ID,
+  UPDATE_ISSUE,
+  DELETE_ISSUE
+} from '@/store/issueModule.js';
+import {
+  DELETE_COMMENTS,
+  ADD_COMMENT,
+  LOAD_COMMENTS,
+  GET_COMMENTS
+} from '@/store/commentModule.js';
+import { USER, CURRLOC } from '@/store/userModule.js';
 import { Carousel, Slide } from 'vue-carousel';
 
 export default {
@@ -92,7 +98,6 @@ export default {
     return {
       issue: null,
       comments: [],
-      user: {},
       newMessage: ''
     };
   },
@@ -101,7 +106,6 @@ export default {
     let issueId = this.$route.params.issueId;
     this.getIssue(issueId);
     this.getComments(issueId);
-    this.user = this.$store.getters[USER];
   },
 
   methods: {
@@ -125,6 +129,10 @@ export default {
     },
 
     addComment() {
+      if (!this.user) {
+        this.$modal.show('loginModal');
+        return;
+      }
       var comment = {
         comment: {
           issueId: this.issue._id,
@@ -144,6 +152,10 @@ export default {
         this.notify('Report already closed', 'warn');
         return;
       }
+      if (!this.user) {
+        this.$modal.show('loginModal');
+        return;
+      }
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
       var userDistance = utilsService.getDistanceFromLatLngInKm(
@@ -155,7 +167,7 @@ export default {
         this.notify('The report is now closed', 'success', 'Report Status');
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify('The report is now modified', 'success', 'Report Status');
+        this.notify('The report is now recognaized', 'success', 'Report Status');
       } else {
         this.notify('Failed to modify report', 'warn', 'Report Status');
         return;
@@ -218,6 +230,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.getters[USER];
+    },
     reverseComments() {
       return this.comments.reverse();
     }

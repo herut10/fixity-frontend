@@ -5,32 +5,29 @@
     <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
-    <loginModal />
-    <footerNavbar />
-    <v-dialog/>
-
-
-    
+    <login-modal />
+    <footer-navbar />
+    <v-dialog/>  
   </div>
 </template>
 
 <script>
-import mapService from "@/services/mapService.js";
-import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
-import footerNavbar from "@/components/generalCmps/footerNavbarCmp.vue";
-import about from "@/views/about.vue";
-import { LOAD_CURRLOC, SET_USER } from "@/store/userModule.js";
-import { SET_COMMENT } from "@/store/commentModule.js";
-import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from "@/store/issueModule.js";
-import loginModal from "@/components/generalCmps/loginModalCmp.vue";
+import mapService from '@/services/mapService.js';
+import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
+import footerNavbar from '@/components/generalCmps/footerNavbarCmp.vue';
+import about from '@/views/about.vue';
+import loginModal from '@/components/generalCmps/loginModalCmp.vue';
+import { LOAD_CURRLOC, SET_USER } from '@/store/userModule.js';
+import { SET_COMMENT } from '@/store/commentModule.js';
+import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from '@/store/issueModule.js';
 
 export default {
-  name: "app",
+  name: 'app',
 
   created() {
     this.$store.dispatch({ type: LOAD_ISSUES });
     this.$store.dispatch({ type: LOAD_CURRLOC });
-    // this.$socket.emit("emit_method", 15);//testing sockets
+    // this.$socket.emit('emit_method', 15);//testing sockets
   },
   sockets: {
     issueAdded(issueToSubmit) {
@@ -44,7 +41,7 @@ export default {
     },
 
     errorAdding() {
-      console.log("errorAdding");
+      console.log('errorAdding');
     },
 
     issueLikesChanged(updatedIssue) {
@@ -58,8 +55,8 @@ export default {
 
   methods: {
     toggleAbout() {
-      this.$refs.about.$el.classList.toggle("about-open");
-      this.$refs.curtain.classList.toggle("curtain-show");
+      this.$refs.about.$el.classList.toggle('about-open');
+      this.$refs.curtain.classList.toggle('curtain-show');
     }
   },
 
@@ -71,7 +68,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss" scoped>
 #app {
