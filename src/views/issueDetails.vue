@@ -42,13 +42,15 @@
             <h2>Communicate</h2>
               <div class="new-message comment-container flex row">
                 <div class="commenter">
-                  <img :src = "user.imgUrl">
-                  <h6>{{user.username}}</h6>
+                  <img v-if="user" :src = "user.imgUrl">
+                  <img v-else src = "http://via.placeholder.com/150x150">
+
+                  <h6 v-if="user">{{user.username}}</h6>
                 </div>
               <div class="add-comment">
-                <form @click.prevent="addComment" class=" flex align-center space-between">
-                  <input class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
-                  <button class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
+                <form  class=" flex align-center space-between">
+                  <input v-on:keyup.enter="addComment" class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
+                  <button @click.prevent="addComment" class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
                 </form>
               </div>
             </div>
@@ -70,25 +72,24 @@
 </template>
 
 <script>
-import utilsService from '@/services/utilsService.js';
-import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
-import { UPDATE_ISSUE } from '@/store/issueModule.js';
-import { DELETE_ISSUE } from '@/store/issueModule.js';
-import { GET_COMMENTS } from '@/store/commentModule.js';
-import { LOAD_COMMENTS } from '@/store/commentModule.js';
-import { DELETE_COMMENTS } from '@/store/commentModule.js';
-import { USER } from '@/store/userModule.js';
-import { CURRLOC } from '@/store/userModule.js';
-import { ADD_COMMENT } from '@/store/commentModule.js';
-import { Carousel, Slide } from 'vue-carousel';
+import utilsService from "@/services/utilsService.js";
+import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
+import { UPDATE_ISSUE } from "@/store/issueModule.js";
+import { DELETE_ISSUE } from "@/store/issueModule.js";
+import { GET_COMMENTS } from "@/store/commentModule.js";
+import { LOAD_COMMENTS } from "@/store/commentModule.js";
+import { DELETE_COMMENTS } from "@/store/commentModule.js";
+import { USER } from "@/store/userModule.js";
+import { CURRLOC } from "@/store/userModule.js";
+import { ADD_COMMENT } from "@/store/commentModule.js";
+import { Carousel, Slide } from "vue-carousel";
 
 export default {
   data() {
     return {
       issue: null,
       comments: [],
-      user: {},
-      newMessage: ''
+      newMessage: ""
     };
   },
 
@@ -96,7 +97,6 @@ export default {
     let issueId = this.$route.params.issueId;
     this.getIssue(issueId);
     this.getComments(issueId);
-    this.user = this.$store.getters[USER];
   },
 
   methods: {
@@ -120,6 +120,10 @@ export default {
     },
 
     addComment() {
+      if (!this.user) {
+        this.$modal.show("loginModal");
+        return;
+      }
       var comment = {
         comment: {
           issueId: this.issue._id,
@@ -129,14 +133,18 @@ export default {
         },
         commenter: this.user
       };
-      this.newMessage = '';
-      this.notify('Your comment was added', 'success', 'Comment Status');
-      this.$socket.emit('commentSent', comment);
+      this.newMessage = "";
+      this.notify("Your comment was added", "success", "Comment Status");
+      this.$socket.emit("commentSent", comment);
     },
 
     resolveIssue() {
-      if (this.issue.status === 'closed') {
-        this.notify('Report already closed', 'warn');
+      if (this.issue.status === "closed") {
+        this.notify("Report already closed", "warn");
+        return;
+      }
+      if (!this.user) {
+        this.$modal.show("loginModal");
         return;
       }
       var userLoc = this.$store.getters[CURRLOC];
@@ -146,13 +154,13 @@ export default {
         userLoc
       );
       if (this.authorizedToClose(this.user, updatedIssue, userDistance)) {
-        updatedIssue.status = 'closed';
-        this.notify('The report is now closed', 'success', 'Report Status');
+        updatedIssue.status = "closed";
+        this.notify("The report is now closed", "success", "Report Status");
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify('The report is now modified', 'success', 'Report Status');
+        this.notify("The report is now modified", "success", "Report Status");
       } else {
-        this.notify('Failed to modify report', 'warn', 'Report Status');
+        this.notify("Failed to modify report", "warn", "Report Status");
         return;
       }
       this.$store
@@ -173,7 +181,7 @@ export default {
 
     notify(text, type, title) {
       this.$notify({
-        group: 'foo',
+        group: "foo",
         title: title,
         text: text,
         type: type,
@@ -190,13 +198,13 @@ export default {
           this.$store
             .dispatch({ type: DELETE_ISSUE, issueId: this.issue._id })
             .then(() => {
-              console.log('issue deleted');
+              console.log("issue deleted");
               this.notify(
-                this.issue.title + ' ' + 'deleted',
-                'success',
-                'Report Delete'
+                this.issue.title + " " + "deleted",
+                "success",
+                "Report Delete"
               );
-              this.$router.push('/');
+              this.$router.push("/");
             })
             .catch(err => console.warn(err));
         })
@@ -213,6 +221,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.getters[USER];
+    },
     reverseComments() {
       return this.comments.reverse();
     }

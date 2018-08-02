@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from '@/store/issueModule.js';
-import { USER, UPDATE_USER } from '@/store/userModule.js';
+import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from "@/store/issueModule.js";
+import { USER, UPDATE_USER } from "@/store/userModule.js";
 
 export default {
-  name: 'issueLikes',
+  name: "issueLikes",
 
   props: {
     issue: {
@@ -32,12 +32,14 @@ export default {
   },
 
   mounted() {
-
     var user = this.$store.getters[USER];
+    if (!user) {
+      return;
+    }
     var issueLiked = user.likes.find(
       userLike => userLike.issueId === this.issue._id
     );
-    if (issueLiked) this.$refs[issueLiked.likeType].classList.add('clicked');
+    if (issueLiked) this.$refs[issueLiked.likeType].classList.add("clicked");
   },
 
   methods: {
@@ -61,14 +63,14 @@ export default {
         this.$store
           .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
-            console.log('Like updated successfully');
+            console.log("Like updated successfully");
             updatedUser.likes.push({ issueId: this.issue._id, likeType });
             this.updateUser(updatedUser);
-            this.$refs[likeType].classList.toggle('clicked');
-            this.$socket.emit('issueLikesChanged', updatedIssue);
+            this.$refs[likeType].classList.toggle("clicked");
+            this.$socket.emit("issueLikesChanged", updatedIssue);
           })
           .catch(() => {
-            console.log('Problem liking issue');
+            console.log("Problem liking issue");
           });
       } else {
         var updatedIssue = JSON.parse(JSON.stringify(this.issue));
@@ -90,13 +92,13 @@ export default {
           .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
             this.updateUser(updatedUser);
-            this.$refs[likeType].classList.toggle('clicked');
-            this.$refs[issueLiked.likeType].classList.toggle('clicked');
-            console.log('Like updated successfully');
-            this.$socket.emit('issueLikesChanged', updatedIssue);
+            this.$refs[likeType].classList.toggle("clicked");
+            this.$refs[issueLiked.likeType].classList.toggle("clicked");
+            console.log("Like updated successfully");
+            this.$socket.emit("issueLikesChanged", updatedIssue);
           })
           .catch(() => {
-            console.log('Problem liking issue');
+            console.log("Problem liking issue");
           });
       }
     },
@@ -105,10 +107,10 @@ export default {
       this.$store
         .dispatch({ type: UPDATE_USER, user: userToUpdate })
         .then(() => {
-          console.log('User like updated successfully');
+          console.log("User like updated successfully");
         })
         .catch(() => {
-          console.log('Problem updating user likes');
+          console.log("Problem updating user likes");
         });
     }
   }
@@ -143,8 +145,8 @@ export default {
   opacity: 0;
   text-align: center;
   font-size: 0.6em;
-  font-family: 'Open Sans', sans-serif;
-  transition: all .6s;
+  font-family: "Open Sans", sans-serif;
+  transition: all 0.6s;
   transform: translate(0, 5px);
 }
 </style>
