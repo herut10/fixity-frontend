@@ -12,6 +12,10 @@
     flex-direction: column;
 }
 
+.row {
+    flex-direction: row;
+}
+
 .space-around {
     justify-content: space-around;
 }
@@ -31,9 +35,11 @@
 .align-center {
     align-items: center;
 }
-.align-baseline{
+
+.align-baseline {
     align-items: baseline;
 }
+
 .flex-wrap {
     flex-wrap: wrap;
 }
