@@ -29,10 +29,8 @@
 import userIssues from "@/components/issueCmps/userIssues.vue";
 import userComments from "@/components/issueCmps/userComments.vue";
 import { LOAD_ISSUES } from "@/store/issueModule.js";
-import { USER } from "@/store/userModule.js";
-import { GET_USER } from "@/store/userModule.js";
+import { USER,GET_USER,UPDATE_USER } from "@/store/userModule.js";
 import { GET_COMMENTS } from "@/store/commentModule.js";
-import { UPDATE_USER } from "@/store/userModule.js";
 import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
 
 export default {
