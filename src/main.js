@@ -7,18 +7,20 @@ import axios from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps';
 import VueCarousel from 'vue-carousel';
 import '@/assets/scss/main.scss';
-import socketio from 'socket.io-client';
+import socketio from 'socket.io-client/lib';
 import VueSocketio from 'vue-socket.io';
 import moment from 'moment';
 import Notifications from 'vue-notification';
 import VModal from 'vue-js-modal';
 
-let socketURL = (process.env.NODE_ENV === 'development')? 'http://localhost:3000' : socketURL = '/';
+let socketURL = (process.env.NODE_ENV === 'development') ? 'http://localhost:3000' : socketURL = '/';
 Vue.use(VueSocketio, socketio(socketURL));
 Vue.use(Notifications)
 
 import cloudinary from 'cloudinary';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  library
+} from '@fortawesome/fontawesome-svg-core';
 import {
   faCheck,
   faPlus,
@@ -29,8 +31,11 @@ import {
   faListUl,
   faCamera
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  FontAwesomeIcon
+} from '@fortawesome/vue-fontawesome';
 
+library.add(faArrowRight);
 library.add(faCheck);
 library.add(faPlus);
 library.add(faInfoCircle);

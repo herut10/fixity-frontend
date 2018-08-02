@@ -40,9 +40,18 @@
 
         <div class="issue-comments">
             <h2>Comments</h2>
-            <button class="add-btn" @click = "toggleModal">Add</button>
-            <div class="comments-container" v-for ='comment in comments' :key="comment._id">
-                <div class="comment-container flex">
+              <div class="new-message comment-container flex row">
+                <div class="commenter">
+                  <img :src = "user.imgUrl">
+                  <h6>{{user.username}}</h6>
+                </div>
+              <div class="comment-content flex">
+                <input class="user-input" v-model="newMessage" type="text"/>
+                <button class="btn send-btn" @click = "addComment"><font-awesome-icon icon="arrow-right" /></button>
+              </div>
+            </div>
+            <div class="comments-container">
+                <div class="comment-container flex" v-for ='comment in reverseComments' :key="comment._id">
                     <div class="commenter">
                         <img :src = "comment.commenter.imgUrl">
                         <h6>{{comment.commenter.username}}</h6>
@@ -53,20 +62,13 @@
                     </div>
                 </div>
             </div>
-            
-            <div v-if="openModal" class="reply-box flex" >
-              <div class="reply">comment:
-                <button @click="toggleModal">X</button>
-                <div contenteditable="true" ref="commentContent" v-focus = true></div>
-                <button @click="addComment">Add Comment</button>
-              </div>
-            </div>
+
         </div>
     </section>
 </template>
 
 <script>
-import utilsService from '@/services/utilsService.js'
+import utilsService from "@/services/utilsService.js";
 import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
 import { UPDATE_ISSUE } from "@/store/issueModule.js";
 import { DELETE_ISSUE } from "@/store/issueModule.js";
@@ -83,8 +85,8 @@ export default {
     return {
       issue: null,
       comments: [],
-      openModal: false,
-      user:{},
+      user: {},
+      newMessage: ""
     };
   },
 
@@ -111,90 +113,108 @@ export default {
         .then(comments => {
           this.comments = comments;
           console.log(this.comments);
-          
         })
         .catch(err => console.warn(err));
     },
 
     addComment() {
-      var txt = this.$refs.commentContent.innerText;
-        var comment = {
-            comment:{
-            issueId: this.issue._id,
-            commenterId: this.user._id,
-            txt:txt,
-            createdAt: Date.now(),
-            },
-            commenter: this.user,
-        };
-        this.notify('Your comment was added', 'success','Comment Status')
-        this.$socket.emit("commentSent", comment);
-        this.toggleModal();
-    },
-
-    toggleModal() {
-      this.openModal = this.openModal ? false : true;
+      var comment = {
+        comment: {
+          issueId: this.issue._id,
+          commenterId: this.user._id,
+          txt: this.newMessage,
+          createdAt: Date.now()
+        },
+        commenter: this.user
+      };
+      this.newMessage = "";
+      this.notify("Your comment was added", "success", "Comment Status");
+      this.$socket.emit("commentSent", comment);
     },
 
     resolveIssue() {
-      if(this.issue.status === 'closed') {
-        this.notify('Report already closed', 'warn');
+      if (this.issue.status === "closed") {
+        this.notify("Report already closed", "warn");
         return;
-      }  
+      }
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
-      var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
-      if(this.authorizedToClose(this.user, updatedIssue, userDistance)) {
-        updatedIssue.status = 'closed';
-        this.notify('The report is now closed', 'success','Report Status');
-      } else if(userDistance <=0.5){
+      var userDistance = utilsService.getDistanceFromLatLngInKm(
+        updatedIssue.loc,
+        userLoc
+      );
+      if (this.authorizedToClose(this.user, updatedIssue, userDistance)) {
+        updatedIssue.status = "closed";
+        this.notify("The report is now closed", "success", "Report Status");
+      } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify('The report is now modified', 'success','Report Status');
+        this.notify("The report is now modified", "success", "Report Status");
       } else {
-        this.notify('Failed to modify report', 'warn','Report Status');
+        this.notify("Failed to modify report", "warn", "Report Status");
         return;
-      }  
-      this.$store.dispatch({type:UPDATE_ISSUE, updatedIssue})
-        .then(updatedIssue=> {
+      }
+      this.$store
+        .dispatch({ type: UPDATE_ISSUE, updatedIssue })
+        .then(updatedIssue => {
           this.issue = updatedIssue;
         })
-        .catch(err=>console.warn(err));
+        .catch(err => console.warn(err));
     },
 
     authorizedToClose(user, updatedIssue, userDistance) {
-      return user._id === updatedIssue.reportedBy||user.isAdmin||
-      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5);
+      return (
+        user._id === updatedIssue.reportedBy ||
+        user.isAdmin ||
+        (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
+      );
     },
 
     notify(text, type, title) {
-        this.$notify({
-          group: 'foo',
-          title: title,
-          text: text,
-          type: type,
-          duration: 5000,
-        });
+      this.$notify({
+        group: "foo",
+        title: title,
+        text: text,
+        type: type,
+        duration: 5000
+      });
     },
     deleteIssue() {
-      this.$store.dispatch({type:DELETE_COMMENTS, deleteBy:{issueId:this.issue._id}})
+      this.$store
+        .dispatch({
+          type: DELETE_COMMENTS,
+          deleteBy: { issueId: this.issue._id }
+        })
         .then(() => {
-          this.$store.dispatch({type:DELETE_ISSUE, issueId:this.issue._id})
+          this.$store
+            .dispatch({ type: DELETE_ISSUE, issueId: this.issue._id })
             .then(() => {
-              console.log('issue deleted');
-              this.notify(this.issue.title +' '+'deleted', 'success', 'Report Delete');
-              this.$router.push('/');
-            }).catch(err => console.warn(err))
+              console.log("issue deleted");
+              this.notify(
+                this.issue.title + " " + "deleted",
+                "success",
+                "Report Delete"
+              );
+              this.$router.push("/");
+            })
+            .catch(err => console.warn(err));
         })
         .catch(err => console.warn(err));
     },
 
     deleteComment(commentId) {
-      this.$store.dispatch({type:DELETE_COMMENTS, deleteBy:{_id:commentId}})
-        .then(()=> {
+      this.$store
+        .dispatch({ type: DELETE_COMMENTS, deleteBy: { _id: commentId } })
+        .then(() => {
           this.comments = this.$store.getters[LOAD_COMMENTS];
-        }).catch(err=> console.warn)
+        })
+        .catch(err => console.warn);
     }
-  },  
+  },
+  computed:{
+    reverseComments(){
+      return this.comments.reverse();
+    }
+  },
 
   directives: {
     focus: {
@@ -212,6 +232,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-input {
+  height: 100%;
+}
+
+.comments-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
 @media (min-width: 980px) {
   .issue-content {
     // display: grid;
@@ -233,6 +262,14 @@ export default {
     // grid-column-start: 2;
     height: 200px;
   }
+}
+.user-input {
+  width: 100%;
+  border-radius: 1000px;
+  border: none;
+  box-shadow: brown;
+  background-color: white;
+  box-shadow: 2px 2px 6px 0px black;
 }
 
 .issue-details {
@@ -287,6 +324,10 @@ h5 {
   &:not(:last-of-type) {
     text-transform: capitalize;
   }
+}
+.btn.send-btn {
+  width: 60px;
+  border-radius: 10000px;
 }
 
 label {

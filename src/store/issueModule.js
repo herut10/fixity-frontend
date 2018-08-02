@@ -18,7 +18,7 @@ export const DELETE_ISSUE = 'issue/actions/deleteIssue';
 
 export default {
     state: {
-        issues: [],
+        issues: null,
         issuesView: 'list'
     },
 
@@ -41,7 +41,9 @@ export default {
             state.issues.push(issueToSubmit)
         },
 
-        [SET_ISSUES_VIEW](state, { viewType }) {
+        [SET_ISSUES_VIEW](state, {
+            viewType
+        }) {
             state.issuesView = viewType;
         }
     },
@@ -69,7 +71,9 @@ export default {
     },
 
     actions: {
-        [LOAD_ISSUES](context, { getBy }) {
+        [LOAD_ISSUES](context, {
+            getBy
+        }) {
             if (!getBy) getBy = {};
 
             return issueService.query(getBy)
@@ -82,12 +86,16 @@ export default {
                 })
         },
 
-        [GET_ISSUE_BY_ID](context, { issueId }) {
+        [GET_ISSUE_BY_ID](context, {
+            issueId
+        }) {
             return issueService.getIssueById(issueId)
                 .then(issue => issue)
         },
 
-        [UPDATE_ISSUE](context, { updatedIssue }) {
+        [UPDATE_ISSUE](context, {
+            updatedIssue
+        }) {
             return issueService.updateIssue(updatedIssue._id, updatedIssue)
                 .then(updatedIssue => {
                     context.commit({
@@ -98,12 +106,17 @@ export default {
                 })
         },
 
-        [DELETE_ISSUE](context, {issueId}) {
+        [DELETE_ISSUE](context, {
+            issueId
+        }) {
             issueService.deleteIssue(issueId)
                 .then(issueId => {
                     var issues = context.getters[ISSUES_TO_DISPLAY];
-                    issues = issues.filter(issue=> issue._id !== issueId);
-                    context.commit({type:SET_ISSUES, issues})                    
+                    issues = issues.filter(issue => issue._id !== issueId);
+                    context.commit({
+                        type: SET_ISSUES,
+                        issues
+                    })
                 }).catch(err => console.warn(err))
         }
 

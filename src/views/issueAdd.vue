@@ -1,7 +1,7 @@
 <template>
     <section class="issue-add flex column align-center">
       <GmapMap
-        :center="center"
+        :center="mapCenter"
         @click="setCenter"
         :zoom="17"
         map-type-id="terrain"
@@ -25,11 +25,13 @@
         upload pictures
         <imgUpload @imgsUploaded="saveURLs"></imgUpload>
       </label>
-      <select v-model="newIssue.category">
+      <label class="flex" >Category:
+      <select  v-model="newIssue.category">
         <option value="pedestrian">Pedestrian</option>
         <option value="garbage">Garbage</option>
         <option value="construction">Construction</option>
       </select>
+      </label>
       <label>
         Submit as anonymous
         <input type="checkbox"/>
@@ -80,6 +82,10 @@ export default {
           likeShocked: 0,
           likeDisgusted: 0
         }
+      },
+      mapCenter: {
+        lat: 10,
+        lng: 10
       },
       center: {
         lat: 10,
@@ -185,12 +191,15 @@ export default {
       var loc = this.$store.getters[CURRLOC];
       if (loc) {
         this.center = JSON.parse(JSON.stringify(loc));
+        this.mapCenter = JSON.parse(JSON.stringify(this.center));
       } else {
         navigator.geolocation.getCurrentPosition(position => {
           this.center = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
+          this.mapCenter = JSON.parse(JSON.stringify(this.center));
+
           this.$store.commit({
             type: SET_CURRLOC,
             currLoc: this.center
