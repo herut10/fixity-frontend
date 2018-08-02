@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "user && issues && comments " class="main-user-container">
+    <section v-if = "user && issues && comments " class="userProfile main-user-container">
         <div class="top-user-container flex column">
             <H1>{{user.username}}</H1>
             <div class="img-container"><img :src="user.imgUrl"/>

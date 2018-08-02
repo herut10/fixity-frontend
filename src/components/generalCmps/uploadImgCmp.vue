@@ -67,13 +67,22 @@ export default {
 <style scoped>
 input {
   position: fixed;
-  top:-100vh;
+  top: -100vh;
   width: 0;
   height: 0;
 }
 
 label {
   cursor: pointer;
-  width:fit-content;
+  width: fit-content;
+  border-radius: 8px;
+  border: 1.5px solid #69c8a4;
+  color: #69c8a4;
+  font-size: 0.9em;
+  background-color: white;
+  padding: 5px 10px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  margin-bottom: 20px;
 }
 </style>

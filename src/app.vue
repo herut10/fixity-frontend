@@ -52,7 +52,7 @@ export default {
     },
 
     commentReceived(comment) {
-      this.$store.commit({type:SET_COMMENT, comment});
+      this.$store.commit({ type: SET_COMMENT, comment });
     }
   },
 

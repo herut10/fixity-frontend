@@ -16,8 +16,6 @@ import VModal from 'vue-js-modal';
 let socketURL = (process.env.NODE_ENV === 'development') ? 'http://localhost:3000' : socketURL = '/';
 Vue.use(VueSocketio, socketio(socketURL));
 Vue.use(Notifications)
-
-import cloudinary from 'cloudinary';
 import {
   library
 } from '@fortawesome/fontawesome-svg-core';
@@ -29,7 +27,8 @@ import {
   faHome,
   faMapMarkedAlt,
   faListUl,
-  faCamera
+  faCamera,
+  faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
 import {
   FontAwesomeIcon
