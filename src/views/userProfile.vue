@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "user && issues && comments " class="main-user-container container">
+    <section v-if = "user && issues && comments " class="userProfile main-user-container">
         <div class="top-user-container flex column">
             <H1>{{user.username}}</H1>
             <div class="img-container"><img :src="user.imgUrl"/>
@@ -170,16 +170,21 @@ export default {
   align-self: center;
   button {
     &:first-child {
-      border-radius: 8px 0 0 8px;
+      border-radius: 8px 0 0 0;
     }
     &:last-child {
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 8px 0 0;
+    }
+    &:hover {
+      color: white;
+      background-color: #69c8a4b9;
     }
     font-size: 1.07em;
     width: 50%;
     background-color: white;
     color: #69c8a4;
-    border: 1.5px solid #69c8a4;
+    border: 1px solid #69c8a4;
+    transition: all 0.3s;
   }
   .active {
     background-color: #69c8a4;
