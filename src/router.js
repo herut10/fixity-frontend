@@ -9,11 +9,8 @@ import userProfile from './views/userProfile.vue'
 Vue.use(Router)
 
 export default new Router({
-  routes: [    {
-      path: '/about',
-      name: 'about',
-      component: about
-    },{
+  routes: [
+    {
       path: '/',
       name: 'home',
       component: home
@@ -29,7 +26,7 @@ export default new Router({
       name: 'issueAdd',
       component: issueAdd
     },
-    
+
     {
       path: '/user',
       name: 'user',
