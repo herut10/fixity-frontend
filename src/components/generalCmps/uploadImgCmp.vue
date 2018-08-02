@@ -1,14 +1,14 @@
 <template>
     <label>
       <slot>default</slot>
-    <input  type="file" 
-    accept="image/*" 
-    v-bind:multiple="!single"  v-on:change="upload($event.target.files)"/>
+      <input  type="file" 
+      accept="image/*" 
+      v-bind:multiple="!single"  v-on:change="upload($event.target.files)"/>
     </label>
 </template>
 ​
 <script>
-import axios from "axios";
+import axios from 'axios';
 export default {
   props: {
     single: {
@@ -21,9 +21,9 @@ export default {
   data() {
     return {
       cloudinary: {
-        uploadPreset: "qtz1qjeq",
-        apiKey: "746648462286187",
-        cloudName: "djewvb6ty"
+        uploadPreset: 'qtz1qjeq',
+        apiKey: '746648462286187',
+        cloudName: 'djewvb6ty'
       }
     };
   },
@@ -41,8 +41,8 @@ export default {
       var formData;
       for (let i = 0; i < files.length; i++) {
         formData = new FormData();
-        formData.append("file", files[i]);
-        formData.append("upload_preset", this.cloudinary.uploadPreset);
+        formData.append('file', files[i]);
+        formData.append('upload_preset', this.cloudinary.uploadPreset);
         uploadPrms[i] = axios.post(this.clUrl, formData);
       }
       Promise.all(uploadPrms)
@@ -52,7 +52,7 @@ export default {
           });
         })
         .then(URLs => {
-          that.$emit("imgsUploaded", URLs);
+          that.$emit('imgsUploaded', URLs);
         });
 
       //   axios.post(this.clUrl, formData, { withCredentials: false }).then(res => {
@@ -64,7 +64,7 @@ export default {
 };
 </script>
 ​
-<style scoped>
+<style lang="scss" scoped>
 input {
   position: fixed;
   top: -100vh;
@@ -75,14 +75,19 @@ input {
 label {
   cursor: pointer;
   width: fit-content;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1.5px solid #69c8a4;
   color: #69c8a4;
-  font-size: 0.9em;
+  font-size: 0.7em;
   background-color: white;
   padding: 5px 10px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  margin-bottom: 20px;
+  margin: 10px 0;
+  &:hover {
+    color: white;
+    border-color: #4b9076;
+    background-color: #69c8a4;
+  }
 }
 </style>

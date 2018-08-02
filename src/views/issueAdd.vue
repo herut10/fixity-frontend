@@ -21,7 +21,7 @@
         </div>
         <input v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
         <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
-          <imgUpload @imgsUploaded="saveURLs">upload <font-awesome-icon icon="camera" class="active"/></imgUpload>
+          <img-upload @imgsUploaded="saveURLs">Upload <font-awesome-icon icon="camera" class="active"/></img-upload>
         <label class="flex" >Category:
           <select  v-model="newIssue.category">
             <option value="pedestrian">Pedestrian</option>
@@ -304,7 +304,7 @@ input[type='file'] {
 .vue-map-container {
   width: 100%;
   max-width: 450px;
-  height: 340px;
+  height: 320px;
   margin-bottom: 15px;
 }
 
@@ -314,6 +314,6 @@ form {
   padding: 10px;
   width: 100%;
   max-width: 450px;
-  height: 340px;
+  height: 320px;
 }
 </style>

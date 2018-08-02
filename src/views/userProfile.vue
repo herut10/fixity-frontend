@@ -7,9 +7,11 @@
             
             </div>
             <div class="upload-container flex align-center space-between">
+                <imgUpload class="img-uploader" @imgsUploaded="saveURL">
+                  <span class="upload">Upload</span>
+                  <font-awesome-icon icon="camera" class="active"/>
+                </imgUpload>
                 <button class="upload-btn" @click="uploadPic">Save</button>
-                <imgUpload class="img-uploader" @imgsUploaded="saveURL"><span class="upload">Upload</span>
-                <font-awesome-icon icon="camera" class="active"/></imgUpload>
             </div> 
         </div>
         <div  class="right-side flex column">
@@ -97,7 +99,7 @@ export default {
 
 <style lang="scss" scoped>
 .main-user-container {
-  padding-top: 30px;
+  padding-top: 15px;
   padding-bottom: 15px;
   overflow: hidden;
   max-width: 100%;
@@ -120,6 +122,7 @@ export default {
 }
 
 .upload-container {
+  margin-bottom: 20px;
   width: 160px;
   span {
     margin-right: 10px;
@@ -133,7 +136,6 @@ export default {
     padding: 5px 10px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
-    margin-bottom: 20px;
     &:hover {
       color: white;
       border-color: #4b9076;
@@ -155,7 +157,6 @@ export default {
   padding: 5px 10px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  margin-bottom: 20px;
   &:hover {
     color: white;
     border-color: #4b9076;

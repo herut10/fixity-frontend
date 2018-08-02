@@ -3,10 +3,15 @@
     <section v-if = "issue" class="issue-details container flex column" >
         <div class="issue-header flex space-between align-center">
             <h1 class="issue-title">{{issue.title}}</h1>
-            <button @click= "resolveIssue">
+            <button @click="resolveIssue">
               <font-awesome-icon icon="check" />
               Resolve
             </button>
+        </div>
+
+        <div v-if="issue.status==='closed'" class="resolved-stamp flex">
+            <font-awesome-icon icon="check" />
+            <h3>Issue Resolved</h3>
         </div>
 
         <div class="issue-content">
@@ -305,6 +310,21 @@ svg {
   margin: 0 auto;
 }
 
+.resolved-stamp {
+  color: #50b891;
+  background-color: #66d3aa7a;
+  padding: 5px;
+  width: fit-content;
+  margin-bottom: 10px;
+  h3 {
+    font-weight: normal;
+  }
+
+  svg {
+    margin: 0 5px 0 0;
+  }
+}
+
 .issue-info {
   margin-bottom: 10px;
   p {
@@ -350,7 +370,8 @@ label {
 }
 
 .VueCarousel-navigation-button {
-  padding: 8px 0 8px 8px;
+  padding: 8px;
+  padding-right: 0;
 }
 
 .issue-img {

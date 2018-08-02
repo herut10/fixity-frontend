@@ -1,4 +1,3 @@
-<!-- here i am trying to make changes -->
 <template>
     <section class="issue-likes flex column">
       <div class="likes-counts flex space-around" ref="likesCounts">
