@@ -3,8 +3,10 @@
     <section class="container flex space-between">
         <router-link to="/">
             <div class="logo">
-                <img src="img/logo/logo-traffic-light.png" class="logo-img" />
-                <img src="img/logo/logo-txt.png" class="logo-txt" />
+              <div class="logo-circle-1"></div>
+              <div class="logo-circle-2"></div>
+              <div class="logo-circle-3"></div>
+              <h1>Fixity</h1>
             </div>
         </router-link>
         <div class="site-navigation flex align-center">
@@ -45,7 +47,47 @@ export default {
 }
 
 .logo {
+  position: relative;
   margin: 5px 0;
+
+  h1 {
+    display: inline-block;
+    color: white;
+    font-size: 3em;
+    text-shadow: -1px 1px 9px #454444;
+    padding-bottom: 5px;
+    position: absolute;
+    left: 15px;
+    top: -3px;
+  }
+}
+
+.logo-circle-1 {
+  background-color: rgba(255, 0, 0, 0.69);
+  border-radius: 50%;
+  height: 23px;
+  width: 23px;
+  position: absolute;
+  top: 0;
+}
+
+.logo-circle-2 {
+  height: 23px;
+  width: 23px;
+  background-color: rgba(255, 255, 0, 0.69);
+  border-radius: 50%;
+  position: absolute;
+  top: 13px;
+  left: 1px;
+}
+
+.logo-circle-3 {
+  height: 23px;
+  width: 23px;
+  background-color: rgba(0, 128, 0, 0.69);
+  border-radius: 50%;
+  position: absolute;
+  top: 28px;
 }
 
 .logo-txt {

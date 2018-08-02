@@ -5,9 +5,9 @@
     <notifications group="foo" />
     <div ref="curtain" class="curtain" @click="toggleAbout"></div>
     <router-view />
-    <loginModal></loginModal>
-    <v-dialog/>
+    <loginModal />
     <footerNavbar />
+    <v-dialog/>
 
 
     

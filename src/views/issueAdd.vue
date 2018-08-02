@@ -1,5 +1,5 @@
 <template>
-    <section class="issue-add flex column align-center">
+    <section class="issue-add container flex column align-center">
       <GmapMap
         :center="mapCenter"
         @click="setCenter"
@@ -16,27 +16,27 @@
       </GmapMap>
       <form action.prevent="" class="flex column " >
         <div class="location-input flex align-baseline">
-      <autoComplete @place_changed="placeChanged" :placeholder="'Address (required)'" v-model="newIssue.address" ></autoComplete>
-      <button @click.prevent="setLocationSelf">my location</button>
+          <autoComplete @place_changed="placeChanged" :placeholder="'Address (required)'" v-model="newIssue.address" ></autoComplete>
+          <button @click.prevent="setLocationSelf">my location</button>
         </div>
-      <input  v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
-      <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
-      <label>
-        upload pictures
-        <imgUpload @imgsUploaded="saveURLs"></imgUpload>
-      </label>
-      <label class="flex" >Category:
-      <select  v-model="newIssue.category">
-        <option value="pedestrian">Pedestrian</option>
-        <option value="garbage">Garbage</option>
-        <option value="construction">Construction</option>
-      </select>
-      </label>
-      <label>
-        Submit as anonymous
-        <input type="checkbox"/>
-      </label>
-      <button @click.prevent="promptUser">submit</button>
+        <input v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
+        <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
+        <label>
+          Upload images
+          <imgUpload @imgsUploaded="saveURLs"></imgUpload>
+        </label>
+        <label class="flex" >Category:
+          <select  v-model="newIssue.category">
+            <option value="pedestrian">Pedestrian</option>
+            <option value="garbage">Garbage</option>
+            <option value="construction">Construction</option>
+          </select>
+        </label>
+        <label class="anonymous">
+          <input type="checkbox"/>
+          Submit as anonymous
+        </label>
+        <button @click.prevent="promptUser">submit</button>
       </form>
 
         <modal name="hello-world">
@@ -46,19 +46,19 @@
 </template>
 
 <script>
-import { ISSUES_TO_DISPLAY } from "@/store/issueModule.js";
-import { SUBMIT_ISSUE } from "@/store/issueModule.js";
+import { ISSUES_TO_DISPLAY } from '@/store/issueModule.js';
+import { SUBMIT_ISSUE } from '@/store/issueModule.js';
 import {
   CURRLOC,
   HASBEENPROMPTED,
   SET_HASBEENPROMPTED
-} from "@/store/userModule.js";
-import { SET_CURRLOC } from "@/store/userModule.js";
-import { USER } from "@/store/userModule.js";
-import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
-import mapService from "@/services/mapService.js";
-import utilsService from "@/services/utilsService.js";
-import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
+} from '@/store/userModule.js';
+import { SET_CURRLOC } from '@/store/userModule.js';
+import { USER } from '@/store/userModule.js';
+import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
+import mapService from '@/services/mapService.js';
+import utilsService from '@/services/utilsService.js';
+import imgUpload from '@/components/generalCmps/uploadImgCmp.vue';
 export default {
   components: {
     autoComplete,
@@ -68,11 +68,11 @@ export default {
   data() {
     return {
       newIssue: {
-        title: "",
-        address: "",
-        body: "",
-        category: "pedestrian",
-        status: "open",
+        title: '',
+        address: '',
+        body: '',
+        category: 'pedestrian',
+        status: 'open',
         imgUrls: [],
         nonIssueReportCount: 0,
         likes: {
@@ -116,22 +116,22 @@ export default {
 
       if (!this.$store.getters[USER] && !this.$store.getters[HASBEENPROMPTED]) {
         this.$store.commit(SET_HASBEENPROMPTED);
-        this.$modal.show("dialog", {
-          title: "YOU ARE NOT LOGGED IN",
+        this.$modal.show('dialog', {
+          title: 'YOU ARE NOT LOGGED IN',
           text:
-            "Not being logged in prevents us from providing you with the best service that you deserve.",
+            'Not being logged in prevents us from providing you with the best service that you deserve.',
           buttons: [
             {
-              title: "Tell me more",
+              title: 'Tell me more',
               handler: () => {
-                that.$modal.hide("dialog");
-                that.$modal.show("loginModal");
+                that.$modal.hide('dialog');
+                that.$modal.show('loginModal');
               }
             },
             {
-              title: "Maybe next time",
+              title: 'Maybe next time',
               handler: () => {
-                that.$modal.hide("dialog");
+                that.$modal.hide('dialog');
                 that.onSubmit();
               }
             }
@@ -152,23 +152,23 @@ export default {
       if (
         !(this.newIssue.title && this.newIssue.body && this.newIssue.address)
       ) {
-        this.$modal.show("dialog", {
-          title: "MISSING DETAILS",
+        this.$modal.show('dialog', {
+          title: 'MISSING DETAILS',
           text:
-            "One or more of the required field are missing, please make sure you fill them all.",
+            'One or more of the required field are missing, please make sure you fill them all.',
           buttons: [
             {
-              title: "close"
+              title: 'close'
             }
           ]
         });
         return;
       }
       var user = this.$store.getters[USER];
-      var userId = user ? this.$store.getters[USER]._id : "";
+      var userId = user ? this.$store.getters[USER]._id : '';
       if (this.newIssue.imgUrls.length === 0)
         this.newIssue.imgUrls.push(
-          "https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png"
+          'https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png'
         );
       var issueToSubmit = JSON.parse(JSON.stringify(this.newIssue));
       issueToSubmit.loc = JSON.parse(JSON.stringify(this.center));
@@ -177,15 +177,15 @@ export default {
       if (!this.isAnon) {
         issueToSubmit.reportedBy = userId;
       }
-      this.$socket.emit("issueAdd", issueToSubmit);
+      this.$socket.emit('issueAdd', issueToSubmit);
       this.$notify({
-        group: "foo",
-        title: "Important message",
-        text: this.newIssue.title + " " + "added successfuly!",
-        type: "success",
+        group: 'foo',
+        title: 'Important message',
+        text: this.newIssue.title + ' ' + 'added successfuly!',
+        type: 'success',
         duration: 5000
       });
-      this.$router.push("/");
+      this.$router.push('/');
     },
     setLocationSelf() {
       var loc = this.$store.getters[CURRLOC];
@@ -220,15 +220,37 @@ export default {
 
 
 <style lang="scss" scoped>
-label,
+.issue-add {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@media (min-width: 980px) {
+  .issue-add {
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    padding-top: 35px;
+
+    form {
+      width: 50%;
+    }
+
+    .vue-map-container {
+      margin: 0;
+    }
+  }
+}
+
+label.anonymous,
+input[type='checkbox'],
 select {
   cursor: pointer;
 }
 .location-input {
   width: 100%;
 }
-input[type="password"],
-input[type="text"],
+input[type='password'],
+input[type='text'],
 textarea,
 select {
   display: block;
@@ -244,36 +266,56 @@ select {
   transition: 0.5s all;
   outline: none;
 }
+input[type='text'] {
+  margin-right: 20px;
+}
 button,
-input[type="file"] {
+input[type='file'] {
   background: white;
   border-radius: 4px;
   box-sizing: border-box;
   padding: 10px;
   letter-spacing: 1px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 400;
   min-width: 140px;
   margin-top: 8px;
-  color: #8b8c8d;
+  // color: #8b8c8d;
+  color: #69c8a4;
   cursor: pointer;
-  border: 1px solid #dddedf;
-  text-transform: uppercase;
+  // border: 1px solid #dddedf;
+  border: 1.5px solid #69c8a4;
+  text-transform: capitalize;
   transition: 0.1s all;
-  font-size: 10px;
+  // font-size: 10px;
+  font-size: 0.7em;
   outline: none;
   &:hover {
-    border-color: mix(#dddedf, black, 90%);
-    color: mix(#8b8c8d, black, 80%);
+    // border-color: mix(#dddedf, black, 90%);
+    // color: mix(#8b8c8d, black, 80%);
+    color: white;
+    border-color: #4b9076;
+    background-color: #69c8a4;
   }
 }
+
+input[type='file'] {
+  width: 100%;
+}
+
 .vue-map-container {
   width: 100%;
-  height: 200px;
+  max-width: 450px;
+  height: 340px;
+  margin-bottom: 15px;
 }
 
 form {
-  border: 1px black solid;
+  border-radius: 4px;
+  border: 1px #c4c0c0 solid;
   padding: 10px;
+  width: 100%;
+  max-width: 450px;
+  height: 340px;
 }
 </style>

@@ -9,16 +9,16 @@ import userProfile from './views/userProfile.vue'
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
+  routes: [    {
+      path: '/about',
+      name: 'about',
+      component: about
+    },{
       path: '/',
       name: 'home',
       component: home
     },
-    {
-      path: '/about',
-      name: 'about',
-      component: about
-    },
+
     {
       path: '/issue/:issueId',
       name: 'issueDetails',
