@@ -26,7 +26,8 @@ import {
   faUserCircle,
   faHome,
   faMapMarkedAlt,
-  faListUl
+  faListUl,
+  faCamera
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -37,6 +38,7 @@ library.add(faUserCircle);
 library.add(faHome);
 library.add(faMapMarkedAlt);
 library.add(faListUl);
+library.add(faCamera);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 axios.defaults.crossDomain = true;
 

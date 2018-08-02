@@ -1,7 +1,10 @@
 <template>
-    <input type="file" 
+    <label>
+      <slot>default</slot>
+    <input  type="file" 
     accept="image/*" 
     v-bind:multiple="!single"  v-on:change="upload($event.target.files)"/>
+    </label>
 </template>
 ​
 <script>
@@ -62,4 +65,15 @@ export default {
 </script>
 ​
 <style scoped>
+input {
+  position: fixed;
+  top:-100vh;
+  width: 0;
+  height: 0;
+}
+
+label {
+  cursor: pointer;
+  width:fit-content;
+}
 </style>
