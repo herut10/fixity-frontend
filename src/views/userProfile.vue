@@ -1,6 +1,6 @@
 
 <template>
-    <section v-if = "user && issues && comments " class="main-user-container">
+    <section v-if = "user && issues && comments " class="main-user-container container">
         <div class="top-user-container flex column">
             <H1>{{user.username}}</H1>
             <div class="img-container"><img :src="user.imgUrl"/>
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import userIssues from "@/components/issueCmps/userIssues.vue";
-import userComments from "@/components/issueCmps/userComments.vue";
-import { LOAD_ISSUES } from "@/store/issueModule.js";
-import { USER } from "@/store/userModule.js";
-import { GET_USER } from "@/store/userModule.js";
-import { GET_COMMENTS } from "@/store/commentModule.js";
-import { UPDATE_USER } from "@/store/userModule.js";
-import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
+import userIssues from '@/components/issueCmps/userIssues.vue';
+import userComments from '@/components/issueCmps/userComments.vue';
+import { LOAD_ISSUES } from '@/store/issueModule.js';
+import { USER } from '@/store/userModule.js';
+import { GET_USER } from '@/store/userModule.js';
+import { GET_COMMENTS } from '@/store/commentModule.js';
+import { UPDATE_USER } from '@/store/userModule.js';
+import imgUpload from '@/components/generalCmps/uploadImgCmp.vue';
 
 export default {
   data() {
@@ -82,7 +82,7 @@ export default {
     uploadPic() {
       this.$store
         .dispatch({ type: UPDATE_USER, user: this.user })
-        .then(user => console.log("user updated"))
+        .then(user => console.log('user updated'))
         .catch(err => console.warn(err));
     }
   },
@@ -97,12 +97,13 @@ export default {
 
 <style lang="scss" scoped>
 .main-user-container {
+  padding-top: 15px;
+  padding-bottom: 15px;
   overflow: hidden;
   max-width: 100%;
   margin: 0 auto;
   h1 {
-    padding-top: 20px;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 2.5em;
   }
 }
@@ -199,7 +200,7 @@ export default {
   transition-duration: 0.6s;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 860px) {
   .main-user-container {
     display: flex;
     h1 {

@@ -11,8 +11,8 @@
         </router-link>
         <div class="site-navigation flex align-center">
             <header-navbar/>
-            <div class="navbar-icon">
-                <font-awesome-icon icon="info-circle" class="about" @click="$emit('openAbout')" />
+            <div class="navbar-icon" @click="$emit('openAbout')">
+                <font-awesome-icon icon="info-circle" class="about" />
                 <h6>About</h6>
             </div>
         </div>
