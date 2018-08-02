@@ -108,7 +108,6 @@ export default {
             user.likes = []
             return userService.registerUser(user)
                 .then(user => {
-                    debugger
                     context.commit({
                         type: SET_USER,
                         user

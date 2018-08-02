@@ -158,7 +158,7 @@ export default {
         this.notify("The report is now closed", "success", "Report Status");
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify("The report is now modified", "success", "Report Status");
+        this.notify("The report is now recognaized", "success", "Report Status");
       } else {
         this.notify("Failed to modify report", "warn", "Report Status");
         return;
