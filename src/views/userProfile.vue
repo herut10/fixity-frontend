@@ -12,7 +12,7 @@
                 <font-awesome-icon icon="camera" class="active"/></imgUpload>
             </div> 
         </div>
-        <div  class=" flex column">
+        <div  class="right-side flex column">
             <div class="toggle-btns flex">
                 <button :disabled="!toggleStatus" :class="{ active:!toggleStatus }" @click="toggleContent">User Reports</button>
                 <button :disabled="toggleStatus" :class="{active:toggleStatus}" @click="toggleContent">User Comments</button>
@@ -202,9 +202,16 @@ export default {
 @media (min-width: 600px) {
   .main-user-container {
     display: flex;
+    h1 {
+        padding-top: 0;
+        display: flex;
+    }
   }
   .top-user-container {
     width: 50%;
+  }
+  .right-side {
+      overflow: hidden;
   }
 }
 </style>
