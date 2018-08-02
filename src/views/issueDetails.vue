@@ -39,15 +39,17 @@
         </div>
 
         <div class="issue-comments">
-            <h2>Comments</h2>
+            <h2>Communicate</h2>
               <div class="new-message comment-container flex row">
                 <div class="commenter">
                   <img :src = "user.imgUrl">
                   <h6>{{user.username}}</h6>
                 </div>
-              <div class="comment-content flex">
-                <input class="user-input" v-model="newMessage" type="text"/>
-                <button class="btn send-btn" @click = "addComment"><font-awesome-icon icon="arrow-right" /></button>
+              <div class="add-comment">
+                <form @click.prevent="addComment" class=" flex align-center space-between">
+                  <input class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
+                  <button class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
+                </form>
               </div>
             </div>
             <div class="comments-container">
@@ -68,17 +70,17 @@
 </template>
 
 <script>
-import utilsService from "@/services/utilsService.js";
-import { GET_ISSUE_BY_ID } from "@/store/issueModule.js";
-import { UPDATE_ISSUE } from "@/store/issueModule.js";
-import { DELETE_ISSUE } from "@/store/issueModule.js";
-import { GET_COMMENTS } from "@/store/commentModule.js";
-import { LOAD_COMMENTS } from "@/store/commentModule.js";
-import { DELETE_COMMENTS } from "@/store/commentModule.js";
-import { USER } from "@/store/userModule.js";
-import { CURRLOC } from "@/store/userModule.js";
-import { ADD_COMMENT } from "@/store/commentModule.js";
-import { Carousel, Slide } from "vue-carousel";
+import utilsService from '@/services/utilsService.js';
+import { GET_ISSUE_BY_ID } from '@/store/issueModule.js';
+import { UPDATE_ISSUE } from '@/store/issueModule.js';
+import { DELETE_ISSUE } from '@/store/issueModule.js';
+import { GET_COMMENTS } from '@/store/commentModule.js';
+import { LOAD_COMMENTS } from '@/store/commentModule.js';
+import { DELETE_COMMENTS } from '@/store/commentModule.js';
+import { USER } from '@/store/userModule.js';
+import { CURRLOC } from '@/store/userModule.js';
+import { ADD_COMMENT } from '@/store/commentModule.js';
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   data() {
@@ -86,7 +88,7 @@ export default {
       issue: null,
       comments: [],
       user: {},
-      newMessage: ""
+      newMessage: ''
     };
   },
 
@@ -127,14 +129,14 @@ export default {
         },
         commenter: this.user
       };
-      this.newMessage = "";
-      this.notify("Your comment was added", "success", "Comment Status");
-      this.$socket.emit("commentSent", comment);
+      this.newMessage = '';
+      this.notify('Your comment was added', 'success', 'Comment Status');
+      this.$socket.emit('commentSent', comment);
     },
 
     resolveIssue() {
-      if (this.issue.status === "closed") {
-        this.notify("Report already closed", "warn");
+      if (this.issue.status === 'closed') {
+        this.notify('Report already closed', 'warn');
         return;
       }
       var userLoc = this.$store.getters[CURRLOC];
@@ -144,13 +146,13 @@ export default {
         userLoc
       );
       if (this.authorizedToClose(this.user, updatedIssue, userDistance)) {
-        updatedIssue.status = "closed";
-        this.notify("The report is now closed", "success", "Report Status");
+        updatedIssue.status = 'closed';
+        this.notify('The report is now closed', 'success', 'Report Status');
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify("The report is now modified", "success", "Report Status");
+        this.notify('The report is now modified', 'success', 'Report Status');
       } else {
-        this.notify("Failed to modify report", "warn", "Report Status");
+        this.notify('Failed to modify report', 'warn', 'Report Status');
         return;
       }
       this.$store
@@ -171,7 +173,7 @@ export default {
 
     notify(text, type, title) {
       this.$notify({
-        group: "foo",
+        group: 'foo',
         title: title,
         text: text,
         type: type,
@@ -188,13 +190,13 @@ export default {
           this.$store
             .dispatch({ type: DELETE_ISSUE, issueId: this.issue._id })
             .then(() => {
-              console.log("issue deleted");
+              console.log('issue deleted');
               this.notify(
-                this.issue.title + " " + "deleted",
-                "success",
-                "Report Delete"
+                this.issue.title + ' ' + 'deleted',
+                'success',
+                'Report Delete'
               );
-              this.$router.push("/");
+              this.$router.push('/');
             })
             .catch(err => console.warn(err));
         })
@@ -210,8 +212,8 @@ export default {
         .catch(err => console.warn);
     }
   },
-  computed:{
-    reverseComments(){
+  computed: {
+    reverseComments() {
       return this.comments.reverse();
     }
   },
@@ -232,13 +234,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user-input {
-  height: 100%;
-}
-
 .comments-container {
   max-height: 500px;
   overflow-y: auto;
+  padding-right: 5px;
 }
 
 @media (min-width: 980px) {
@@ -264,12 +263,13 @@ export default {
   }
 }
 .user-input {
-  width: 100%;
-  border-radius: 1000px;
-  border: none;
+  width: 90%;
+  color: #439475;
+  border: 1px #c4c0c0 solid;
   box-shadow: brown;
   background-color: white;
-  box-shadow: 2px 2px 6px 0px black;
+  padding: 10px;
+  margin-right: 5px;
 }
 
 .issue-details {
@@ -326,8 +326,9 @@ h5 {
   }
 }
 .btn.send-btn {
-  width: 60px;
-  border-radius: 10000px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }
 
 label {
@@ -394,6 +395,10 @@ label {
   }
 }
 
+.add-comment {
+  width: 100%;
+}
+
 .comment-container {
   margin-bottom: 10px;
 }
@@ -427,22 +432,6 @@ label {
   h6 {
     font-weight: normal;
   }
-}
-
-.reply-box {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(237, 237, 245, 0.596);
-}
-
-.reply {
-  width: 300px;
-  height: 200px;
-  background: grey;
-  opacity: 1;
 }
 </style>
 

@@ -21,7 +21,7 @@
         </div>
         <input v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
         <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
-          <imgUpload @imgsUploaded="saveURLs">upload <font-awesome-icon icon="camera" class="active"/></imgUpload></imgUpload>
+          <imgUpload @imgsUploaded="saveURLs">upload <font-awesome-icon icon="camera" class="active"/></imgUpload>
         <label class="flex" >Category:
           <select  v-model="newIssue.category">
             <option value="pedestrian">Pedestrian</option>

@@ -20,6 +20,7 @@ import {
   library
 } from '@fortawesome/fontawesome-svg-core';
 import {
+  faArrowRight,
   faCheck,
   faPlus,
   faInfoCircle,
