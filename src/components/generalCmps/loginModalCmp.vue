@@ -86,6 +86,7 @@ export default {
     doLogin() {
       var user = JSON.parse(JSON.stringify(this.user));
       this.$socket.emit("loginUser", user);
+      this.$modal.hide("loginModal");
     }
   },
   created() {
