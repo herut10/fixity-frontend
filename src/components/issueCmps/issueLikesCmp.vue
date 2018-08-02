@@ -46,6 +46,10 @@ export default {
     changeIssueLikes(likeType) {
       //TODO: only logged in user can like. if user is not logged- open the modal for signing up.
       var user = this.$store.getters[USER];
+      if (!user) {
+        this.$modal.show("loginModal");
+        return;
+      }
       // var userPrompt = this.$store.state.isPrompted;
       // if (!user && !userPrompt) {
       //   this.$modal.show('dialog', dialogModal);
