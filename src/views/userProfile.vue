@@ -170,10 +170,10 @@ export default {
   align-self: center;
   button {
     &:first-child {
-      border-radius: 8px 0 0 0;
+      border-radius: 8px 0 0 8px;
     }
     &:last-child {
-      border-radius: 0 8px 0 0;
+      border-radius: 0 8px 8px 0;
     }
     &:hover {
       color: white;
