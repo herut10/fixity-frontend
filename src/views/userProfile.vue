@@ -18,7 +18,7 @@
                 <button :disabled="toggleStatus" :class="{active:toggleStatus}" @click="toggleContent">User Comments</button>
             </div>
         <div class="user-info flex" :class="{ commentsSlide: toggleStatus, issuesSlide:!toggleStatus }">
-            <user-Issues :userIssues="issues"></user-Issues>
+            <user-issues :userIssues="issues"></user-issues>
             <user-comments :userComments="comments"></user-comments>
         </div>
         </div>
@@ -165,21 +165,26 @@ export default {
 
 .toggle-btns {
   width: 90%;
-    text-align: center;
-    margin-bottom: 10px;
-    align-self: center;
+  text-align: center;
+  margin-bottom: 10px;
+  align-self: center;
   button {
     &:first-child {
-      border-radius: 8px 0 0 8px;
+      border-radius: 8px 0 0 0;
     }
     &:last-child {
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 8px 0 0;
+    }
+    &:hover {
+      color: white;
+      background-color: #69c8a4b9;
     }
     font-size: 1.07em;
     width: 50%;
     background-color: white;
     color: #69c8a4;
-    border: 1.5px solid #69c8a4;
+    border: 1px solid #69c8a4;
+    transition: all 0.3s;
   }
   .active {
     background-color: #69c8a4;
@@ -204,15 +209,15 @@ export default {
   .main-user-container {
     display: flex;
     h1 {
-        padding-top: 0;
-        display: flex;
+      padding-top: 0;
+      display: flex;
     }
   }
   .top-user-container {
     width: 50%;
   }
   .right-side {
-      overflow: hidden;
+    overflow: hidden;
   }
 }
 </style>
