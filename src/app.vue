@@ -20,6 +20,7 @@ import appHeader from "@/components/generalCmps/appHeaderCmp.vue";
 import footerNavbar from "@/components/generalCmps/footerNavbarCmp.vue";
 import about from "@/views/about.vue";
 import { LOAD_CURRLOC, SET_USER } from "@/store/userModule.js";
+import { SET_COMMENT } from "@/store/commentModule.js";
 import { LOAD_ISSUES, ADD_ISSUE, UPDATE_ISSUE } from "@/store/issueModule.js";
 import loginModal from "@/components/generalCmps/loginModalCmp.vue";
 
@@ -48,6 +49,10 @@ export default {
 
     issueLikesChanged(updatedIssue) {
       this.$store.commit({ type: UPDATE_ISSUE, updatedIssue });
+    },
+
+    commentReceived(comment) {
+      this.$store.commit({type:SET_COMMENT, comment});
     }
   },
 
