@@ -20,7 +20,7 @@
           <button @click.prevent="setLocationSelf">my location</button>
         </div>
         <input v-model="newIssue.title" type="text" placeholder="Title (required)"  maxlength="25"/>
-        <textarea class="desc-input" v-model="newIssue.body" placeholder="Description (required)"  ></textarea>
+        <textarea class="desc-input" v-model="newIssue.desc" placeholder="Description (required)"  ></textarea>
           <imgUpload @imgsUploaded="saveURLs">upload <font-awesome-icon icon="camera" class="active"/></imgUpload>
         <label class="flex" >Category:
           <select  v-model="newIssue.category">
@@ -67,7 +67,7 @@ export default {
       newIssue: {
         title: '',
         address: '',
-        body: '',
+        desc: '',
         category: 'pedestrian',
         status: 'open',
         imgUrls: [],
@@ -147,7 +147,7 @@ export default {
     },
     onSubmit() {
       if (
-        !(this.newIssue.title && this.newIssue.body && this.newIssue.address)
+        !(this.newIssue.title && this.newIssue.desc && this.newIssue.address)
       ) {
         this.$modal.show('dialog', {
           title: 'MISSING DETAILS',
