@@ -3,6 +3,11 @@
     <h2>The App</h2>
     <p>Lorem ipsum lorem ipsum.</p>
     <h2>The Developers</h2>
+    <h3>Herut Yona</h3>
+    <p>Lorem ipsum lorem ipsum.</p>
+    <h3>Kareen Ben Ari</h3>
+    <p>Lorem ipsum lorem ipsum.</p>
+    <h3>Mark Kopolov</h3>
     <p>Lorem ipsum lorem ipsum.</p>
   </section>
 </template>

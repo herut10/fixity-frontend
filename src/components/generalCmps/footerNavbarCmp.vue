@@ -21,7 +21,7 @@
             </router-link>
         </div>
         <div class="footer-navbar space-evenly desktop">
-            <span>© coffee rights</span>
+            <span>© CoffeeRights</span>
         </div>
     </section>
 </template>
@@ -43,6 +43,10 @@ section div.footer-navbar {
       display: none;
     }
     &.desktop {
+      font-size: .7em;
+      color: lightgray;
+      box-shadow: none;
+      background-color: transparent;
       display: block;
     }
   }

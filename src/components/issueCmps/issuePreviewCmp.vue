@@ -120,5 +120,6 @@ export default {
   font-weight: normal;
   height: fit-content;
   align-self: flex-end;
+  margin-right: 4px;
 }
 </style>

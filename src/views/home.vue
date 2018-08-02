@@ -17,7 +17,7 @@
         <font-awesome-icon icon="map-marked-alt" ref="mapIcon" @click="changeCurrView('map')" />
       </div>
       
-      <autoComplete @change.native="isAdressEmpty" @place_changed="setCurrLoc"></autoComplete>
+      <autoComplete @change.native="isAddressEmpty" @place_changed="setCurrLoc"></autoComplete>
 
       <issue-list-cmp :mapLoaded="mapLoaded" :currLoc="center" :issues="issues" v-show="currView === 'list'" />
       <GmapMap
@@ -37,13 +37,20 @@
           v-for="issue in issues" :key="issue._id"
           :position="issue.loc"
           :clickable="true"
-          @click="openIssuePreview(issue)"
+          @click="openInfoWindow(issue)"
           :draggable="false"
           :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
         />
+
+        <gmap-info-window
+          :options="{maxWidth: 300}"
+          :position="infoWindow.position"
+          :opened="infoWindow.open"
+          @closeclick="infoWindow.open=false">
+          <div @click="goToIssue" v-html="infoWindow.template" class="issue-info-window flex column"></div>
+        </gmap-info-window>
       </GmapMap>
 
-      <!-- <issue-preview-cmp :issue:"issue" /> -->
     </section>    
   </section>
 </template>
@@ -65,7 +72,13 @@ export default {
   data() {
     return {
       mapLoaded: false,
-      currLoc: null
+      currLoc: null,
+      infoWindow: {
+        currIssueId: '',
+        position: { lat: 0, lng: 0 },
+        open: false,
+        template: ''
+      }
     };
   },
 
@@ -87,7 +100,7 @@ export default {
   },
 
   methods: {
-    isAdressEmpty(ev) {
+    isAddressEmpty(ev) {
       if (!ev.target.value) {
         this.currLoc = null;
       }
@@ -107,49 +120,74 @@ export default {
       this.$refs.mapIcon.classList.toggle('active');
     },
     resolveIssue() {
-      if(this.issue.status === 'closed') {
+      if (this.issue.status === 'closed') {
         this.notify('Report already closed', 'warn');
         return;
-      }  
+      }
       var user = this.$store.getters[USER];
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
-      var userDistance = utilsService.getDistanceFromLatLngInKm(updatedIssue.loc,userLoc);
-      if(this.authorizedToClose(user, updatedIssue, userDistance)) {
+      var userDistance = utilsService.getDistanceFromLatLngInKm(
+        updatedIssue.loc,
+        userLoc
+      );
+      if (this.authorizedToClose(user, updatedIssue, userDistance)) {
         updatedIssue.status = 'closed';
         this.notify('The report is now closed', 'success');
-      } else if(userDistance <=0.5){
+      } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
         this.notify('The report is now modified', 'success');
       } else {
-        
         this.notify('Failed to modify report', 'warn');
         return;
-      }  
-      this.$store.dispatch({type:UPDATE_ISSUE, updatedIssue})
-        .then(updatedIssue=> {
+      }
+      this.$store
+        .dispatch({ type: UPDATE_ISSUE, updatedIssue })
+        .then(updatedIssue => {
           this.issue = updatedIssue;
         })
-        .catch(err=>console.warn(err));
+        .catch(err => console.warn(err));
     },
 
     authorizedToClose(user, updatedIssue, userDistance) {
-      return user._id === updatedIssue.reportedBy||user.isAdmin||
-      (updatedIssue.nonIssueReportCount === 2 && userDistance <=0.5);
+      return (
+        user._id === updatedIssue.reportedBy ||
+        user.isAdmin ||
+        (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
+      );
     },
 
     notify(text, type) {
-        this.$notify({
-          group: 'foo',
-          title: 'Report Status',
-          text: text,
-          type: type,
-          duration: 3000,
-        });
+      this.$notify({
+        group: 'foo',
+        title: 'Report Status',
+        text: text,
+        type: type,
+        duration: 3000
+      });
     },
 
-    openIssuePreview(issue) {
-      console.log('issue opened', issue);
+    openInfoWindow(issue) {
+      this.setInfoWindowTemplate(issue);
+      this.infoWindow.position = issue.loc;
+      this.infoWindow.open = true;
+      this.infoWindow.currIssueId = issue._id;
+    },
+
+    goToIssue() {
+      this.$router.push(`/issue/${this.infoWindow.currIssueId}`);
+    },
+
+    setInfoWindowTemplate(issue) {
+      var strHtml = `
+          <h2 style="text-transform: capitalize; text-align: center; font-size: 1.4em; margin-bottom: 5px">${
+            issue.title
+          }</h2>
+          <img src="${
+            issue.imgUrls[0]
+          }" style="max-width: 150px; margin: 0 auto" />
+      `;
+      this.infoWindow.template = strHtml;
     }
   },
 
@@ -201,9 +239,9 @@ export default {
 
   .subtitles {
     h3 {
-      text-indent: 40px;
+      text-indent: 60px;
       &:last-of-type {
-        text-indent: 120px;
+        text-indent: 140px;
       }
     }
   }
@@ -266,5 +304,9 @@ input {
 
 .vue-map-container {
   height: 70vh;
+}
+
+.issue-info-window {
+  cursor: pointer;
 }
 </style>
