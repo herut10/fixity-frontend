@@ -36,7 +36,7 @@ export default {
 <style lang="scss" scoped>
     .issue-container {
         width: 90%;
-        border: 1.5px solid #69c8a4;
+        border: 1px solid lightgray;
         min-height: 70px;
         border-radius: 8px;
         margin: 0 5% 3px 5%;
