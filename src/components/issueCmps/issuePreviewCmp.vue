@@ -110,6 +110,7 @@ export default {
 
 .VueCarousel {
   height: 60%;
+  margin-bottom: 5px;
 }
 
 .issue-img {
