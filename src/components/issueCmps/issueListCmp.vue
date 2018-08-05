@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import issuePreviewCmp from "./issuePreviewCmp.vue";
-import utilsService from "@/services/utilsService.js";
+import issuePreviewCmp from './issuePreviewCmp.vue';
+import utilsService from '@/services/utilsService.js';
 
 export default {
-  name: "issueList",
+  name: 'issueList',
   methods: {
     issueDistance(loc, issueLoc) {
       return utilsService.getDistanceFromLatLngInKm(loc, issueLoc);

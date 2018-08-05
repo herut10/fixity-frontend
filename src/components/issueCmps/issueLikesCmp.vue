@@ -1,4 +1,3 @@
-<!-- here i am trying to make changes -->
 <template>
     <section class="issue-likes flex column">
       <div class="likes-counts flex space-around" ref="likesCounts">
@@ -19,11 +18,11 @@
 </template>
 
 <script>
-import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from "@/store/issueModule.js";
-import { USER, UPDATE_USER } from "@/store/userModule.js";
+import { UPDATE_ISSUE, GET_ISSUE_BY_ID } from '@/store/issueModule.js';
+import { USER, UPDATE_USER } from '@/store/userModule.js';
 
 export default {
-  name: "issueLikes",
+  name: 'issueLikes',
 
   props: {
     issue: {
@@ -39,23 +38,17 @@ export default {
     var issueLiked = user.likes.find(
       userLike => userLike.issueId === this.issue._id
     );
-    if (issueLiked) this.$refs[issueLiked.likeType].classList.add("clicked");
+    if (issueLiked) this.$refs[issueLiked.likeType].classList.add('clicked');
   },
 
   methods: {
     changeIssueLikes(likeType) {
-      //TODO: only logged in user can like. if user is not logged- open the modal for signing up.
       var user = this.$store.getters[USER];
       if (!user) {
-        this.$modal.show("loginModal");
+        this.$modal.show('loginModal');
         return;
       }
-      // var userPrompt = this.$store.state.isPrompted;
-      // if (!user && !userPrompt) {
-      //   this.$modal.show('dialog', dialogModal);
-      // } else {
-      //   this.$modal.show('loginModal');
-      // }
+      
       var updatedUser = JSON.parse(JSON.stringify(user));
       var userLikes = user.likes;
       var issueLiked = userLikes.find(
@@ -67,14 +60,14 @@ export default {
         this.$store
           .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
-            console.log("Like updated successfully");
+            console.log('Like updated successfully');
             updatedUser.likes.push({ issueId: this.issue._id, likeType });
             this.updateUser(updatedUser);
-            this.$refs[likeType].classList.toggle("clicked");
-            this.$socket.emit("issueLikesChanged", updatedIssue);
+            this.$refs[likeType].classList.toggle('clicked');
+            this.$socket.emit('issueLikesChanged', updatedIssue);
           })
           .catch(() => {
-            console.log("Problem liking issue");
+            console.log('Problem liking issue');
           });
       } else {
         var updatedIssue = JSON.parse(JSON.stringify(this.issue));
@@ -96,13 +89,13 @@ export default {
           .dispatch({ type: UPDATE_ISSUE, updatedIssue })
           .then(() => {
             this.updateUser(updatedUser);
-            this.$refs[likeType].classList.toggle("clicked");
-            this.$refs[issueLiked.likeType].classList.toggle("clicked");
-            console.log("Like updated successfully");
-            this.$socket.emit("issueLikesChanged", updatedIssue);
+            this.$refs[likeType].classList.toggle('clicked');
+            this.$refs[issueLiked.likeType].classList.toggle('clicked');
+            console.log('Like updated successfully');
+            this.$socket.emit('issueLikesChanged', updatedIssue);
           })
           .catch(() => {
-            console.log("Problem liking issue");
+            console.log('Problem liking issue');
           });
       }
     },
@@ -111,10 +104,10 @@ export default {
       this.$store
         .dispatch({ type: UPDATE_USER, user: userToUpdate })
         .then(() => {
-          console.log("User like updated successfully");
+          console.log('User like updated successfully');
         })
         .catch(() => {
-          console.log("Problem updating user likes");
+          console.log('Problem updating user likes');
         });
     }
   }

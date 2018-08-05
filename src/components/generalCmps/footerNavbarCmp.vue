@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "footerNavbar"
+  name: 'footerNavbar'
 };
 </script>
 
@@ -47,7 +47,7 @@ section div.footer-navbar {
       color: lightgray;
       box-shadow: none;
       background-color: transparent;
-      display: block;
+      display: none;
     }
   }
 }

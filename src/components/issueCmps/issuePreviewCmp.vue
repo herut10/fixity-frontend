@@ -12,7 +12,13 @@
         </carousel>
         
         <div class="issue-info">
-            <h2>{{issue.title}}</h2>
+            <div class="issue-header flex space-between">
+              <h2>{{issue.title}}</h2>
+              <div v-if="issue.status==='closed'" class="resolved-stamp flex">
+                <font-awesome-icon icon="check" />
+                <h3>Issue Resolved</h3>
+              </div>
+            </div>
             <h3 class="issue-distance">{{issue.distance}} {{issue.distance | distanceUnit}}</h3>
             <h3>{{issueAddress}}</h3>
             <h4>{{issue.category}}</h4>
@@ -27,13 +33,13 @@
 </template>
 
 <script>
-import utilsService from "@/services/utilsService.js";
-import mapService from "@/services/mapService.js";
-import issueLikesCmp from "@/components/issueCmps/issueLikesCmp.vue";
-import { CURRLOC } from "@/store/userModule.js";
+import utilsService from '@/services/utilsService.js';
+import mapService from '@/services/mapService.js';
+import issueLikesCmp from '@/components/issueCmps/issueLikesCmp.vue';
+import { CURRLOC } from '@/store/userModule.js';
 
 export default {
-  name: "issuePreview",
+  name: 'issuePreview',
 
   props: {
     issue: {
@@ -43,7 +49,7 @@ export default {
 
   data() {
     return {
-      issueAddress: "",
+      issueAddress: '',
       addressloc: null
     };
   },
@@ -52,10 +58,10 @@ export default {
     issueImgSize() {
       if (
         this.issue.imgUrls[0] ===
-        "https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png"
+        'https://res.cloudinary.com/djewvb6ty/image/upload/v1532962154/placeholder.png'
       )
-        return "contain";
-      else return "cover";
+        return 'contain';
+      else return 'cover';
     }
   },
 
@@ -85,7 +91,7 @@ export default {
   }
 
   h3 {
-    font-size: .9em;
+    font-size: 0.9em;
     font-weight: normal;
   }
 
@@ -95,8 +101,16 @@ export default {
   }
 }
 
+.resolved-stamp {
+  color: #50b891;
+  svg {
+    margin-right: 5px;
+  }
+}
+
 .VueCarousel {
   height: 60%;
+  margin-bottom: 5px;
 }
 
 .issue-img {

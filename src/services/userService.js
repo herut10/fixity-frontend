@@ -16,7 +16,7 @@ function login(user) {
         .catch(err => console.warn(err))
 }
 function registerUser(user) {
-    console.log('now in user service');
+    // console.log('now in user service');
     return axios.post(`${USER_URL}`, user)
         .then(res => res.data)
         .catch(err => console.warn(err))

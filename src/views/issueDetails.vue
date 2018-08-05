@@ -3,10 +3,15 @@
     <section v-if = "issue" class="issue-details container flex column" >
         <div class="issue-header flex space-between align-center">
             <h1 class="issue-title">{{issue.title}}</h1>
-            <button @click= "resolveIssue">
+            <button @click="resolveIssue">
               <font-awesome-icon icon="check" />
               Resolve
             </button>
+        </div>
+
+        <div v-if="issue.status==='closed'" class="resolved-stamp flex">
+            <font-awesome-icon icon="check" />
+            <h3>Issue Resolved</h3>
         </div>
 
         <div class="issue-content">
@@ -22,20 +27,20 @@
                   Reported <label>{{issue.createdAt | relativeTime}}</label> 
                 </h5>
             </div>
-
-            <carousel :perPage="1" :paginationEnabled="false" :navigationEnabled="issue.imgUrls.length>1">
-              <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
-                <img :src="imgUrl" :title="issue.title" :alt="issue.title" />
-              </slide>
-            </carousel>
-
-            <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
-                <GmapMarker
-                  :position="issue.loc"
-                  :clickable="false"
-                  :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
-                  />
-            </GmapMap>
+            <div class="issue-img-map flex column">
+              <carousel :perPage="1" :paginationEnabled="false" :navigationEnabled="issue.imgUrls.length>1">
+                <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
+                  <img :src="imgUrl" :title="issue.title" :alt="issue.title" />
+                </slide>
+              </carousel>
+              <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
+                  <GmapMarker
+                    :position="issue.loc"
+                    :clickable="false"
+                    :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+                    />
+              </GmapMap>
+            </div>
         </div>
 
         <div class="issue-comments">
@@ -162,7 +167,11 @@ export default {
         this.notify("The report is now closed", "success", "Report Status");
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify("The report is now recognaized", "success", "Report Status");
+        this.notify(
+          "The report is now recognaized",
+          "success",
+          "Report Status"
+        );
       } else {
         this.notify("Failed to modify report", "warn", "Report Status");
         return;
@@ -256,6 +265,13 @@ export default {
 }
 
 @media (min-width: 980px) {
+  .issue-img-map {
+    flex-direction: row;
+    .vue-map-container {
+      height: 295px;
+      margin-left: 20px;
+    }
+  }
   .issue-content {
     // display: grid;
     // grid-template-columns: 2fr 1fr;
@@ -320,6 +336,21 @@ svg {
   margin: 0 auto;
 }
 
+.resolved-stamp {
+  color: #50b891;
+  background-color: #66d3aa7a;
+  padding: 5px;
+  width: fit-content;
+  margin-bottom: 10px;
+  h3 {
+    font-weight: normal;
+  }
+
+  svg {
+    margin: 0 5px 0 0;
+  }
+}
+
 .issue-info {
   margin-bottom: 10px;
   p {
@@ -365,7 +396,8 @@ label {
 }
 
 .VueCarousel-navigation-button {
-  padding: 8px 0 8px 8px;
+  padding: 8px;
+  padding-right: 0;
 }
 
 .issue-img {

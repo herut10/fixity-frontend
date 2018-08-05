@@ -1,21 +1,18 @@
 'use strict';
 import userService from '../services/userService.js';
-import {
-    debug
-} from 'util';
 
 export const SET_CURRLOC = 'user/mutations/setCurrLoc';
 export const SET_USER = 'user/mutations/setUser';
-export const SET_HASBEENPROMPTED = 'user/mutations/setHasBeenPrompted'
+export const SET_HASBEENPROMPTED = 'user/mutations/setHasBeenPrompted';
 
 export const USER = 'user/getters/getUser';
 export const CURRLOC = 'user/getters/getCurrLoc';
-export const HASBEENPROMPTED = 'user/getters/getHasBeenPrompted'
+export const HASBEENPROMPTED = 'user/getters/getHasBeenPrompted';
 
 export const LOAD_CURRLOC = 'user/actions/loadCurrLoc';
 export const UPDATE_USER = 'user/actions/getCurrLoc';
-export const SIGNUP = 'user/actions/signup'
-export const LOGIN = 'user/actions/login'
+export const SIGNUP = 'user/actions/signup';
+export const LOGIN = 'user/actions/login';
 
 
 export default {
@@ -101,9 +98,9 @@ export default {
         [SIGNUP](context, {
             user
         }) {
-            console.log('now in actions');
+            // console.log('now in actions');
 
-            user.imgUrl = ''
+            user.imgUrl = 'http://via.placeholder.com/150x150'
             user.isAdmin = false
             user.likes = []
             return userService.registerUser(user)

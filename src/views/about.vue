@@ -2,6 +2,7 @@
   <section class="about">
     <h2>The App</h2>
     <p>Lorem ipsum lorem ipsum.</p>
+    
     <h2>The Developers</h2>
     <h3>Herut Yona</h3>
     <p>Lorem ipsum lorem ipsum.</p>
@@ -37,7 +38,13 @@ export default {
 }
 
 h2 {
-  color: white;
+  font-family: 'Roboto', sans-serif;
+  color: #cdcdcd;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+h3 {
   font-weight: normal;
 }
 

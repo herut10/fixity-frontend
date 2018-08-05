@@ -1,15 +1,17 @@
 
 <template>
-    <section v-if = "user && issues && comments " class="userProfile main-user-container">
+    <section v-if = "user && issues && comments " class="user-profile main-user-container">
         <div class="top-user-container flex column">
             <H1>{{user.username}}</H1>
-            <div class="img-container"><img :src="user.imgUrl"/>
-            
+            <div class="img-container">
+              <img  :src="user.imgUrl || 'http://via.placeholder.com/150x150'"/>
             </div>
             <div class="upload-container flex align-center space-between">
+                <imgUpload class="img-uploader" @imgsUploaded="saveURL">
+                  <span class="upload">Upload</span>
+                  <font-awesome-icon icon="camera" class="active"/>
+                </imgUpload>
                 <button class="upload-btn" @click="uploadPic">Save</button>
-                <imgUpload class="img-uploader" @imgsUploaded="saveURL"><span class="upload">Upload</span>
-                <font-awesome-icon icon="camera" class="active"/></imgUpload>
             </div> 
         </div>
         <div  class="right-side flex column">
@@ -29,7 +31,7 @@
 import userIssues from "@/components/issueCmps/userIssues.vue";
 import userComments from "@/components/issueCmps/userComments.vue";
 import { LOAD_ISSUES } from "@/store/issueModule.js";
-import { USER,GET_USER,UPDATE_USER } from "@/store/userModule.js";
+import { USER, GET_USER, UPDATE_USER } from "@/store/userModule.js";
 import { GET_COMMENTS } from "@/store/commentModule.js";
 import imgUpload from "@/components/generalCmps/uploadImgCmp.vue";
 
@@ -50,6 +52,7 @@ export default {
       this.$router.push("/");
       return;
     }
+
     this.getIssues();
     this.getComments();
   },
@@ -100,7 +103,7 @@ export default {
 
 <style lang="scss" scoped>
 .main-user-container {
-  padding-top: 30px;
+  padding-top: 15px;
   padding-bottom: 15px;
   overflow: hidden;
   max-width: 100%;
@@ -123,6 +126,7 @@ export default {
 }
 
 .upload-container {
+  margin-bottom: 20px;
   width: 160px;
   span {
     margin-right: 10px;
@@ -136,7 +140,6 @@ export default {
     padding: 5px 10px;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
-    margin-bottom: 20px;
     &:hover {
       color: white;
       border-color: #4b9076;
@@ -158,7 +161,6 @@ export default {
   padding: 5px 10px;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  margin-bottom: 20px;
   &:hover {
     color: white;
     border-color: #4b9076;

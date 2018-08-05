@@ -1,79 +1,80 @@
 <template>
-<modal name="loginModal" transition="pop-out" :width="modalWidth" :height="400">
-  <div class="box">
-    <div class="box-part" id="bp-left">
-      <div class="partition" id="partition-register">
-        <div class="partition-title">CREATE ACCOUNT/LOGIN</div>
-        <div class="partition-form">
-          <form autocomplete="false">
+  <modal name="loginModal" transition="pop-out" :width="modalWidth" :height="400">
+    <div class="box">
+      <div class="box-part" id="bp-left">
+        <div class="partition" id="partition-register">
+          <div class="partition-title">CREATE ACCOUNT/LOGIN</div>
+          <div class="partition-form">
+            <form autocomplete="false">
 
-            <div class="autocomplete-fix">
-              <input type="password">
+              <div class="autocomplete-fix">
+                <input type="password">
+              </div>
+
+              <input v-model="user.username" id="n-username" type="text" placeholder="Username">
+              <input v-model="user.password" id="n-password2" type="password" placeholder="Password">
+            </form>
+
+            <div style="margin-top: 42px">
             </div>
 
-            <input v-model="user.username" id="n-username" type="text" placeholder="Username">
-            <input v-model="user.password" id="n-password2" type="password" placeholder="Password">
-          </form>
-
-          <div style="margin-top: 42px">
-          </div>
-
-          <div class="button-set">
-            <button @click="doLogin" id="goto-signin-btn">Sign In</button>
-            <button @click="doRegister" id="register-btn">Register</button>
-            <button @click="setDemo" id="demo-btn">Continue in demo mode</button>
+            <div class="button-set">
+              <button @click="doLogin" id="goto-signin-btn">Sign In</button>
+              <button @click="doRegister" id="register-btn">Register</button>
+              <button @click="setDemo" id="demo-btn">Continue in demo mode</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="box-part" id="bp-right">
-        <div class="partition" id="partition-register">
-            <div class="partition-title">LOGGING IN WILL LET YOU</div>
-            <ul class="box-messages">
-                <li>Comment</li>
-                <li>React to issues</li>
-                <li>Keep track of issues you submitted</li>
-                <li>Tell other users if an issue has been fixed</li>
-            </ul>
+      <div class="box-part" id="bp-right">
+          <div class="partition" id="partition-register">
+              <div class="partition-title">LOGGING IN WILL LET YOU</div>
+              <ul class="box-messages">
+                  <li>Comment</li>
+                  <li>React to issues</li>
+                  <li>Keep track of issues you submitted</li>
+                  <li>Tell other users if an issue has been fixed</li>
+              </ul>
 
-        </div>
+          </div>
+      </div>
     </div>
-  </div>
-</modal>
+  </modal>
 </template>
+
 <script>
 const MODAL_WIDTH = 656;
-import { SIGNUP, LOGIN, SET_USER } from "@/store/userModule.js";
+import { SIGNUP, LOGIN, SET_USER } from '@/store/userModule.js';
 export default {
-  name: "loginModal",
+  name: 'loginModal',
   data() {
     return {
       modalWidth: MODAL_WIDTH,
       user: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       }
     };
   },
   methods: {
     setDemo() {
-      this.$socket.emit("loginUser", {
-        username: "demo",
-        password: "demo"
+      this.$socket.emit('loginUser', {
+        username: 'demo',
+        password: 'demo'
       });
-      this.$modal.hide("loginModal");
+      this.$modal.hide('loginModal');
     },
     doRegister() {
-      console.log("starting register");
+      console.log('starting register');
       var user = JSON.parse(JSON.stringify(this.user));
       this.$store.dispatch({ type: SIGNUP, user }).then(res => {
-        this.$modal.hide("loginModal");
+        this.$modal.hide('loginModal');
       });
     },
     doLogin() {
       var user = JSON.parse(JSON.stringify(this.user));
-      this.$socket.emit("loginUser", user);
-      this.$modal.hide("loginModal");
+      this.$socket.emit('loginUser', user);
+      this.$modal.hide('loginModal');
     }
   },
   created() {
