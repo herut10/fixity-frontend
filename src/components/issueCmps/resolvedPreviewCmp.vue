@@ -83,12 +83,12 @@ export default {
   h3 {
     text-transform: capitalize;
     font-family: 'Roboto', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.1em;
     margin-bottom: 3px;
   }
 
   h4 {
-    font-size: .9em;
+    font-size: .8em;
     font-weight: normal;
     margin-bottom: 3px;
   }
@@ -100,7 +100,7 @@ export default {
 }
 
 .VueCarousel {
-  height: 40%;
+  height: 50%;
 }
 
 .issue-img {

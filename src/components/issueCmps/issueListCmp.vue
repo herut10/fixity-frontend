@@ -1,5 +1,6 @@
 <template>
     <section class="issue-list">
+        <h2>All Reports</h2>
         <ul class="clean-list">
             <li v-for="issue in issuesToDisplay" :key="issue._id" class="issue">
                 <router-link :to="`/issue/${issue._id}`">
@@ -60,6 +61,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 {
+  text-align: center;
+  margin: 10px 0 20px;
+}
+
 ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));

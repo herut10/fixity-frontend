@@ -1,5 +1,6 @@
 <template>
     <section v-if="issues" class="issue-list">
+        <h2>Recently Resolved Reports</h2>
         <ul class="clean-list">
             <li v-for="issue in issues" :key="issue._id" class="issue">
                 <router-link :to="`/issue/${issue._id}`">
@@ -59,22 +60,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 {
+  text-align: center;
+  margin: 10px 0 20px;
+}
 
 ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 15px;
   margin-top: 0;
 }
 
 .issue {
   border-radius: 4px;
-  border: 1px solid #ebeef5;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.4);
-  height: 250px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  &:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  }
+  border: 1px solid #d5d8de;
+  height: 280px;
+  transition: all 0.5s;
 }
 </style>

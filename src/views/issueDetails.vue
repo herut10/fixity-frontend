@@ -305,9 +305,9 @@ export default {
 }
 .user-input {
   width: 90%;
-  color: #439475;
+  color: #3c9ee4;
   border: 1px #c4c0c0 solid;
-  box-shadow: brown;
+  // box-shadow: brown;
   background-color: white;
   padding: 10px;
   margin-right: 5px;
@@ -350,17 +350,16 @@ svg {
 }
 
 .resolved-stamp {
-  color: #50b891;
-  background-color: #66d3aa7a;
+  color: #6baad8;
+  background-color: #84bde87a;
   padding: 5px;
   width: fit-content;
   margin-bottom: 10px;
   h3 {
     font-weight: normal;
   }
-
   svg {
-    margin: 0 5px 0 0;
+    margin: 5px 5px 0 0;
   }
 }
 

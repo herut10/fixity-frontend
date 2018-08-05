@@ -62,7 +62,7 @@ export default {
 
 .comment-container {
   width: 90%;
-  border: 1.5px solid #69c8a4;
+  border: 1.5px solid #6baad8;
   min-height: 70px;
   border-radius: 8px;
   margin: 0 5% 3px 5%;
