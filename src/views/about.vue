@@ -4,12 +4,31 @@
     <p>Lorem ipsum lorem ipsum.</p>
     
     <h2>The Developers</h2>
-    <h3>Herut Yona</h3>
-    <p>Lorem ipsum lorem ipsum.</p>
-    <h3>Kareen Ben Ari</h3>
-    <p>Lorem ipsum lorem ipsum.</p>
-    <h3>Mark Kopolov</h3>
-    <p>Lorem ipsum lorem ipsum.</p>
+
+    <div class="team-member">
+      <div>
+        <h3>Herut Yona</h3>
+        <p>Lorem ipsum lorem ipsum.</p>
+      </div>
+      <img src="/img/team/herut.jpg" alt="Herut Yona" />
+    </div>
+
+    <div class="team-member">
+      <div>
+        <h3>Kareen Ben Ari</h3>
+        <p>Lorem ipsum lorem ipsum.</p>
+      </div>
+      <img src="/img/team/kareen.jpg" alt="Kareen Ben Ari" />
+    </div>
+
+    <div class="team-member">
+      <div>
+        <h3>Mark Kopolov</h3>
+        <p>Lorem ipsum lorem ipsum.</p>
+      </div>
+      <img src="/img/team/mark.jpg" alt="Mark Kopolov" />
+    </div>
+
   </section>
 </template>
 
@@ -32,8 +51,18 @@ export default {
   right: -82vw;
   transition: all 0.6s ease-in-out;
   z-index: 3;
+  overflow-y: scroll;
   &.about-open {
     right: 0;
+  }
+}
+
+.team-member {
+  img {
+    border-radius: 50%;
+    width: 20%;
+    min-width: 100px;
+    // max-width: 200px;
   }
 }
 

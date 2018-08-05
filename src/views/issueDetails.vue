@@ -1,7 +1,7 @@
 
 <template>
     <section v-if = "issue" class="issue-details container flex column" >
-        <div class="issue-header flex space-between align-center">
+        <div class="issue-header flex space-between">
             <h1 class="issue-title">{{issue.title}}</h1>
             <button @click="resolveIssue">
               <font-awesome-icon icon="check" />
@@ -51,27 +51,27 @@
                   <img v-else src = "http://via.placeholder.com/150x150">
 
                   <h6 v-if="user">{{user.username}}</h6>
-                  <h6 v-else>Unknown</h6>
+                  <h6 v-else>Guest</h6>
                 </div>
-              <div class="add-comment">
-                <form  class=" flex align-center space-between">
-                  <input v-on:keyup.enter="addComment" class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
-                  <button @click.prevent="addComment" class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
-                </form>
+                <div class="add-comment">
+                  <form  class=" flex align-center space-between">
+                    <input v-on:keyup.enter="addComment" class="user-input" placeholder="Care to contribute?" v-model="newMessage" type="text"/>
+                    <button @click.prevent="addComment" class="btn send-btn"><font-awesome-icon icon="arrow-right" /></button>
+                  </form>
+                </div>
               </div>
-            </div>
-            <div class="comments-container">
-                <div class="comment-container flex" v-for ='comment in reverseComments' :key="comment._id">
-                    <div class="commenter">
-                        <img :src = "comment.commenter.imgUrl">
-                        <h6>{{comment.commenter.username}}</h6>
-                    </div>
-                    <div class="comment-content flex column space-between">
-                        <p>{{comment.txt}}</p>
-                        <p class="comment-time">{{comment.createdAt | relativeTime}}</p>
-                    </div>
-                </div>
-            </div>
+              <div class="comments-container">
+                  <div class="comment-container flex" v-for ='comment in reverseComments' :key="comment._id">
+                      <div class="commenter">
+                          <img :src = "comment.commenter.imgUrl">
+                          <h6>{{comment.commenter.username}}</h6>
+                      </div>
+                      <div class="comment-content flex column space-between">
+                          <p>{{comment.txt}}</p>
+                          <p class="comment-time">{{comment.createdAt | relativeTime}}</p>
+                      </div>
+                  </div>
+              </div>
 
         </div>
     </section>
@@ -167,7 +167,11 @@ export default {
         this.notify('The report is now closed', 'success', 'Report Status');
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
-        this.notify('The report is now recognaized', 'success', 'Report Status');
+        this.notify(
+          'The report is now recognaized',
+          'success',
+          'Report Status'
+        );
       } else {
         this.notify('Failed to modify report', 'warn', 'Report Status');
         return;
@@ -260,6 +264,16 @@ export default {
   padding-right: 5px;
 }
 
+@media (min-width: 530px) {
+  div.issue-header {
+    button {
+      font-size: 1.7em;
+      height: 130px;
+      width: 130px;
+    }
+  }
+}
+
 @media (min-width: 980px) {
   .issue-content {
     // display: grid;
@@ -298,24 +312,27 @@ export default {
 }
 
 .issue-header {
-  margin-bottom: 10px;
+  margin-top: 20px;
   button {
-    color: #69c8a4;
-    font-size: 0.7em;
+    color: #6baad8;
+    font-size: 1.4em;
     border-radius: 50%;
-    border: 1.5px solid #69c8a4;
+    border: 1.5px solid #6baad8;
     background-color: white;
-    height: 5em;
+    height: 100px;
+    width: 100px;
+    margin-left: 10px;
     transition: all 0.3s;
     &:hover {
       color: white;
-      border-color: #4b9076;
-      background-color: #69c8a4;
+      border-color: #6491b3;
+      background-color: #6baad8;
     }
   }
 }
 
 .issue-title {
+  align-self: center;
   font-size: 2em;
   text-transform: capitalize;
 }
@@ -367,7 +384,7 @@ h5 {
 }
 
 label {
-  color: #439475;
+  color: #448dc2;
 }
 
 .VueCarousel {
@@ -416,17 +433,17 @@ label {
 
   button {
     border-radius: 8px;
-    border: 1.5px solid #69c8a4;
+    border: 1.5px solid #6baad8;
     background-color: white;
-    color: #69c8a4;
+    color: #6baad8;
     font-size: 0.9em;
     float: right;
     padding: 5px 10px;
     transition: all 0.3s;
     &:hover {
       color: white;
-      border-color: #4b9076;
-      background-color: #69c8a4;
+      border-color: #6491b3;
+      background-color: #6baad8;
     }
   }
 }

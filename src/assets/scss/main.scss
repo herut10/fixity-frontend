@@ -56,3 +56,15 @@ button {
 .VueCarousel-slide {
     height: 100%;
 }
+
+.issue {
+    &:hover {
+      border-color: #90b3cf;
+      background-color: #e5eff7;
+      .issue-preview {
+        h2 {
+          color: #236da4;
+        }
+      }
+    }
+  }

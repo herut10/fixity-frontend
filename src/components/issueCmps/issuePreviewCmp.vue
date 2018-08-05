@@ -88,6 +88,7 @@ export default {
     font-family: 'Roboto', sans-serif;
     font-size: 1.2em;
     margin-bottom: 8px;
+    transition: all .5s;
   }
 
   h3 {
@@ -102,7 +103,7 @@ export default {
 }
 
 .resolved-stamp {
-  color: #50b891;
+  color: #619ac4;
   svg {
     margin-right: 5px;
   }
@@ -126,7 +127,7 @@ export default {
 }
 
 .issue-distance {
-  color: #439475;
+  color: #619ac4;
 }
 
 .issue-time {

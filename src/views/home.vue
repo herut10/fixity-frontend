@@ -8,6 +8,9 @@
           <h3>Form groups to make your city a better place.</h3>
         </div>
       </div>
+      <button class="cta-report-btn" @click="$router.push('/issueAdd')">
+        <font-awesome-icon icon="plus" /> Report
+      </button>
     </div>
 
     <section class="main container">
@@ -67,6 +70,7 @@ import { CURRLOC } from '@/store/userModule.js';
 import issueListCmp from '@/components/issueCmps/issueListCmp.vue';
 import issuePreviewCmp from '@/components/issueCmps/issuePreviewCmp.vue';
 import autoComplete from 'vue2-google-maps/dist/components/autocomplete.vue';
+import demoService from '@/services/demoService.js';
 
 export default {
   name: 'home',
@@ -115,6 +119,9 @@ export default {
     },
     changeCurrView(viewType) {
       if (this.$store.state.issueModule.issuesView === viewType) return;
+
+      demoService.addRandomIssue();
+
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
       this.$refs.listIcon.classList.toggle('active');
       this.$refs.mapIcon.classList.toggle('active');
@@ -228,26 +235,25 @@ export default {
 @media (min-width: 800px) {
   div.site-entrance {
     background-position: center;
+
+    .title {
+      font-size: 4em;
+    }
+
+    .subtitles {
+      h3 {
+        font-size: 1.7em;
+      }
+    }
   }
 }
 
 @media (min-width: 992px) {
   div.site-entrance {
-    height: calc(100vh - 60px);
-  }
-}
+    height: calc(90vh - 60px);
 
-@media (min-width: 1015px) {
-  div.site-entrance {
-    text-align: start;
-  }
-
-  .subtitles {
-    h3 {
-      text-indent: 60px;
-      &:last-of-type {
-        text-indent: 140px;
-      }
+    h1.title {
+      font-size: 5em;
     }
   }
 }
@@ -255,26 +261,43 @@ export default {
 .site-entrance {
   color: white;
   text-align: center;
-  background-image: url("../../public/img/site-entrance.jpg");
+  background-image: url('../../public/img/site-entrance-buildings.jpg');
   background-size: cover;
-  background-position: -100px;
+  background-position: -678px;
   margin-bottom: 10px;
-  height: calc(100vh - 110px);
+  height: calc(90vh - 110px);
   width: 100%;
 }
 
 .title {
   font-size: 2.5em;
   line-height: 1.2em;
-  text-shadow: -1px 1px 9px #454444;
+  text-shadow: -1px 1px 9px black, 2px -1px 8px black;
   margin-bottom: 10px;
 }
 
 h3 {
   font-size: 1.2em;
   font-weight: lighter;
-  text-shadow: -1px 1px 9px #000000;
+  text-shadow: -1px 1px 9px black, 2px -1px 8px black;
   margin: 15px 0;
+}
+
+.cta-report-btn {
+  font-size: 1.7em;
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  background-color: #289aee;
+  width: 180px;
+  height: 80px;
+  margin: 30px auto 0;
+  transition: all .4s;
+  &:hover {
+    background-color: #e1ebf4;
+    color: #289aee;
+  }
 }
 
 .main {
@@ -283,7 +306,7 @@ h3 {
 
 .view-pick {
   color: lightgrey;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   display: inline-block;
   padding-bottom: 15px;
   margin-right: 15px;
@@ -302,7 +325,7 @@ svg {
 
 input {
   padding: 3px;
-  color: #439475;
+  color: #619ac4;
   border-radius: 4px;
   border: 1px solid #aeaeae;
 }

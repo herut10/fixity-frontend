@@ -130,10 +130,10 @@ export default {
   span {
     margin-right: 10px;
   }
-  .img-uploader {
+  .img-uploader, .upload-btn {
     border-radius: 8px;
-    border: 1.5px solid #69c8a4;
-    color: #69c8a4;
+    border: 1.5px solid #6baad8;
+    color: #248fde;
     font-size: 0.9em;
     background-color: white;
     padding: 5px 10px;
@@ -141,30 +141,14 @@ export default {
     transition: all 0.3s;
     &:hover {
       color: white;
-      border-color: #4b9076;
-      background-color: #69c8a4;
+      border-color: #6491b3;
+      background-color: #6baad8;
     }
   }
 }
 
 .img-container {
   text-align: center;
-}
-
-.upload-btn {
-  border-radius: 8px;
-  border: 1.5px solid #69c8a4;
-  color: #69c8a4;
-  font-size: 0.9em;
-  background-color: white;
-  padding: 5px 10px;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  &:hover {
-    color: white;
-    border-color: #4b9076;
-    background-color: #69c8a4;
-  }
 }
 
 .toggle-btns {
@@ -181,17 +165,17 @@ export default {
     }
     &:hover {
       color: white;
-      background-color: #69c8a4b9;
+      background-color: #6baad8b9;
     }
     font-size: 1.07em;
     width: 50%;
     background-color: white;
-    color: #69c8a4;
-    border: 1px solid #69c8a4;
+    color: #6baad8;
+    border: 1px solid #6baad8;
     transition: all 0.3s;
   }
   .active {
-    background-color: #69c8a4;
+    background-color: #6baad8;
     color: white;
   }
 }

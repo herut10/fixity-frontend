@@ -70,7 +70,7 @@ a,
   transition: all 0.3s;
   &:hover,
   &.router-link-exact-active {
-    color: #69c8a4;
+    color: #6baad8;
   }
 }
 
