@@ -36,9 +36,9 @@ export default {
 
 .issue-container {
   width: 90%;
-  border: 1.5px solid #69c8a4;
+  border: 1px solid lightgray;
   min-height: 70px;
-  border-radius: 8px;
+  // border-radius: 8px;
   margin: 0 5% 3px 5%;
   cursor: pointer;
 
@@ -47,7 +47,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     min-width: 17%;
-    border-radius: 6px 0 0 8px;
+    // border-radius: 6px 0 0 8px;
   }
   .issue-content {
     padding: 7px 7px;

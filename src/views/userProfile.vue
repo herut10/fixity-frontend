@@ -103,7 +103,7 @@ export default {
 
 <style lang="scss" scoped>
 .main-user-container {
-  padding-top: 15px;
+  padding-top: 30px;
   padding-bottom: 15px;
   overflow: hidden;
   max-width: 100%;
