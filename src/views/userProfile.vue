@@ -4,7 +4,7 @@
         <div class="top-user-container flex column">
             <H1>{{user.username}}</H1>
             <div class="img-container">
-              <img  :src="user.imgUrl || 'http://via.placeholder.com/150x150'"/>
+              <img  :src="user.imgUrl || 'https://i2.wp.com/www.ahfirstaid.org/wp-content/uploads/2014/07/avatar-placeholder.png'"/>
             </div>
             <div class="upload-container flex align-center space-between">
                 <imgUpload class="img-uploader" @imgsUploaded="saveURL">
