@@ -249,6 +249,7 @@ input[type="password"],
 input[type="text"],
 textarea,
 select {
+  color: #3c9ee4;
   display: block;
   box-sizing: border-box;
   margin-bottom: 4px;
@@ -277,10 +278,10 @@ input[type="file"] {
   min-width: 140px;
   margin-top: 8px;
   // color: #8b8c8d;
-  color: #69c8a4;
+  color: #248fde;
   cursor: pointer;
   // border: 1px solid #dddedf;
-  border: 1.5px solid #69c8a4;
+  border: 1.5px solid #6baad8;
   text-transform: capitalize;
   transition: 0.1s all;
   // font-size: 10px;
@@ -290,8 +291,8 @@ input[type="file"] {
     // border-color: mix(#dddedf, black, 90%);
     // color: mix(#8b8c8d, black, 80%);
     color: white;
-    border-color: #4b9076;
-    background-color: #69c8a4;
+    border-color: #6491b3;
+    background-color: #6baad8;
   }
 }
 

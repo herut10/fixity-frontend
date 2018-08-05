@@ -42,7 +42,7 @@ a {
   color: white;
   transition: all 0.3s;
   &:hover, &.router-link-exact-active {
-    color: #3f7a64;
+    color: #3b6584;
   }
 }
 

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import demoService from '@/services/demoService.js';
 import mapService from '@/services/mapService.js';
 import appHeader from '@/components/generalCmps/appHeaderCmp.vue';
 import footerNavbar from '@/components/generalCmps/footerNavbarCmp.vue';
@@ -25,6 +26,7 @@ export default {
   name: 'app',
 
   created() {
+    demoService.setThis(this);
     this.$store.dispatch({ type: LOAD_ISSUES });
     this.$store.dispatch({ type: LOAD_CURRLOC });
     // this.$socket.emit('emit_method', 15);//testing sockets

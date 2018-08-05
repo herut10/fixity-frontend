@@ -69,12 +69,19 @@ ul {
 
 .issue {
   border-radius: 4px;
-  border: 1px solid #ebeef5;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.4);
+  border: 1px solid #d5d8de;
+  // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.4);
   height: 440px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  &:hover {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  }
+  transition: all 0.5s;
+  // transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  // &:hover {
+  //   // box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  //   background-color: #f7f5f5;
+  //   .issue-preview {
+  //     .issue-img {
+  //       opacity: 1;
+  //     }
+  //   }
+  // }
 }
 </style>

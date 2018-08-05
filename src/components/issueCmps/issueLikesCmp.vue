@@ -48,14 +48,16 @@ export default {
         this.$modal.show('loginModal');
         return;
       }
-      
+
+      var updatedIssue = JSON.parse(JSON.stringify(this.issue));
       var updatedUser = JSON.parse(JSON.stringify(user));
       var userLikes = user.likes;
       var issueLiked = userLikes.find(
         userLike => userLike.issueId === this.issue._id
       );
+      
+      
       if (!issueLiked) {
-        var updatedIssue = JSON.parse(JSON.stringify(this.issue));
         updatedIssue.likes[likeType]++;
         this.$store
           .dispatch({ type: UPDATE_ISSUE, updatedIssue })
@@ -70,7 +72,6 @@ export default {
             console.log('Problem liking issue');
           });
       } else {
-        var updatedIssue = JSON.parse(JSON.stringify(this.issue));
         var likeIdx = updatedUser.likes.findIndex(
           like => like.issueId === this.issue._id
         );
@@ -142,7 +143,7 @@ export default {
   opacity: 0;
   text-align: center;
   font-size: 0.6em;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   transition: all 0.6s;
   transform: translate(0, 5px);
 }

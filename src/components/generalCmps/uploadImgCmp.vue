@@ -76,8 +76,8 @@ label {
   cursor: pointer;
   width: fit-content;
   border-radius: 4px;
-  border: 1.5px solid #69c8a4;
-  color: #69c8a4;
+  border: 1.5px solid #6baad8;
+  color: #248fde;
   font-size: 0.7em;
   background-color: white;
   padding: 5px 10px;
@@ -86,8 +86,8 @@ label {
   margin: 10px 0;
   &:hover {
     color: white;
-    border-color: #4b9076;
-    background-color: #69c8a4;
+    border-color: #6491b3;
+    background-color: #6baad8;
   }
 }
 </style>

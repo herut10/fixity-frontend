@@ -34,8 +34,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-header {
-  background-color: #69c8a4;
-  box-shadow: 0px 2px #4b9076;
+  background-color: #6baad8;
+  box-shadow: 0px 2px #5889ad;
   position: fixed;
   top: 0;
   height: 60px;
@@ -63,7 +63,7 @@ export default {
 }
 
 .logo-circle-1 {
-  background-color: rgba(255, 0, 0, 0.69);
+  background-color: rgba(212, 74, 24, 0.74);
   border-radius: 50%;
   height: 23px;
   width: 23px;
@@ -84,19 +84,10 @@ export default {
 .logo-circle-3 {
   height: 23px;
   width: 23px;
-  background-color: rgba(0, 128, 0, 0.69);
+  background-color: rgba(43, 113, 91, 0.8);
   border-radius: 50%;
   position: absolute;
   top: 28px;
-}
-
-.logo-txt {
-  width: 100px;
-  padding-bottom: 3px;
-}
-
-.logo-img {
-  height: 55.5px;
 }
 
 .site-navigation {
@@ -109,7 +100,7 @@ export default {
   color: white;
   transition: all 0.3s;
   &:hover {
-    color: #4b9076;
+    color: #3b6584;
   }
 }
 
