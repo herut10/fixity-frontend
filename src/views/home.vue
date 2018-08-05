@@ -18,7 +18,9 @@
       </div>
       
       <autoComplete @change.native="isAddressEmpty" @place_changed="setCurrLoc"></autoComplete>
-
+      <h1>Last Resolved Reports:</h1>
+      <resolved-issues-cmp v-if="completedIssues" :issues="completedIssues" :currLoc="center" v-show="currView === 'list'"></resolved-issues-cmp>
+      <h1>All Reports:</h1>
       <issue-list-cmp v-if="issues" :mapLoaded="mapLoaded" :currLoc="center" :issues="issues" v-show="currView === 'list'" />
       <img class="loading-gif" v-else src="img/loading.gif"/>
       <GmapMap
@@ -65,6 +67,7 @@ import {
 } from "@/store/issueModule.js";
 import { CURRLOC } from "@/store/userModule.js";
 import issueListCmp from "@/components/issueCmps/issueListCmp.vue";
+import resolvedIssuesCmp from "@/components/issueCmps/resolvedIssuesCmp.vue";
 import issuePreviewCmp from "@/components/issueCmps/issuePreviewCmp.vue";
 import autoComplete from "vue2-google-maps/dist/components/autocomplete.vue";
 
@@ -96,6 +99,15 @@ export default {
     center() {
       var userLoc = this.$store.getters[CURRLOC];
       return this.currLoc || userLoc || { lat: 32, lng: 34 };
+    },
+
+    completedIssues() {
+      if(this.issues) {
+        let issues =  this.issues.filter(issue=> issue.status === 'closed').slice(0, 5);
+        return issues.sort((issueA, issueB) => {
+          return issueA.createdAt - issueB.createdAt;
+          });
+      }
     }
   },
 
@@ -200,7 +212,8 @@ export default {
   components: {
     issueListCmp,
     issuePreviewCmp,
-    autoComplete
+    autoComplete,
+    resolvedIssuesCmp,
   }
 };
 </script>
