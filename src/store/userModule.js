@@ -100,7 +100,7 @@ export default {
         }) {
             // console.log('now in actions');
 
-            user.imgUrl = ''
+            user.imgUrl = 'http://via.placeholder.com/150x150'
             user.isAdmin = false
             user.likes = []
             return userService.registerUser(user)

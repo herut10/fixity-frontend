@@ -27,20 +27,20 @@
                   Reported <label>{{issue.createdAt | relativeTime}}</label> 
                 </h5>
             </div>
-
-            <carousel :perPage="1" :paginationEnabled="false" :navigationEnabled="issue.imgUrls.length>1">
-              <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
-                <img :src="imgUrl" :title="issue.title" :alt="issue.title" />
-              </slide>
-            </carousel>
-
-            <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
-                <GmapMarker
-                  :position="issue.loc"
-                  :clickable="false"
-                  :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
-                  />
-            </GmapMap>
+            <div class="issue-img-map flex column">
+              <carousel :perPage="1" :paginationEnabled="false" :navigationEnabled="issue.imgUrls.length>1">
+                <slide v-for="(imgUrl,idx) in issue.imgUrls" :key="idx">
+                  <img :src="imgUrl" :title="issue.title" :alt="issue.title" />
+                </slide>
+              </carousel>
+              <GmapMap v-if = "issue.loc" :center="issue.loc" :zoom="17" map-type-id="terrain">
+                  <GmapMarker
+                    :position="issue.loc"
+                    :clickable="false"
+                    :icon="`img/map-icons/${issue.category}-${issue.status}.png`"
+                    />
+              </GmapMap>
+            </div>
         </div>
 
         <div class="issue-comments">
@@ -78,27 +78,27 @@
 </template>
 
 <script>
-import utilsService from '@/services/utilsService.js';
+import utilsService from "@/services/utilsService.js";
 import {
   GET_ISSUE_BY_ID,
   UPDATE_ISSUE,
   DELETE_ISSUE
-} from '@/store/issueModule.js';
+} from "@/store/issueModule.js";
 import {
   DELETE_COMMENTS,
   ADD_COMMENT,
   LOAD_COMMENTS,
   GET_COMMENTS
-} from '@/store/commentModule.js';
-import { USER, CURRLOC } from '@/store/userModule.js';
-import { Carousel, Slide } from 'vue-carousel';
+} from "@/store/commentModule.js";
+import { USER, CURRLOC } from "@/store/userModule.js";
+import { Carousel, Slide } from "vue-carousel";
 
 export default {
   data() {
     return {
       issue: null,
       comments: [],
-      newMessage: ''
+      newMessage: ""
     };
   },
 
@@ -130,7 +130,7 @@ export default {
 
     addComment() {
       if (!this.user) {
-        this.$modal.show('loginModal');
+        this.$modal.show("loginModal");
         return;
       }
       var comment = {
@@ -142,18 +142,18 @@ export default {
         },
         commenter: this.user
       };
-      this.newMessage = '';
-      this.notify('Your comment was added', 'success', 'Comment Status');
-      this.$socket.emit('commentSent', comment);
+      this.newMessage = "";
+      this.notify("Your comment was added", "success", "Comment Status");
+      this.$socket.emit("commentSent", comment);
     },
 
     resolveIssue() {
-      if (this.issue.status === 'closed') {
-        this.notify('Report already closed', 'warn');
+      if (this.issue.status === "closed") {
+        this.notify("Report already closed", "warn");
         return;
       }
       if (!this.user) {
-        this.$modal.show('loginModal');
+        this.$modal.show("loginModal");
         return;
       }
       var userLoc = this.$store.getters[CURRLOC];
@@ -163,17 +163,17 @@ export default {
         userLoc
       );
       if (this.authorizedToClose(this.user, updatedIssue, userDistance)) {
-        updatedIssue.status = 'closed';
-        this.notify('The report is now closed', 'success', 'Report Status');
+        updatedIssue.status = "closed";
+        this.notify("The report is now closed", "success", "Report Status");
       } else if (userDistance <= 0.5) {
         updatedIssue.nonIssueReportCount++;
         this.notify(
-          'The report is now recognaized',
+          'The report is now recognized',
           'success',
           'Report Status'
         );
       } else {
-        this.notify('Failed to modify report', 'warn', 'Report Status');
+        this.notify("Failed to modify report", "warn", "Report Status");
         return;
       }
       this.$store
@@ -194,7 +194,7 @@ export default {
 
     notify(text, type, title) {
       this.$notify({
-        group: 'foo',
+        group: "foo",
         title: title,
         text: text,
         type: type,
@@ -211,13 +211,13 @@ export default {
           this.$store
             .dispatch({ type: DELETE_ISSUE, issueId: this.issue._id })
             .then(() => {
-              console.log('issue deleted');
+              console.log("issue deleted");
               this.notify(
-                this.issue.title + ' ' + 'deleted',
-                'success',
-                'Report Delete'
+                this.issue.title + " " + "deleted",
+                "success",
+                "Report Delete"
               );
-              this.$router.push('/');
+              this.$router.push("/");
             })
             .catch(err => console.warn(err));
         })
@@ -275,6 +275,13 @@ export default {
 }
 
 @media (min-width: 980px) {
+  .issue-img-map {
+    flex-direction: row;
+    .vue-map-container {
+      height: 295px;
+      margin-left: 20px;
+    }
+  }
   .issue-content {
     // display: grid;
     // grid-template-columns: 2fr 1fr;
