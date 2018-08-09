@@ -9,7 +9,7 @@
     
     <h2>The Developers</h2>
 
-    <div class="team-member">
+    <div class="team-member flex space-between">
       <div>
         <h3>Herut Yona</h3>
         <p>23 year old full stack developer from Eshbol.</p>
@@ -17,7 +17,7 @@
       <img src="/img/team/herut.jpg" alt="Herut Yona" />
     </div>
 
-    <div class="team-member">
+    <div class="team-member flex space-between">
       <div>
         <h3>Kareen Ben Ari</h3>
         <p>29 year old full stack developer from Tel Aviv.</p>
@@ -25,12 +25,12 @@
       <img src="/img/team/kareen.jpg" alt="Kareen Ben Ari" />
     </div>
 
-    <div class="team-member">
+    <div class="team-member flex space-between">
       <div>
         <h3>Mark Kopolov</h3>
         <p>33 year old full stack developer from Beer Sheva.</p>
       </div>
-      <img src="/img/team/mark.jpg" alt="Mark Kopolov" />
+      <img src="/img/team/mark1.jpg" alt="Mark Kopolov" />
     </div>
 
   </section>
@@ -62,6 +62,14 @@ export default {
 }
 
 .team-member {
+  flex-direction: row-reverse;
+  height: 100px;
+  margin-bottom: 20px;
+
+  div {
+    width: 250px;
+  }
+
   img {
     border-radius: 50%;
     width: 20%;
@@ -74,14 +82,16 @@ h2 {
   font-family: 'Roboto', sans-serif;
   color: #cdcdcd;
   font-weight: normal;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 h3 {
   font-weight: normal;
+  margin-bottom: 10px;
 }
 
 p {
   color: white;
+  margin: 1px 0 15px;
 }
 </style>
