@@ -107,12 +107,14 @@ export default {
 
     completedIssues() {
       if (this.issues) {
-        let issues = this.issues
-          .filter(issue => issue.status === 'closed')
-          .slice(0, 5);
-        return issues.sort((issueA, issueB) => {
-          return issueA.createdAt - issueB.createdAt;
+        let closedIssues = this.issues.filter(issue => issue.status === 'closed');
+
+        closedIssues.sort((issueA, issueB) => {
+          return issueB.closeDate - issueA.closeDate;
         });
+        // console.log(closedIssues);
+        
+        return closedIssues.slice(0, 4);
       }
     }
   },
@@ -139,43 +141,6 @@ export default {
       this.$store.commit({ type: SET_ISSUES_VIEW, viewType });
       this.$refs.listIcon.classList.toggle('active');
       this.$refs.mapIcon.classList.toggle('active');
-    },
-    resolveIssue() {
-      if (this.issue.status === 'closed') {
-        this.notify('Report already closed', 'warn');
-        return;
-      }
-      var user = this.$store.getters[USER];
-      var userLoc = this.$store.getters[CURRLOC];
-      var updatedIssue = JSON.parse(JSON.stringify(this.issue));
-      var userDistance = utilsService.getDistanceFromLatLngInKm(
-        updatedIssue.loc,
-        userLoc
-      );
-      if (this.authorizedToClose(user, updatedIssue, userDistance)) {
-        updatedIssue.status = 'closed';
-        this.notify('The report is now closed', 'success');
-      } else if (userDistance <= 0.5) {
-        updatedIssue.nonIssueReportCount++;
-        this.notify('The report is now modified', 'success');
-      } else {
-        this.notify('Failed to modify report', 'warn');
-        return;
-      }
-      this.$store
-        .dispatch({ type: UPDATE_ISSUE, updatedIssue })
-        .then(updatedIssue => {
-          this.issue = updatedIssue;
-        })
-        .catch(err => console.warn(err));
-    },
-
-    authorizedToClose(user, updatedIssue, userDistance) {
-      return (
-        user._id === updatedIssue.reportedBy ||
-        user.isAdmin ||
-        (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
-      );
     },
 
     notify(text, type) {

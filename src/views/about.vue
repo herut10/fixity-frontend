@@ -1,14 +1,18 @@
 <template>
   <section class="about">
     <h2>The App</h2>
-    <p>Lorem ipsum lorem ipsum.</p>
+    <p>Fixity is a social community for reporting deficiencies in your surroundings,
+      meant to increase public involvement in improving their environment.</p>
+    <p>This is a final project that demonstrates the abilities we have acquired
+      during a three-months bootcamp Full Stack Development course.
+      It was built with Vue.js as the frontend framework and Node.js as the server environment.</p>
     
     <h2>The Developers</h2>
 
     <div class="team-member">
       <div>
         <h3>Herut Yona</h3>
-        <p>Lorem ipsum lorem ipsum.</p>
+        <p>23 year old full stack developer from Eshbol.</p>
       </div>
       <img src="/img/team/herut.jpg" alt="Herut Yona" />
     </div>
@@ -16,7 +20,7 @@
     <div class="team-member">
       <div>
         <h3>Kareen Ben Ari</h3>
-        <p>Lorem ipsum lorem ipsum.</p>
+        <p>29 year old full stack developer from Tel Aviv.</p>
       </div>
       <img src="/img/team/kareen.jpg" alt="Kareen Ben Ari" />
     </div>
@@ -24,7 +28,7 @@
     <div class="team-member">
       <div>
         <h3>Mark Kopolov</h3>
-        <p>Lorem ipsum lorem ipsum.</p>
+        <p>33 year old full stack developer from Beer Sheva.</p>
       </div>
       <img src="/img/team/mark.jpg" alt="Mark Kopolov" />
     </div>

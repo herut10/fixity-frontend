@@ -158,39 +158,40 @@ export default {
       }
       var userLoc = this.$store.getters[CURRLOC];
       var updatedIssue = JSON.parse(JSON.stringify(this.issue));
-      var userDistance = utilsService.getDistanceFromLatLngInKm(
-        updatedIssue.loc,
-        userLoc
-      );
-      if (this.authorizedToClose(this.user, updatedIssue, userDistance)) {
+      // var userDistance = utilsService.getDistanceFromLatLngInKm(
+      //   updatedIssue.loc,
+      //   userLoc
+      // );
+      // if (this.authorizedToClose(this.user, updatedIssue, userDistance)) {
         updatedIssue.status = "closed";
-        this.notify("The report is now closed", "success", "Report Status");
-      } else if (userDistance <= 0.5) {
-        updatedIssue.nonIssueReportCount++;
-        this.notify(
-          'The report is now recognized',
-          'success',
-          'Report Status'
-        );
-      } else {
-        this.notify("Failed to modify report", "warn", "Report Status");
-        return;
-      }
+        updatedIssue.closeDate = Date.now();
+      // } else if (userDistance <= 0.5) {
+        //   updatedIssue.nonIssueReportCount++;
+      //   this.notify(
+        //     'The report is now recognized',
+      //     'success',
+      //     'Report Status'
+      //   );
+      // } else {
+        //   this.notify("Failed to modify report", "warn", "Report Status");
+      //   return;
+      // }
       this.$store
         .dispatch({ type: UPDATE_ISSUE, updatedIssue })
         .then(updatedIssue => {
           this.issue = updatedIssue;
+          this.notify("The report is now closed", "success", "Report Status");
         })
         .catch(err => console.warn(err));
     },
 
-    authorizedToClose(user, updatedIssue, userDistance) {
-      return (
-        user._id === updatedIssue.reportedBy ||
-        user.isAdmin ||
-        (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
-      );
-    },
+    // authorizedToClose(user, updatedIssue, userDistance) {
+    //   return (
+    //     user._id === updatedIssue.reportedBy ||
+    //     user.isAdmin ||
+    //     (updatedIssue.nonIssueReportCount === 2 && userDistance <= 0.5)
+    //   );
+    // },
 
     notify(text, type, title) {
       this.$notify({
