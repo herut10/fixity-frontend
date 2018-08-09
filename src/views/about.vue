@@ -46,7 +46,7 @@ export default {
 .about {
   background-color: #474747;
   color: white;
-  padding: 10px;
+  padding: 10px 10px 80px 10px;
   width: 82vw;
   max-width: 400px;
   height: 100%;
